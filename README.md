@@ -1,12 +1,12 @@
 # 🧠 Proyecto Zeta - Full Stack con React + Node + Prisma + MySQL (Railway)
 
-Este proyecto es una base sólida para una aplicación full stack. Utiliza:
+Base de proyecto para desarrollo interno del equipo. Tecnologías:
 
 - **Frontend:** React (Vite)
 - **Backend:** Node.js + Express
 - **ORM:** Prisma
-- **Base de datos:** MySQL (hospedada en Railway)
-- **Estilos:** HTML + CSS simples
+- **Base de datos:** MySQL en Railway
+- **Estilos:** HTML + CSS básicos
 
 ---
 
@@ -16,76 +16,37 @@ Este proyecto es una base sólida para una aplicación full stack. Utiliza:
 my-app/
 ├── backend/
 │   ├── prisma/
-│   │   └── schema.prisma     # Definición de modelos y relaciones (migrado desde SQL Server)
+│   │   └── schema.prisma
 │   ├── src/
-│   │   └── index.js          # Servidor Express principal con rutas conectadas a Railway
-│   ├── .env                  # Variables de entorno (Railway)
+│   │   └── index.js
+│   ├── .env
 │   └── package.json
 ├── frontend/
 │   ├── src/
-│   │   └── App.jsx           # App principal de React conectada al backend
+│   │   └── App.jsx
 │   ├── public/
-│   ├── index.html
 │   └── package.json
-├── package.json              # Script raíz para iniciar backend + frontend en paralelo
+├── package.json
 ```
 
 ---
 
-## 🚀 Requisitos previos
+## ⚙️ Inicio del proyecto (backend + frontend juntos)
 
-- Node.js instalado
-- Tener una cuenta en [Railway](https://railway.app/) con la base de datos configurada
-- Tener el proyecto clonado en tu máquina
-- Tener `.env` en `backend/` con la conexión a la base de datos
-
----
-
-## 🔧 Configuración del entorno
-
-### 1. Clonar el repositorio
+Ya configurado para ejecutar ambos servicios en paralelo con un solo comando:
 
 ```bash
-git clone https://github.com/tuusuario/tu-repo.git
-cd my-app
-```
-
-### 2. Configurar las variables de entorno
-
-En el archivo `backend/.env`, agregá tu conexión a Railway:
-
-```env
-DATABASE_URL="mysql://usuario:password@host:puerto/nombre_db"
-PORT=3001
-```
-
-> Ejemplo real:
-
-```env
-DATABASE_URL="mysql://root:pSJCZAwRWIuOJWIcytJlUNPiOQuStZDT@trolley.proxy.rlwy.net:19881/railway"
-```
-
----
-
-## ⚙️ Cómo levantar el proyecto
-
-### ✅ Opción recomendada (una sola terminal para todo)
-
-Desde la raíz (`my-app/`):
-
-```bash
-# Instalar dependencias
-npm install
-npm install --prefix backend
-npm install --prefix frontend
-
-# Iniciar backend y frontend en paralelo
 npm run dev
 ```
 
-### 🧠 ¿Cómo funciona esto?
+Este script utiliza `concurrently` para levantar:
 
-Gracias al paquete [`concurrently`](https://www.npmjs.com/package/concurrently), usamos un script especial en el `package.json` raíz:
+- El backend con Express (desde `backend/src/index.js`)
+- El frontend con Vite (desde `frontend/`)
+
+### Scripts definidos
+
+**En el package.json raíz:**
 
 ```json
 "scripts": {
@@ -93,7 +54,7 @@ Gracias al paquete [`concurrently`](https://www.npmjs.com/package/concurrently),
 }
 ```
 
-Y en `backend/package.json`:
+**En `backend/package.json`:**
 
 ```json
 "scripts": {
@@ -101,7 +62,7 @@ Y en `backend/package.json`:
 }
 ```
 
-Y en `frontend/package.json`:
+**En `frontend/package.json`:**
 
 ```json
 "scripts": {
@@ -111,33 +72,17 @@ Y en `frontend/package.json`:
 
 ---
 
-## 🧱 Base de Datos y Prisma
+## 🌐 Endpoints configurados
 
-- Todos los modelos están definidos en `backend/prisma/schema.prisma`
-- Prisma se conecta automáticamente a Railway usando `.env`
-- Se migró una base completa desde SQL Server
-- Para aplicar cambios:
-
-```bash
-cd backend
-npx prisma migrate dev --name init
-```
-
-- Para explorar los datos visualmente:
-
-```bash
-npx prisma studio
-```
-
----
-
-## 📬 API disponibles (por ahora)
+### `GET /`
+Mensaje de confirmación: API funcionando
 
 ### `GET /usuarios`
-Lista todos los usuarios
+Devuelve todos los usuarios
 
 ### `POST /usuarios`
 Crea un nuevo usuario. Body esperado:
+
 ```json
 {
   "nombre": "Alon",
@@ -151,66 +96,41 @@ Crea un nuevo usuario. Body esperado:
 ```
 
 ### `GET /posts`
-Lista todos los posts
+Devuelve todos los posts (con info de usuario)
 
 ### `POST /posts`
-Crea un nuevo post con:
+Crea un nuevo post. Body:
 
 ```json
 {
   "id_usuario": 1,
-  "titulo_post": "Mi primer post",
-  "contenido_post": "Hola mundo",
+  "titulo_post": "Título",
+  "contenido_post": "Contenido del post",
   "imagen_url": "imagen.jpg"
 }
 ```
 
 ---
 
-## 🧪 Desarrollo recomendado
+## 🗃️ Base de Datos (Railway)
 
-- Usar el script `npm run dev` desde la raíz para levantar todo
-- Usar Postman o ThunderClient para testear la API
-- Usar `Prisma Studio` para ver los datos en tabla
-- Sincronizar `schema.prisma` con migraciones (`migrate dev`)
-- Siempre actualizar `.env` correctamente si se cambia Railway
+La conexión está definida en `backend/.env` bajo `DATABASE_URL`, apuntando al proyecto de Railway ya activo.
 
----
+Para aplicar cambios en el esquema Prisma:
 
-## 🧠 Notas finales
+```bash
+cd backend
+npx prisma migrate dev --name nombre
+```
 
-Este proyecto incluye:
+Para visualizar los datos:
 
-- Base completa migrada desde SQL Server
-- Servidor Express funcional
-- Conexión 100% real con Railway en producción
-- Frontend React funcionando y comunicándose correctamente con el backend
-- Código limpio y modular para expandir fácilmente
+```bash
+npx prisma studio
+```
 
 ---
 
-## 📌 Próximos pasos
 
-- CRUD completo para todos los modelos
-- Autenticación de usuarios
-- UI con diseño pro (Tailwind, MUI o Bootstrap)
-- Tests automáticos
-- Deploy completo (Vercel + Railway)
 
----
-
-## 🛠️ Stack resumido
-
-| Tecnología | Rol                 |
-|------------|---------------------|
-| React      | Frontend (SPA)      |
-| Express    | Backend (API REST)  |
-| Prisma     | ORM                 |
-| MySQL      | Base de datos       |
-| Railway    | Hosting de la DB    |
-| Vite       | Empaquetador React  |
-| Concurrently | Script paralelo  |
-
----
-
-Hecho con 💻 por Alon & ChatGPT.
+Hecho con 💻 por el equipo de Zeta.
