@@ -1,0 +1,24 @@
+{
+  "name": "my-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+  "dev": "concurrently \"npm run server --prefix backend\" \"npm run dev --prefix frontend\""
+}
+,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KanterAlon/Zeta-v2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KanterAlon/Zeta-v2/issues"
+  },
+  "homepage": "https://github.com/KanterAlon/Zeta-v2#readme",
+  "description": "",
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
