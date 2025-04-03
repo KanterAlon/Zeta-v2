@@ -7,8 +7,159 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Usuario {
-  id     Int    @id @default(autoincrement())
-  nombre String
-  email  String @unique
+model Actividades {
+  id_actividad       Int                  @id @default(autoincrement())
+  nombre_actividad   String               @db.VarChar(100)
+  coef_actividad     Decimal              @db.Decimal(3, 2)
+  actividadesUsuario ActividadesUsuario[]
+}
+
+model ActividadesUsuario {
+  id_actividad_usuario Int     @id @default(autoincrement())
+  id_usuario           Int
+  id_actividad         Int?
+  frecuencia_semanal   Int
+
+  usuario   Usuarios     @relation(fields: [id_usuario], references: [id_usuario])
+  actividad Actividades? @relation(fields: [id_actividad], references: [id_actividad])
+}
+
+model Articulos {
+  id_articulo          Int                         @id
+  nombre_articulo      String                      @db.VarChar(50)
+  img_portada_articulo String                      @db.VarChar(50)
+  autor                String                      @db.VarChar(50)
+  texto_articulo       String                      @db.LongText
+  fecha_creacion       DateTime
+  categorias           CategoriasArticulosBlog[]
+  imagenes             IntermediaArticulosImagenes[]
+}
+
+model CategoriasArticulosBlog {
+  id_categoria Int
+  id_articulo  Int
+
+  articulo  Articulos             @relation(fields: [id_articulo], references: [id_articulo])
+  categoria CategoriasDeArticulos @relation(fields: [id_categoria], references: [id_categoria])
+
+  @@id([id_categoria, id_articulo])
+}
+
+model CategoriasDeArticulos {
+  id_categoria          Int                      @id
+  nombre_categoria      String                   @db.VarChar(50)
+  descripcion_categoria String                   @db.VarChar(50)
+  articulos             CategoriasArticulosBlog[]
+}
+
+model Comentarios {
+  id_comentario        Int             @id @default(autoincrement())
+  id_post              Int
+  id_usuario           Int?
+  contenido_comentario String          @db.Text
+  fecha_comentario     DateTime
+
+  usuario       Usuarios?       @relation(fields: [id_usuario], references: [id_usuario])
+  post          Posts           @relation(fields: [id_post], references: [id_post])
+  interacciones Interacciones[] // 🔥 relación inversa agregada acá
+}
+
+model ImagenesDeArticulos {
+  id_imagen  Int                         @id
+  src_imagen String                      @db.Char(10)
+  articulos  IntermediaArticulosImagenes[]
+}
+
+model Interacciones {
+  id_interaccion    Int         @id @default(autoincrement())
+  id_usuario        Int?
+  id_post           Int?
+  id_comentario     Int?
+  tipo_interaccion  Int?
+  fecha_interaccion DateTime
+
+  usuario    Usuarios?    @relation(fields: [id_usuario], references: [id_usuario])
+  post       Posts?       @relation(fields: [id_post], references: [id_post])
+  comentario Comentarios? @relation(fields: [id_comentario], references: [id_comentario])
+}
+
+model IntermediaArticulosImagenes {
+  id_articulo Int
+  id_imagen   Int
+
+  articulo Articulos           @relation(fields: [id_articulo], references: [id_articulo])
+  imagen   ImagenesDeArticulos @relation(fields: [id_imagen], references: [id_imagen])
+
+  @@id([id_articulo, id_imagen])
+}
+
+model Logs {
+  id_log       Int       @id @default(autoincrement())
+  id_usuario   Int?
+  accion       String    @db.VarChar(200)
+  fecha_accion DateTime
+  descripcion  String?   @db.Text
+
+  usuario Usuarios? @relation(fields: [id_usuario], references: [id_usuario])
+}
+
+model Notificaciones {
+  id_notificacion     Int      @id @default(autoincrement())
+  id_usuario          Int?
+  mensaje             String   @db.Text
+  fecha_notificacion  DateTime
+  leida               Boolean  @default(false)
+
+  usuario Usuarios? @relation(fields: [id_usuario], references: [id_usuario])
+}
+
+model Patologias {
+  id_patologia     Int                 @id @default(autoincrement())
+  nombre_patologia String              @db.VarChar(100)
+  usuarios         UsuariosPatologias[]
+}
+
+model Posts {
+  id_post         Int             @id @default(autoincrement())
+  id_usuario      Int?
+  titulo_post     String?         @db.VarChar(200)
+  contenido_post  String          @db.Text
+  fecha_creacion  DateTime
+  version         Int?            @default(1)
+  imagen_url      String?         @db.VarChar(50)
+
+  usuario        Usuarios?       @relation(fields: [id_usuario], references: [id_usuario])
+  comentarios    Comentarios[]
+  interacciones  Interacciones[]
+}
+
+model Usuarios {
+  id_usuario      Int     @id @default(autoincrement())
+  nombre          String  @db.VarChar(100)
+  email           String  @unique @db.VarChar(100)
+  fecha_registro  DateTime?
+  ultima_sesion   DateTime?
+  edad            Int?
+  sexo            Boolean?
+  peso            Float?
+  altura          Float?
+  password        String?
+
+  actividades     ActividadesUsuario[]
+  posts           Posts[]
+  interacciones   Interacciones[]
+  notificaciones  Notificaciones[]
+  logs            Logs[]
+  comentarios     Comentarios[]
+  patologias      UsuariosPatologias[]
+}
+
+model UsuariosPatologias {
+  id_usuario   Int
+  id_patologia Int
+
+  usuario   Usuarios   @relation(fields: [id_usuario], references: [id_usuario])
+  patologia Patologias @relation(fields: [id_patologia], references: [id_patologia])
+
+  @@id([id_usuario, id_patologia])
 }
