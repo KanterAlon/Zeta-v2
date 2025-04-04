@@ -23,9 +23,11 @@ app.get('/usuarios', async (req, res) => {
     const usuarios = await prisma.usuarios.findMany();
     res.json(usuarios);
   } catch (err) {
+    console.error('🔥 Error al obtener usuarios:', err); // <--- Aca
     res.status(500).json({ error: 'Error al obtener usuarios' });
   }
 });
+
 
 app.post('/usuarios', async (req, res) => {
   const { nombre, email } = req.body;

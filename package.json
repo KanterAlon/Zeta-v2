@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-  "dev": "concurrently \"npm run server --prefix backend\" \"npm run dev --prefix frontend\""
-}
-,
+    "dev": "concurrently \"npm run server --prefix backend\" \"npm run dev --prefix frontend\""
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/KanterAlon/Zeta-v2.git"
