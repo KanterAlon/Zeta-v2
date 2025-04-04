@@ -3,9 +3,12 @@ import axios from 'axios';
 import './App.css';
 
 function App() {
+
   const [usuarios, setUsuarios] = useState([]);
   const [nombre, setNombre] = useState('');
   const [email, setEmail] = useState('');
+
+
 
   // Cargar usuarios al iniciar
   useEffect(() => {
