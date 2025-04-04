@@ -1,11 +1,12 @@
-# 🧠 Proyecto Zeta - Full Stack con React + Node + Prisma + MySQL (Railway)
+
+# 🧠 Proyecto Zeta - Full Stack con React + Node + Prisma + MySQL
 
 Base de proyecto para desarrollo interno del equipo. Tecnologías:
 
 - **Frontend:** React (Vite)
 - **Backend:** Node.js + Express
 - **ORM:** Prisma
-- **Base de datos:** MySQL en Railway
+- **Base de datos:** MySQL (📍 ahora **local** con opción previa en Railway)
 - **Estilos:** HTML + CSS básicos
 
 ---
@@ -112,18 +113,68 @@ Crea un nuevo post. Body:
 
 ---
 
-## 🗃️ Base de Datos (Railway)
+## 🗃️ Base de Datos
 
-La conexión está definida en `backend/.env` bajo `DATABASE_URL`, apuntando al proyecto de Railway ya activo.
+### ✅ Modo actual: **Local** (MySQL)
 
-Para aplicar cambios en el esquema Prisma:
+Usamos una instancia local de MySQL (ej: instalada con WAMP o como servicio en Windows/Mac/Linux).
+
+**Conexión en `.env`:**
+
+```env
+DATABASE_URL="mysql://root:TU_PASSWORD@localhost:3306/zeta_local"
+PORT=3001
+```
+
+### 📥 Cómo crear la base desde cero:
+
+1. Abrí DBeaver
+2. Conectate a `localhost:3306` con usuario `root`
+3. Ejecutá:
+
+```sql
+CREATE DATABASE zeta_local;
+```
+
+4. Luego:
 
 ```bash
 cd backend
+npx prisma generate
+npx prisma migrate dev --name init
+```
+
+---
+
+### 🧠 Visualización de datos (DBeaver)
+
+1. Abrí DBeaver y conectate a `zeta_local`
+2. Explorá tablas y hacé clic derecho → "Ver datos"
+3. Insertá filas con clic derecho → "Agregar fila" → `Ctrl + S` para guardar
+
+---
+
+### 🕸 Modo anterior (opcional): **Railway**
+
+La conexión antes estaba definida con:
+
+```env
+DATABASE_URL="mysql://root:contraseña@host.railway.internal:puerto/railway"
+```
+
+Railway levantaba MySQL en la nube y Prisma funcionaba igual. Si algún miembro del equipo quiere volver a Railway, solo debe reemplazar el `DATABASE_URL`.
+
+---
+
+## 🧪 Prisma CLI útil
+
+### Migrar schema y generar tablas
+
+```bash
 npx prisma migrate dev --name nombre
 ```
 
-Para visualizar los datos:
+### Ver estructura en navegador
 
 ```bash
 npx prisma studio
@@ -131,6 +182,35 @@ npx prisma studio
 
 ---
 
+## 🖥️ Instalación completa desde cero (una sola vez por compu)
 
+```bash
+git clone https://github.com/KanterAlon/Zeta-v2.git
+cd Zeta-v2
+
+:: Instalar dependencias raíz
+npm install
+
+:: Instalar dependencias del backend
+npm install --prefix backend
+
+:: Instalar dependencias del frontend
+npm install --prefix frontend
+
+:: (Opcional) Crear archivo de entorno
+echo DATABASE_URL="mysql://root:tu_password@localhost:3306/zeta_local" > backend/.env
+echo PORT=3001 >> backend/.env
+
+:: Generar Prisma Client y aplicar migración
+cd backend
+npx prisma generate
+npx prisma migrate dev --name init
+cd ..
+
+:: Ejecutar proyecto completo (front + back)
+npm run dev
+```
+
+---
 
 Hecho con 💻 por el equipo de Zeta.
