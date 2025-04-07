@@ -1,4 +1,3 @@
-
 # 🧠 Proyecto Zeta - Full Stack con React + Node + Prisma + MySQL
 
 Base de proyecto para desarrollo interno del equipo. Tecnologías:
@@ -14,13 +13,13 @@ Base de proyecto para desarrollo interno del equipo. Tecnologías:
 ## 📁 Estructura del Proyecto
 
 ```
-my-app/
+Zeta-v2/
 ├── backend/
-│   ├── prisma/
-│   │   └── schema.prisma
 │   ├── src/
-│   │   └── index.js
-│   ├── .env
+│   │   ├── prisma/
+│   │   │   ├── schema.prisma
+│   │   │   └── .env
+│   │   └── app.js
 │   └── package.json
 ├── frontend/
 │   ├── src/
@@ -42,7 +41,7 @@ npm run dev
 
 Este script utiliza `concurrently` para levantar:
 
-- El backend con Express (desde `backend/src/index.js`)
+- El backend con Express (desde `backend/src/app.js`)
 - El frontend con Vite (desde `frontend/`)
 
 ### Scripts definidos
@@ -59,7 +58,7 @@ Este script utiliza `concurrently` para levantar:
 
 ```json
 "scripts": {
-  "server": "node src/index.js"
+  "server": "node src/app.js"
 }
 ```
 
@@ -117,9 +116,9 @@ Crea un nuevo post. Body:
 
 ### ✅ Modo actual: **Local** (MySQL)
 
-Usamos una instancia local de MySQL (ej: instalada con WAMP o como servicio en Windows/Mac/Linux).
+Usamos una instancia local de MySQL (ej: instalada con WAMP, XAMPP o como servicio independiente).
 
-**Conexión en `.env`:**
+**Conexión en `src/prisma/.env`:**
 
 ```env
 DATABASE_URL="mysql://root:TU_PASSWORD@localhost:3306/zeta_local"
@@ -128,7 +127,7 @@ PORT=3001
 
 ### 📥 Cómo crear la base desde cero:
 
-1. Abrí DBeaver
+1. Abrí DBeaver o Workbench
 2. Conectate a `localhost:3306` con usuario `root`
 3. Ejecutá:
 
@@ -136,12 +135,11 @@ PORT=3001
 CREATE DATABASE zeta_local;
 ```
 
-4. Luego:
+4. Luego en consola:
 
 ```bash
-cd backend
-npx prisma generate
-npx prisma migrate dev --name init
+npx prisma generate --schema backend/src/prisma/schema.prisma
+npx prisma migrate dev --name init --schema backend/src/prisma/schema.prisma
 ```
 
 ---
@@ -171,43 +169,34 @@ Railway levantaba MySQL en la nube y Prisma funcionaba igual. Si algún miembro 
 ### Migrar schema y generar tablas
 
 ```bash
-npx prisma migrate dev --name nombre
+npx prisma migrate dev --name nombre --schema backend/src/prisma/schema.prisma
 ```
 
 ### Ver estructura en navegador
 
 ```bash
-npx prisma studio
+npx prisma studio --schema backend/src/prisma/schema.prisma
 ```
 
 ---
 
 ## 🖥️ Instalación completa desde cero (una sola vez por compu)
 
-```bash
+```powershell
 git clone https://github.com/KanterAlon/Zeta-v2.git
 cd Zeta-v2
 
-:: Instalar dependencias raíz
 npm install
-
-:: Instalar dependencias del backend
 npm install --prefix backend
-
-:: Instalar dependencias del frontend
 npm install --prefix frontend
+npm install concurrently --save-dev
 
-:: (Opcional) Crear archivo de entorno
-echo DATABASE_URL="mysql://root:tu_password@localhost:3306/zeta_local" > backend/.env
-echo PORT=3001 >> backend/.env
+# Crear base de datos en DBeaver o Workbench:
+# CREATE DATABASE zeta_local;
 
-:: Generar Prisma Client y aplicar migración
-cd backend
-npx prisma generate
-npx prisma migrate dev --name init
-cd ..
+npx prisma generate --schema backend/src/prisma/schema.prisma
+npx prisma migrate dev --name init --schema backend/src/prisma/schema.prisma
 
-:: Ejecutar proyecto completo (front + back)
 npm run dev
 ```
 
