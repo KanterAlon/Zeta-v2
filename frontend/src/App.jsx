@@ -1,7 +1,8 @@
 import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
-import Home from './pages/HomePage';
+import HomePage from './pages/HomePage';
 import BlogPage from './pages/BlogPage';
+import CommunityPage from './Pages/CommunityPage';
 // Agregá otras rutas si tenés Comunidad, Contacto, etc.
 
 function App() {
