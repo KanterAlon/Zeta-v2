@@ -12,7 +12,7 @@ const CommunityCard = ({ post, onLike, onDislike }) => {
         <div className="community-card-footer">
           <button className={`like-button ${post.liked ? 'active' : ''}`} onClick={() => onLike(post.id)}>
             <img
-              src={`/img/icon_like${post.liked ? '-fill' : ''}.svg`}
+              src={`./assets/img/icon_like${post.liked ? '-fill' : ''}.svg`}
               className="img-like"
               alt="like"
             />
@@ -20,7 +20,7 @@ const CommunityCard = ({ post, onLike, onDislike }) => {
           </button>
           <button className={`dislike-button ${post.disliked ? 'active' : ''}`} onClick={() => onDislike(post.id)}>
             <img
-              src={`/img/icon_dislike${post.disliked ? '-fill' : ''}.svg`}
+              src={`./assets/img/icon_dislike${post.disliked ? '-fill' : ''}.svg`}
               className="img-dislike"
               alt="dislike"
             />

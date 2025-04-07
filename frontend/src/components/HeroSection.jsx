@@ -10,7 +10,7 @@ const HeroSection = () => {
           <div className="search-bar">
             <form action="/home/product" method="get">
               <button type="submit" className="search-button">
-                <img src="/img/icon_search.svg" alt="Search Icon" width="20" height="20" />
+                <img src="./assets/img/icon_search.svg" alt="Search Icon" width="20" height="20" />
               </button>
               <input
                 type="text"
@@ -23,7 +23,7 @@ const HeroSection = () => {
             </form>
             <div id="autocomplete-results" className="autocomplete-results">
               <div id="loader" className="loader">
-                <img src="/img/loader.gif" alt="Cargando..." />
+                <img src="./assets/img/loader.gif" alt="Cargando..." />
               </div>
               {/* Aquí va el resultado de la búsqueda */}
               {/* Ejemplo de conexión:

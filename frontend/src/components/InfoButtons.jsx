@@ -2,10 +2,10 @@ import React from 'react';
 
 const InfoButtons = () => {
   const data = [
-    { img: '/img/icon_food.svg', text: 'Ingresás que querés comer' },
-    { img: '/img/icon_order-completed.svg', text: 'Obtenés feedback nutricional rápido' },
-    { img: '/img/icon_healthy-eating.svg', text: 'Te informás íntegramente con facilidad' },
-    { img: '/img/icon_scales.svg', text: 'Te ayudamos a tomar una decisión' }
+    { img: './assets/img/icon_food.svg', text: 'Ingresás que querés comer' },
+    { img: './assets/img/icon_order-completed.svg', text: 'Obtenés feedback nutricional rápido' },
+    { img: './assets/img/icon_healthy-eating.svg', text: 'Te informás íntegramente con facilidad' },
+    { img: './assets/img/icon_scales.svg', text: 'Te ayudamos a tomar una decisión' }
   ];
 
   return (

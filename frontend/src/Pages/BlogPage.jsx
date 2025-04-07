@@ -55,7 +55,7 @@ const BlogPage = () => {
             <h1>¿QUÉ QUERÉS APRENDER?</h1>
             <div className="search-bar">
               <button className="search-button">
-                <img src="/img/icon_search.svg" alt="Search Icon" width="20" height="20" />
+                <img src="./assets/img/icon_search.svg" alt="Search Icon" width="20" height="20" />
               </button>
               <input
                 type="text"

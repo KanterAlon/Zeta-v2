@@ -65,7 +65,7 @@ const homeController = {
         ['es', 'en'].includes(p.lang) && (p.countries?.toLowerCase().includes('argentina'))
       ).map(p => ({
         name: p.product_name,
-        image: p.image_url || "/img/default_product.png"
+        image: p.image_url || "./assets/img/default_product.png"
       }));
 
       res.json({ success: true, products: productos });

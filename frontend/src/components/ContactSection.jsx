@@ -5,7 +5,7 @@ const ContactSection = () => {
     <section className="contact-section">
       <div className="contact-inner">
         <div className="contact-image">
-          <img src="/img/img_contact.svg" alt="Contacto" />
+          <img src="./assets/img/img_contact.svg" alt="Contacto" />
         </div>
         <div className="contact-content">
           <h2 style={{ color: 'var(--primary-color)' }}>¿Te quedó alguna inquietud?</h2>

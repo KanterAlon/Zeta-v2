@@ -111,7 +111,7 @@ const CommunityPage = () => {
         </div>
 
         <button className="button-add-post" onClick={() => setPopupOpen(true)}>
-          <img src="/img/icon_button_add.svg" />
+          <img src="./assets/img/icon_button_add.svg" />
         </button>
       </section>
 
