@@ -1,6 +1,5 @@
 # Node
 node_modules
-.env
 dist
 .prisma
 .idea
