@@ -1415,7 +1415,7 @@ textarea:focus, input:focus {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: url('./assets/img/img_fondo-login.svg') no-repeat center center;
+  background: url('./img/img_fondo-login.svg') no-repeat center center;
   background-size: cover;
 }
 
@@ -1647,7 +1647,7 @@ textarea:focus, input:focus {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: url('./assets/img/img_fondo-login.svg') no-repeat center center;
+  background: url('./img/img_fondo-login.svg') no-repeat center center;
   background-size: cover;
 }
 
@@ -1745,7 +1745,7 @@ textarea:focus, input:focus {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: url('./assets/img/img_fondo-login.svg') no-repeat center center;
+  background: url('./img/img_fondo-login.svg') no-repeat center center;
   background-size: cover;
 }
 
@@ -2127,6 +2127,7 @@ textarea:focus, input:focus {
 
 }
 
+
 @media (max-width: 940px) {
   header {
     padding: 20px 30px;
@@ -2185,4 +2186,6 @@ textarea:focus, input:focus {
     width: 100%;
     text-align: center;
   }
+
+  
 }

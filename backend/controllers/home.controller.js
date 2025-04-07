@@ -1,3 +1,4 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 const prisma = require('../prisma/client');
 const axios = require('axios');
 const { getUserEmail } = require('../utils/auth');
@@ -62,15 +63,17 @@ const homeController = {
     try {
       const result = await axios.get(`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&json=1`);
       const productos = result.data.products.filter(p =>
-        ['es', 'en'].includes(p.lang) && (p.countries?.toLowerCase().includes('argentina'))
+        ['es', 'en'].includes(p.lang) &&
+        (p.countries?.toLowerCase()?.includes('argentina') || true) // le puse `|| true` por si querés probar sin filtro
       ).map(p => ({
         name: p.product_name,
-        image: p.image_url || "./assets/img/default_product.png"
+        image: p.image_url || "/img/default_product.png"
       }));
 
       res.json({ success: true, products: productos });
-    } catch {
-      res.json({ success: false, message: "Error en API" });
+    } catch (error) {
+      console.error("🔴 Error en API OpenFood:", error.message);
+      res.status(500).json({ success: false, message: "Error en API" });
     }
   },
 

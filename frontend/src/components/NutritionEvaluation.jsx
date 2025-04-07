@@ -6,7 +6,7 @@ const NutritionEvaluation = () => {
       <div className="nutrition-evaluation-inner">
         <div className="product-info">
           <div className="img-rating">
-            <img src="./assets/img/lays-classic.svg" alt="Lays Clasicas" className="product-image" />
+            <img src="./img/lays-classic.svg" alt="Lays Clasicas" className="product-image" />
             <div className="rating">
               <div className="circle red"></div>
               <h3>Muy Malo</h3>
@@ -14,15 +14,15 @@ const NutritionEvaluation = () => {
           </div>
           <div className="nutrition-details">
             <div className="nutrition-detail">
-              <img src="./assets/img/icon_fat.svg" alt="Alto en grasas" />
+              <img src="./img/icon_fat.svg" alt="Alto en grasas" />
               <span>Alto en Grasas</span>
             </div>
             <div className="nutrition-detail">
-              <img src="./assets/img/icon_calories.svg" alt="Alto en calorías" />
+              <img src="./img/icon_calories.svg" alt="Alto en calorías" />
               <span>Alto en Calorías</span>
             </div>
             <div className="nutrition-detail">
-              <img src="./assets/img/icon_protein.svg" alt="Bajas proteínas" />
+              <img src="./img/icon_protein.svg" alt="Bajas proteínas" />
               <span>Bajas Proteínas</span>
             </div>
           </div>

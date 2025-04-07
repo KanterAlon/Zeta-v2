@@ -6,7 +6,7 @@ const CommunityPopup = ({ isOpen, onClose, onPost, content, setContent }) => {
   return (
     <div className="popup-container">
       <div className="popup-content">
-        <img src="./assets/img/icon_close.svg" className="close-btn" onClick={onClose} />
+        <img src="./img/icon_close.svg" className="close-btn" onClick={onClose} />
         <div className="top-pop-up-add-post">
           <textarea
             id="postInput"
@@ -16,7 +16,7 @@ const CommunityPopup = ({ isOpen, onClose, onPost, content, setContent }) => {
             required
           />
           <button className="button-select-img">
-            <img src="./assets/img/icon_img.svg" alt="Seleccionar imagen" />
+            <img src="./img/icon_img.svg" alt="Seleccionar imagen" />
           </button>
         </div>
         <button className="publish-btn" onClick={onPost}>Publicar</button>

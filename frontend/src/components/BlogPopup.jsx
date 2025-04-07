@@ -6,7 +6,7 @@ const BlogPopup = ({ post, onClose }) => {
   return (
     <section className="pop-up-info-articulo" style={{ display: 'flex' }}>
       <div className="pop-up-info-articulo-inner">
-        <img src={`./assets/img/${post.imagen_url}`} alt="Post Image" />
+        <img src={`./img/${post.imagen_url}`} alt="Post Image" />
         <h1>{post.titulo_post}</h1>
         <h3>Escrito por todo el equipo de Zeta</h3>
         <hr />
