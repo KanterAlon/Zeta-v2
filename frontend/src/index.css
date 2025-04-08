@@ -137,6 +137,20 @@ button {
     color: var(--secondary2-color);
 }
 
+#root {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1440px;
+}
+
 
 ::placeholder {
   font-size: var(--placeholder-text-size);
@@ -281,7 +295,7 @@ span.button-text{
 
 .inner {
   width: 100%;
-  max-width: 1440px;
+  
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -351,7 +365,7 @@ span.button-text{
   margin-top: 2rem;
   gap: 1rem;
   width: 100%;
-  max-width: 1440px;
+  
 }
 
 .info-button {
@@ -438,7 +452,7 @@ span.button-text{
   justify-content: space-evenly;
   align-items: center;
   width: 100%;
-  max-width: 1440px;
+  
 }
 
 .product-info {
@@ -608,7 +622,7 @@ span.button-text{
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  max-width: 1440px;
+  
   gap: 2.5rem;
 }
 
@@ -769,7 +783,7 @@ gap: .5rem;
   flex-direction: column;
   justify-content: center;
   width: 90%;
-  max-width: 1440px;
+  
   gap: 1rem;
 }
 
@@ -839,7 +853,7 @@ gap: .5rem;
 
 .pop-up-info-articulo-inner {
   width: 100%;
-  max-width: 1440px;
+  
   display: flex;
   flex-direction: column;
   align-items: start;
@@ -875,7 +889,7 @@ gap: .5rem;
 }
 
 .product-inner {
-  max-width: 1440px;
+  
   width: 100%;
 }
 
@@ -1072,7 +1086,7 @@ gap: .5rem;
 }
 
 .inner-community {
-  max-width: 1440px;
+  
   width: 100%;
 }
 
@@ -1176,7 +1190,7 @@ gap: .5rem;
   background-color: var(--secondary6-color);
   width: 95%;
   height: 60%;
-  max-width: 1440px;
+  
   padding: 2rem;
   display: flex;
   flex-direction: column;
