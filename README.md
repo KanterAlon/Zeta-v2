@@ -164,8 +164,8 @@ npm install concurrently --save-dev
 
 cd backend
 set NODE_TLS_REJECT_UNAUTHORIZED=0
-npx prisma generate --schema src/schema.prisma
-npx prisma migrate dev --name init --schema src/schema.prisma
+npx prisma generate --schema prisma/schema.prisma 
+npx prisma migrate dev --name init --schema prisma/schema.prisma 
 cd ..
 
 npm run dev
