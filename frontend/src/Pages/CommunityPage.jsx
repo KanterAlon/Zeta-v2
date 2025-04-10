@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import CommunityCard from '../components/CommunityCard';
 import CommunityPopup from '../components/CommunityPopup';
 
@@ -7,86 +8,67 @@ const CommunityPage = () => {
   const [popupOpen, setPopupOpen] = useState(false);
   const [newPostContent, setNewPostContent] = useState('');
 
-  useEffect(() => {
-    const stored = localStorage.getItem('communityPosts');
-    if (stored) {
-      setPosts(JSON.parse(stored));
-    } else {
-      // Posts de ejemplo
-      const sample = [
-        {
-          id: 'post_1',
-          contenido: '¡Bienvenidos a la comunidad!',
-          imagen_url: '',
-          fecha: new Date().toLocaleString(),
-          likes: 0,
-          dislikes: 0,
+  // Función para traer los posts desde la base de datos
+  const fetchPosts = async () => {
+    try {
+      const response = await axios.get('/api/obtenerPosts');
+      if (response.data.success) {
+        // Mapeamos la respuesta para darle la estructura que espera el front-end.
+        const mappedPosts = response.data.posts.map(post => ({
+          id: post.id_post,
+          contenido: post.contenido_post,
+          fecha: new Date(post.fecha_creacion).toLocaleString(),
+          imagen_url: post.imagen_url,
+          likes: post.likes,
+          dislikes: post.dislikes,
+          // Los estados de "liked" y "disliked" dependerán de la lógica de la sesión actual.
           liked: false,
           disliked: false
-        }
-      ];
-      localStorage.setItem('communityPosts', JSON.stringify(sample));
-      setPosts(sample);
+        }));
+        setPosts(mappedPosts);
+      }
+    } catch (error) {
+      console.error('Error al obtener posts:', error);
     }
+  };
+
+  useEffect(() => {
+    fetchPosts();
   }, []);
 
-  const updateLocalStorage = (updated) => {
-    localStorage.setItem('communityPosts', JSON.stringify(updated));
-    setPosts(updated);
+  // Llamada al endpoint de dar like
+  const handleLike = async (id) => {
+    try {
+      await axios.post('/api/darLike', { idPost: id });
+      fetchPosts();
+    } catch (error) {
+      console.error('Error al dar like:', error);
+    }
   };
 
-  const handleLike = (id) => {
-    const updated = posts.map(post => {
-      if (post.id === id) {
-        const liked = !post.liked;
-        return {
-          ...post,
-          liked,
-          disliked: liked ? false : post.disliked,
-          likes: liked ? post.likes + 1 : post.likes - 1,
-          dislikes: liked && post.disliked ? post.dislikes - 1 : post.dislikes
-        };
-      }
-      return post;
-    });
-    updateLocalStorage(updated);
+  // Llamada al endpoint de dar dislike
+  const handleDislike = async (id) => {
+    try {
+      await axios.post('/api/darDislike', { idPost: id });
+      fetchPosts();
+    } catch (error) {
+      console.error('Error al dar dislike:', error);
+    }
   };
 
-  const handleDislike = (id) => {
-    const updated = posts.map(post => {
-      if (post.id === id) {
-        const disliked = !post.disliked;
-        return {
-          ...post,
-          disliked,
-          liked: disliked ? false : post.liked,
-          dislikes: disliked ? post.dislikes + 1 : post.dislikes - 1,
-          likes: disliked && post.liked ? post.likes - 1 : post.likes
-        };
-      }
-      return post;
-    });
-    updateLocalStorage(updated);
-  };
-
-  const handlePost = () => {
-    if (newPostContent.trim() === '') return alert('El contenido no puede estar vacío.');
-
-    const newPost = {
-      id: 'post_' + Date.now(),
-      contenido: newPostContent,
-      imagen_url: '', // después podés agregar upload
-      fecha: new Date().toLocaleString(),
-      likes: 0,
-      dislikes: 0,
-      liked: false,
-      disliked: false
-    };
-
-    const updated = [newPost, ...posts];
-    updateLocalStorage(updated);
-    setNewPostContent('');
-    setPopupOpen(false);
+  // Llamada al endpoint para publicar un post nuevo
+  const handlePost = async () => {
+    if (newPostContent.trim() === '') {
+      return alert('El contenido no puede estar vacío.');
+    }
+    try {
+      await axios.post('/api/publicarPost', { contenidoPost: newPostContent });
+      fetchPosts();
+      setNewPostContent('');
+      setPopupOpen(false);
+    } catch (error) {
+      console.error('Error al publicar el post:', error);
+    }
   };
 
   return (
@@ -111,7 +93,7 @@ const CommunityPage = () => {
         </div>
 
         <button className="button-add-post" onClick={() => setPopupOpen(true)}>
-          <img src="./img/icon_button_add.svg" />
+          <img src="./img/icon_button_add.svg" alt="Agregar post" />
         </button>
       </section>
 
