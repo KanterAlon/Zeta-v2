@@ -4,7 +4,7 @@
 
 @font-face {
   font-family: 'Codec Pro';
-  src: url('/fonts/codec-pro-regular.ttf') format('truetype');
+  src: url('../fonts/codec-pro-regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
 }
