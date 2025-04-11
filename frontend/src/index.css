@@ -326,13 +326,19 @@ span.button-text{
   color: var(--secondary2-color);
 }
 
+.search-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
 .search-bar {
   display: flex;
   align-items: center;
   border: 2px solid var(--secondary4-color);
   border-radius: 15px;
   max-width: 950px;
-  width: 100%;
+  width: 90%;
   height: 60px;
   padding-inline: 1.5rem;
   position: relative;
@@ -344,7 +350,7 @@ span.button-text{
   flex-grow: 1;
   padding: 10px;
   border-radius: 15px;
-  max-width: 70%;
+  width: 100%;
 }
 
 .search-button {
@@ -400,11 +406,8 @@ span.button-text{
   justify-content: start;
 }
 
-#autocomplete-results {
-  display: none;
-}
-
 .autocomplete-results {
+  display: none;
   border: 1px solid #ddd;
   background-color: #fff;
   min-height: 200px;
@@ -416,7 +419,6 @@ span.button-text{
   left: 0;
   z-index: 100;
   border-radius: 15px;
-  display: none; /* Inicialmente oculto */
   flex-direction: column;
 }
 
@@ -424,6 +426,7 @@ span.button-text{
   padding: 10px;
   cursor: pointer;
   border-bottom: 1px solid #ddd;
+  height: 100px;
 }
 
 .autocomplete-item:hover {
@@ -431,12 +434,11 @@ span.button-text{
 }
 
 .loader {
-  display: none; /* Oculto por defecto */
+  display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
 }
-
 
 /* ------------------ NUTRITION EVALUATION ------------------ */
 
@@ -555,7 +557,7 @@ span.button-text{
 
 .contact-section {
   background-color: var(--secondary3-color);
-  padding-top: 4rem;
+  padding-top: 1.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -622,8 +624,6 @@ span.button-text{
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  
-  gap: 2.5rem;
 }
 
 .cards-container {
@@ -732,9 +732,10 @@ span.button-text{
 /* ------------------ FOOTER ------------------ */
 
 .footer {
-  background-color: var(--secondary2-color); /* Dark gray background */
-  padding: 2rem;
-  color: var(--secondary3-color); /* Light color for text */
+  width: 100%;
+  background-color: var(--secondary2-color);
+  padding-block: 2rem;
+  color: var(--secondary3-color);
   display: flex;
   justify-content: center;
 }

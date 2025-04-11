@@ -68,7 +68,7 @@ const HeroSection = () => {
             </div>
 
             {showResults && (
-              <div className="autocomplete-results">
+              <div className="autocomplete-results" style={{display:'flex'}}>
                 {loading && (
                   <div className="loader">
                     <img src="/img/loader.gif" alt="Cargando..." />
