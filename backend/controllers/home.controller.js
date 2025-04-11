@@ -1,24 +1,46 @@
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
+// Prisma nos permite interactuar con la base de datos de forma sencilla.
 const prisma = require('../prisma/client');
 const axios = require('axios');
-
 const homeController = {
-  // 🔐 LOGIN
+
+  // 🔐 Esta función maneja el inicio de sesión (login).
+  // Sintaxis explicada:
+  // - "login:" define una propiedad del objeto (una función en este caso).
+  // - "async" permite usar "await" para esperar operaciones asincrónicas (como consultar la base de datos).
+  // - "req" es el objeto que representa la petición del frontend.
+  // - "res" es el objeto que usamos para enviar la respuesta al frontend.
   login: async (req, res) => {
+    
+    // 📥 Extraemos "email" y "password" del cuerpo de la petición.
+    // El cliente (por ejemplo, una app en React o Postman) debe enviar estos datos en formato JSON.
     const { email, password } = req.body;
+
+    // 🔍 Buscamos en la base de datos un usuario que tenga ese email.
+    // "findUnique" es una función de Prisma que busca un solo registro que cumpla una condición (where).
     const usuario = await prisma.usuarios.findUnique({ where: { email } });
 
+    // ❌ Si no se encontró ningún usuario o la contraseña no coincide, devolvemos un error.
+    // "res.status(401)" indica "No autorizado" (Unauthorized).
+    // "res.json()" envía una respuesta en formato JSON al cliente.
     if (!usuario || usuario.password !== password) {
       return res.status(401).json({ error: 'Credenciales inválidas' });
     }
 
-    req.session.authenticated = true;
-    req.session.user = {
+    // ✅ Si las credenciales son correctas, guardamos datos en la sesión del usuario.
+    // "req.session" existe si estamos usando middleware como express-session.
+    // Esto permite mantener la autenticación del usuario entre distintas páginas o peticiones.
+    req.session.authenticated = true; // Marcamos al usuario como autenticado.
+    req.session.user = {              // Guardamos información útil del usuario en la sesión.
       id: usuario.id_usuario,
       nombre: usuario.nombre,
       email: usuario.email
     };
 
+    // 📤 Enviamos una respuesta al cliente indicando que el login fue exitoso.
+    // También le mandamos los datos del usuario (sin incluir la contraseña).
+    // El cliente puede usar esto para mostrar el nombre del usuario, etc.
     res.json({ success: true, usuario: req.session.user });
   },
 
@@ -82,18 +104,35 @@ const homeController = {
     res.json(data);
   },
 
-  index: async (req, res) => {
-    const posts = await prisma.posts.findMany({
-      take: 3,
-      orderBy: { fecha_creacion: 'desc' },
-      include: {
-        usuario: true,
-        interacciones: true
-      }
-    });
-    res.json(posts);
-  },
-
+  obtenerTresPostsRecientes: async (req, res) => {
+    try {
+      const posts = await prisma.posts.findMany({
+        orderBy: { fecha_creacion: 'desc' },
+        take: 3,
+        include: {
+          usuario: true,
+          interacciones: true
+        }
+      });
+  
+      const formatted = posts.map(post => ({
+        id_post: post.id_post,
+        contenido_post: post.contenido_post,
+        fecha_creacion: post.fecha_creacion,
+        autor: post.usuario.nombre,
+        imagen_url: post.imagen_url,
+        likes: post.interacciones.filter(i => i.tipo_interaccion === 1).length,
+        dislikes: post.interacciones.filter(i => i.tipo_interaccion === 2).length
+      }));
+  
+      res.json({ success: true, posts: formatted });
+    } catch (error) {
+      console.error('❌ Error al obtener los 3 posts recientes:', error.message);
+      res.status(500).json({ success: false, message: 'Error interno al traer posts' });
+    }
+  }
+  
+,
   blog: async (req, res) => {
     const posts = await prisma.posts.findMany({
       where: { id_usuario: 1 },

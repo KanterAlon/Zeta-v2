@@ -8,8 +8,7 @@ export default function LoginSection({ goTo }) {
     const password = form.get('password');
   
     try {
-      const res = await axios.post(
-        'http://localhost:3000/api/login',
+      const res = await axios.post('/api/posts',
         { email, password },
         { withCredentials: true }
       );
