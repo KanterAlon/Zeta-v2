@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import CommunityCard from '../components/CommunityCard';
 import CommunityPopup from '../components/CommunityPopup';
 
@@ -7,13 +8,15 @@ const CommunityPage = () => {
   const [posts, setPosts] = useState([]);
   const [popupOpen, setPopupOpen] = useState(false);
   const [newPostContent, setNewPostContent] = useState('');
+  const [auth, setAuth] = useState({ authenticated: false });
+  const navigate = useNavigate();
 
-  // Función para traer los posts desde la base de datos
   const fetchPosts = async () => {
     try {
-      const response = await axios.get('/api/obtenerPosts');
+      const response = await axios.get('/api/obtenerPosts', {
+        withCredentials: true
+      });
       if (response.data.success) {
-        // Mapeamos la respuesta para darle la estructura que espera el front-end.
         const mappedPosts = response.data.posts.map(post => ({
           id: post.id_post,
           contenido: post.contenido_post,
@@ -21,7 +24,6 @@ const CommunityPage = () => {
           imagen_url: post.imagen_url,
           likes: post.likes,
           dislikes: post.dislikes,
-          // Los estados de "liked" y "disliked" dependerán de la lógica de la sesión actual.
           liked: false,
           disliked: false
         }));
@@ -32,37 +34,55 @@ const CommunityPage = () => {
     }
   };
 
+  const checkAuth = async () => {
+    try {
+      const res = await axios.get('/api/auth', {
+        withCredentials: true
+      });
+      setAuth(res.data);
+    } catch (err) {
+      console.error('Error al verificar sesión:', err);
+    }
+  };
+
   useEffect(() => {
+    checkAuth();
     fetchPosts();
   }, []);
 
-  // Llamada al endpoint de dar like
   const handleLike = async (id) => {
+    if (!auth.authenticated) return navigate('/login');
     try {
-      await axios.post('/api/darLike', { idPost: id });
+      await axios.post('/api/darLike', { idPost: id }, {
+        withCredentials: true
+      });
       fetchPosts();
     } catch (error) {
       console.error('Error al dar like:', error);
     }
   };
 
-  // Llamada al endpoint de dar dislike
   const handleDislike = async (id) => {
+    if (!auth.authenticated) return navigate('/login');
     try {
-      await axios.post('/api/darDislike', { idPost: id });
+      await axios.post('/api/darDislike', { idPost: id }, {
+        withCredentials: true
+      });
       fetchPosts();
     } catch (error) {
       console.error('Error al dar dislike:', error);
     }
   };
 
-  // Llamada al endpoint para publicar un post nuevo
   const handlePost = async () => {
+    if (!auth.authenticated) return navigate('/login');
     if (newPostContent.trim() === '') {
       return alert('El contenido no puede estar vacío.');
     }
     try {
-      await axios.post('/api/publicarPost', { contenidoPost: newPostContent });
+      await axios.post('/api/publicarPost', { contenidoPost: newPostContent }, {
+        withCredentials: true
+      });
       fetchPosts();
       setNewPostContent('');
       setPopupOpen(false);
@@ -92,7 +112,10 @@ const CommunityPage = () => {
           </div>
         </div>
 
-        <button className="button-add-post" onClick={() => setPopupOpen(true)}>
+        <button className="button-add-post" onClick={() => {
+          if (!auth.authenticated) return navigate('/login');
+          setPopupOpen(true);
+        }}>
           <img src="./img/icon_button_add.svg" alt="Agregar post" />
         </button>
       </section>

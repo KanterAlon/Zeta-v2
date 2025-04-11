@@ -1,11 +1,9 @@
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 const prisma = require('../prisma/client');
 const axios = require('axios');
-const { getUserEmail } = require('../utils/auth');
 
 const homeController = {
-  // 📌 NUEVAS FUNCIONES --------------------
-
+  // 🔐 LOGIN
   login: async (req, res) => {
     const { email, password } = req.body;
     const usuario = await prisma.usuarios.findUnique({ where: { email } });
@@ -33,7 +31,10 @@ const homeController = {
   },
 
   isAuthenticated: (req, res) => {
-    res.json({ authenticated: !!req.session.authenticated, user: req.session.user || null });
+    res.json({
+      authenticated: !!req.session.authenticated,
+      user: req.session.user || null
+    });
   },
 
   registrarUsuario: async (req, res) => {
@@ -54,9 +55,7 @@ const homeController = {
           altura: parseFloat(altura),
           peso: parseFloat(peso),
           patologias: {
-            create: patologias.map(id => ({
-              id_patologia: parseInt(id)
-            }))
+            create: patologias.map(id => ({ id_patologia: parseInt(id) }))
           },
           actividades: {
             create: actividades.map(a => ({
@@ -82,8 +81,6 @@ const homeController = {
     const data = await prisma.actividades.findMany();
     res.json(data);
   },
-
-  // 👇 FUNCIONES EXISTENTES ------------------
 
   index: async (req, res) => {
     const posts = await prisma.posts.findMany({
@@ -159,86 +156,104 @@ const homeController = {
   },
 
   darLike: async (req, res) => {
-    const { idPost } = req.body;
-    const email = getUserEmail(req);
-    const user = await prisma.usuarios.findUnique({ where: { email } });
-    const idUsuario = user.id_usuario;
+    try {
+      if (!req.session?.user?.email) throw new Error('Usuario no autenticado');
+      const { idPost } = req.body;
+      const email = req.session.user.email;
+      const user = await prisma.usuarios.findUnique({ where: { email } });
+      const idUsuario = user.id_usuario;
 
-    const yaTieneLike = await prisma.interacciones.findFirst({
-      where: { id_post: idPost, id_usuario: idUsuario, tipo_interaccion: 1 }
-    });
-
-    if (!yaTieneLike) {
-      await prisma.interacciones.deleteMany({
-        where: { id_post: idPost, id_usuario: idUsuario, tipo_interaccion: 2 }
-      });
-
-      await prisma.interacciones.create({
-        data: {
-          id_post: idPost,
-          id_usuario: idUsuario,
-          tipo_interaccion: 1,
-          fecha_interaccion: new Date()
-        }
-      });
-    }
-
-    res.json({ success: true });
-  },
-
-  darDislike: async (req, res) => {
-    const { idPost } = req.body;
-    const email = getUserEmail(req);
-    const user = await prisma.usuarios.findUnique({ where: { email } });
-    const idUsuario = user.id_usuario;
-
-    const yaTieneDislike = await prisma.interacciones.findFirst({
-      where: { id_post: idPost, id_usuario: idUsuario, tipo_interaccion: 2 }
-    });
-
-    if (!yaTieneDislike) {
-      await prisma.interacciones.deleteMany({
+      const yaTieneLike = await prisma.interacciones.findFirst({
         where: { id_post: idPost, id_usuario: idUsuario, tipo_interaccion: 1 }
       });
 
-      await prisma.interacciones.create({
-        data: {
-          id_post: idPost,
-          id_usuario: idUsuario,
-          tipo_interaccion: 2,
-          fecha_interaccion: new Date()
-        }
-      });
-    }
+      if (!yaTieneLike) {
+        await prisma.interacciones.deleteMany({
+          where: { id_post: idPost, id_usuario: idUsuario, tipo_interaccion: 2 }
+        });
 
-    res.json({ success: true });
+        await prisma.interacciones.create({
+          data: {
+            id_post: idPost,
+            id_usuario: idUsuario,
+            tipo_interaccion: 1,
+            fecha_interaccion: new Date()
+          }
+        });
+      }
+
+      res.json({ success: true });
+    } catch (err) {
+      console.error('❌ Error en darLike:', err.message);
+      res.status(500).json({ success: false, message: err.message });
+    }
+  },
+
+  darDislike: async (req, res) => {
+    try {
+      if (!req.session?.user?.email) throw new Error('Usuario no autenticado');
+      const { idPost } = req.body;
+      const email = req.session.user.email;
+      const user = await prisma.usuarios.findUnique({ where: { email } });
+      const idUsuario = user.id_usuario;
+
+      const yaTieneDislike = await prisma.interacciones.findFirst({
+        where: { id_post: idPost, id_usuario: idUsuario, tipo_interaccion: 2 }
+      });
+
+      if (!yaTieneDislike) {
+        await prisma.interacciones.deleteMany({
+          where: { id_post: idPost, id_usuario: idUsuario, tipo_interaccion: 1 }
+        });
+
+        await prisma.interacciones.create({
+          data: {
+            id_post: idPost,
+            id_usuario: idUsuario,
+            tipo_interaccion: 2,
+            fecha_interaccion: new Date()
+          }
+        });
+      }
+
+      res.json({ success: true });
+    } catch (err) {
+      console.error('❌ Error en darDislike:', err.message);
+      res.status(500).json({ success: false, message: err.message });
+    }
   },
 
   publicarPost: async (req, res) => {
-    const { contenidoPost } = req.body;
-    const email = getUserEmail(req);
-    const user = await prisma.usuarios.findUnique({ where: { email } });
-    const idUsuario = user.id_usuario;
+    try {
+      if (!req.session?.user?.email) throw new Error('Usuario no autenticado');
+      const { contenidoPost } = req.body;
+      const email = req.session.user.email;
+      const user = await prisma.usuarios.findUnique({ where: { email } });
+      const idUsuario = user.id_usuario;
 
-    if (!contenidoPost) return res.status(400).json({ success: false, message: 'Contenido vacío' });
+      if (!contenidoPost) return res.status(400).json({ success: false, message: 'Contenido vacío' });
 
-    const nuevo = await prisma.posts.create({
-      data: {
-        contenido_post: contenidoPost,
-        id_usuario: idUsuario,
-        fecha_creacion: new Date()
-      }
-    });
+      const nuevo = await prisma.posts.create({
+        data: {
+          contenido_post: contenidoPost,
+          id_usuario: idUsuario,
+          fecha_creacion: new Date()
+        }
+      });
 
-    res.json({
-      success: true,
-      post: {
-        id_post: nuevo.id_post,
-        contenido_post: nuevo.contenido_post,
-        fecha_creacion: nuevo.fecha_creacion,
-        autor: user.nombre
-      }
-    });
+      res.json({
+        success: true,
+        post: {
+          id_post: nuevo.id_post,
+          contenido_post: nuevo.contenido_post,
+          fecha_creacion: nuevo.fecha_creacion,
+          autor: user.nombre
+        }
+      });
+    } catch (err) {
+      console.error('❌ Error en publicarPost:', err.message);
+      res.status(500).json({ success: false, message: err.message });
+    }
   },
 
   obtenerPosts: async (req, res) => {
