@@ -24,7 +24,7 @@ const HeroSection = () => {
     setLoading(true);
 
     timeoutIdRef.current = setTimeout(() => {
-      fetch(`/api/home/SearchProducts?query=${encodeURIComponent(value)}`)
+      fetch(`/api/SearchProducts?query=${encodeURIComponent(value)}`)
         .then((res) => res.json())
         .then((data) => {
           setLoading(false);

@@ -12,7 +12,7 @@ const ProductPage = () => {
   useEffect(() => {
     if (!query) return;
 
-    fetch(`/api/home/product?query=${encodeURIComponent(query)}`)
+    fetch(`/api/product?query=${encodeURIComponent(query)}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.error) {

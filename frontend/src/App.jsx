@@ -5,6 +5,7 @@ import BlogPage from './pages/BlogPage';
 import CommunityPage from './Pages/CommunityPage';
 import ProductPage from './Pages/ProductPage';
 import LoginPage from './Pages/Login';
+
 // Agregá otras rutas si tenés Comunidad, Contacto, etc.
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/producto" element={<ProductPage />} />
         <Route index element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
+        
       </Routes>
     </Layout>
   );
