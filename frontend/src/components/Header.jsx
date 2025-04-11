@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Header = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(true); // Cambialo según tu lógica de auth
+  const [auth, setAuth] = useState({ authenticated: false, user: null });
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Verificar sesión activa en backend
+    axios.get('http://localhost:3000/api/auth', { withCredentials: true })
+      .then(res => setAuth(res.data))
+      .catch(() => setAuth({ authenticated: false }));
+
+    // Config hamburguesa
     const hamburgerBtn = document.querySelector('.hamburger-btn');
     const navLinks = document.querySelector('.nav-links');
 
@@ -41,11 +48,11 @@ const Header = () => {
   }, []);
 
   const handleLogout = () => {
-    // fetch('/Home/LogOut', { method: 'POST' }) // ← conectalo cuando tengas el backend
-    //   .then(() => {
-    //     setIsAuthenticated(false);
-    //     navigate('/');
-    //   });
+    axios.post('http://localhost:3000/api/logout', {}, { withCredentials: true })
+      .then(() => {
+        setAuth({ authenticated: false, user: null });
+        navigate('/');
+      });
   };
 
   const toggleDropdown = () => {
@@ -66,17 +73,19 @@ const Header = () => {
       </button>
 
       <nav className="nav-links">
-        <Link to="/"><img src="./img/icon_home.svg" alt="Inicio" width="30" height="30" /><span>Inicio</span></Link>
-        <Link to="/community"><img src="./img/icon_community.svg" alt="Comunidad" width="30" height="30" /><span>Comunidad</span></Link>
-        <Link to="/blog"><img src="./img/icon_blog.svg" alt="Blog" width="30" height="30" /><span>Blog</span></Link>
-        <Link to="/contact"><img src="./img/icon_contact.svg" alt="Contacto" width="30" height="30" /><span>Contacto</span></Link>
+        <Link to="/"><img src="/img/icon_home.svg" alt="Inicio" width="30" height="30" /><span>Inicio</span></Link>
+        <Link to="/community"><img src="/img/icon_community.svg" alt="Comunidad" width="30" height="30" /><span>Comunidad</span></Link>
+        <Link to="/blog"><img src="/img/icon_blog.svg" alt="Blog" width="30" height="30" /><span>Blog</span></Link>
+        <Link to="/contact"><img src="/img/icon_contact.svg" alt="Contacto" width="30" height="30" /><span>Contacto</span></Link>
 
-        {isAuthenticated ? (
+        {!auth.authenticated ? (
+          <Link to="/login" className="login-button"><span className="button-text">Login</span></Link>
+        ) : (
           <div className="icon-group">
-            <a href="#"><img src="./img/icon_notif.svg" alt="Notif" className="icon-img" /></a>
-            <a href="#"><img src="./img/icon_save.svg" alt="Save" className="icon-img" /></a>
+            <a href="#"><img src="/img/icon_notif.svg" alt="Notif" className="icon-img" /></a>
+            <a href="#"><img src="/img/icon_save.svg" alt="Save" className="icon-img" /></a>
             <a href="#" id="icon_profile" onClick={toggleDropdown}>
-              <img src="./img/icon_profile.svg" alt="Profile" className="icon-img" />
+              <img src="/img/icon_profile.svg" alt="Profile" className="icon-img" />
             </a>
             <div id="profile-dropdown" className="profile-dropdown">
               <Link to="/profile">Mi perfil</Link>
@@ -84,8 +93,6 @@ const Header = () => {
               <a href="#" onClick={handleLogout}>Cerrar sesión</a>
             </div>
           </div>
-        ) : (
-          <Link to="/login" className="login-button"><span className="button-text">Login</span></Link>
         )}
       </nav>
     </header>

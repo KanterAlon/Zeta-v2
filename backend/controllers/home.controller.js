@@ -4,6 +4,87 @@ const axios = require('axios');
 const { getUserEmail } = require('../utils/auth');
 
 const homeController = {
+  // 📌 NUEVAS FUNCIONES --------------------
+
+  login: async (req, res) => {
+    const { email, password } = req.body;
+    const usuario = await prisma.usuarios.findUnique({ where: { email } });
+
+    if (!usuario || usuario.password !== password) {
+      return res.status(401).json({ error: 'Credenciales inválidas' });
+    }
+
+    req.session.authenticated = true;
+    req.session.user = {
+      id: usuario.id_usuario,
+      nombre: usuario.nombre,
+      email: usuario.email
+    };
+
+    res.json({ success: true, usuario: req.session.user });
+  },
+
+  logout: (req, res) => {
+    req.session.destroy(err => {
+      if (err) return res.status(500).send('Error al cerrar sesión');
+      res.clearCookie('connect.sid');
+      res.sendStatus(200);
+    });
+  },
+
+  isAuthenticated: (req, res) => {
+    res.json({ authenticated: !!req.session.authenticated, user: req.session.user || null });
+  },
+
+  registrarUsuario: async (req, res) => {
+    try {
+      const {
+        email, password, nombre, apellido,
+        fecha_nacimiento, genero, altura, peso,
+        patologias, actividades
+      } = req.body;
+
+      const nuevoUsuario = await prisma.usuarios.create({
+        data: {
+          email,
+          password,
+          nombre: `${nombre} ${apellido}`,
+          fecha_registro: new Date(),
+          sexo: genero === "1",
+          altura: parseFloat(altura),
+          peso: parseFloat(peso),
+          patologias: {
+            create: patologias.map(id => ({
+              id_patologia: parseInt(id)
+            }))
+          },
+          actividades: {
+            create: actividades.map(a => ({
+              id_actividad: parseInt(a.id),
+              frecuencia_semanal: parseInt(a.frecuencia)
+            }))
+          }
+        }
+      });
+
+      res.status(201).json({ message: 'Cuenta creada', usuario: nuevoUsuario });
+    } catch (error) {
+      res.status(500).json({ error: 'Error al registrar usuario', detalles: error.message });
+    }
+  },
+
+  getPatologias: async (req, res) => {
+    const data = await prisma.patologias.findMany();
+    res.json(data);
+  },
+
+  getActividades: async (req, res) => {
+    const data = await prisma.actividades.findMany();
+    res.json(data);
+  },
+
+  // 👇 FUNCIONES EXISTENTES ------------------
+
   index: async (req, res) => {
     const posts = await prisma.posts.findMany({
       take: 3,
@@ -64,7 +145,7 @@ const homeController = {
       const result = await axios.get(`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&json=1`);
       const productos = result.data.products.filter(p =>
         ['es', 'en'].includes(p.lang) &&
-        (p.countries?.toLowerCase()?.includes('argentina') || true) // le puse `|| true` por si querés probar sin filtro
+        (p.countries?.toLowerCase()?.includes('argentina') || true)
       ).map(p => ({
         name: p.product_name,
         image: p.image_url || "/img/default_product.png"
