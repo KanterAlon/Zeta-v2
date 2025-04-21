@@ -195,10 +195,10 @@ main {
 
 /* ------------------ HEADER ------------------ */
 header {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 100px;
   background-color: var(--secondary3-color);
   position: relative;
 }
@@ -406,7 +406,7 @@ span.button-text{
   justify-content: start;
 }
 
-.autocomplete-results {
+/* .autocomplete-results {
   display: none;
   border: 1px solid #ddd;
   background-color: #fff;
@@ -431,7 +431,7 @@ span.button-text{
 
 .autocomplete-item:hover {
   background-color: #f0f0f0;
-}
+} */
 
 .loader {
   display: flex;
@@ -1991,7 +1991,87 @@ textarea:focus, input:focus {
   color: var(--secondary4-color);
 }
 
+/* ------------------ SEARCH RESULTS PAGE ------------------ */
+
+.search-results-page {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.search-results-page .results-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.search-results-page .loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+/* Grid de tarjetas */
+.search-results-page .cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  width: 100%;
+}
+
+/* Tarjeta de producto */
+.search-results-page .product-card {
+  background-color: var(--whiteback-color);
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  max-width: 280px;
+}
+
+.search-results-page .product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Imagen dentro de la tarjeta */
+.search-results-page .product-card .card-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+/* Título dentro de la tarjeta */
+.search-results-page .product-card .card-title {
+  padding: 1rem;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
 /* MEDIAQUERIES */
+
+@media (max-width: 768px) {
+  .search-results-page {
+    padding: 1.5rem 0.5rem;
+  }
+  .search-results-page .results-header h2 {
+    font-size: 2rem;
+  }
+  .search-results-page .product-card .card-image {
+    height: 180px;
+  }
+}
 
 @media (max-width: 1400px) {
   .login-content {
@@ -2201,6 +2281,4 @@ textarea:focus, input:focus {
     width: 100%;
     text-align: center;
   }
-
-  
 }

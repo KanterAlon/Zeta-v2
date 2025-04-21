@@ -1,48 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react';
+// src/components/HeroSection.jsx
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const HeroSection = () => {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [showResults, setShowResults] = useState(false);
-  const timeoutIdRef = useRef(null);
   const navigate = useNavigate();
 
-  // Input con debounce
-  const handleInput = (e) => {
-    const value = e.target.value;
-    setQuery(value);
-    setShowResults(!!value);
-    clearTimeout(timeoutIdRef.current);
-
-    if (value.trim() === '') {
-      setResults([]);
-      return;
+  const handleSearch = () => {
+    if (query.trim()) {
+      navigate(`/search?query=${encodeURIComponent(query.trim())}`);
     }
-
-    setLoading(true);
-
-    timeoutIdRef.current = setTimeout(() => {
-      fetch(`/api/SearchProducts?query=${encodeURIComponent(value)}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setLoading(false);
-          if (data.success && data.products.length > 0) {
-            setResults(data.products);
-          } else {
-            setResults([{ name: 'No se encontraron resultados.', image: null }]);
-          }
-        })
-        .catch(() => {
-          setLoading(false);
-          setResults([{ name: 'Error al cargar resultados.', image: null }]);
-        });
-    }, 500);
   };
 
-  const handleSelect = (name) => {
-    navigate(`/producto?query=${encodeURIComponent(name)}`);
+  const onKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
   };
 
   return (
@@ -54,7 +27,10 @@ const HeroSection = () => {
 
           <div className="search-bar">
             <div className="search-wrapper">
-              <button className="search-button" onClick={() => handleSelect(query)}>
+              <button
+                className="search-button"
+                onClick={handleSearch}
+              >
                 <img src="/img/icon_search.svg" alt="Buscar" width="20" height="20" />
               </button>
               <input
@@ -62,45 +38,10 @@ const HeroSection = () => {
                 className="search-input"
                 placeholder="Ej: Fideos Matarazzo"
                 value={query}
-                onChange={handleInput}
-                onFocus={() => query && setShowResults(true)}
+                onChange={e => setQuery(e.target.value)}
+                onKeyDown={onKeyDown}
               />
             </div>
-
-            {showResults && (
-              <div className="autocomplete-results" style={{display:'flex'}}>
-                {loading && (
-                  <div className="loader">
-                    <img src="/img/loader.gif" alt="Cargando..." />
-                  </div>
-                )}
-
-                {!loading &&
-                  results.map((product, index) => (
-                    <div
-                      key={index}
-                      className="autocomplete-item"
-                      onClick={() => product.image && handleSelect(product.name)}
-                      style={{
-                        cursor: product.image ? 'pointer' : 'default',
-                        display: 'flex',
-                        alignItems: 'center',
-                        padding: '6px',
-                        borderBottom: '1px solid #eee',
-                      }}
-                    >
-                      {product.image && (
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          style={{ width: 30, height: 30, marginRight: 10 }}
-                        />
-                      )}
-                      <span>{product.name}</span>
-                    </div>
-                  ))}
-              </div>
-            )}
           </div>
         </div>
       </div>
