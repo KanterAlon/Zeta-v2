@@ -201,6 +201,10 @@ header {
   align-items: center;
   background-color: var(--secondary3-color);
   position: relative;
+  box-sizing: border-box;
+  max-width: 100%;
+  padding-inline: 6rem;
+  padding-block: 1rem;
 }
 
 .logo img {
@@ -447,6 +451,7 @@ span.button-text{
   padding-block: 4rem;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 
 .nutrition-evaluation-inner {
@@ -624,12 +629,14 @@ span.button-text{
   flex-direction: column;
   justify-content: center;
   width: 100%;
+  gap: 1rem;
 }
 
 .cards-container {
   width: 100%;
   display: flex;
   justify-content: space-evenly;
+  gap: 1rem;
 }
 
 .card-funcionalidad, .card-advertisement-blog {
