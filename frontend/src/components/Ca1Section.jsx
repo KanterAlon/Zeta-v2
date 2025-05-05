@@ -9,10 +9,10 @@ export default function Ca1Section({ goTo, updateForm }) {
     if (!email || !password) return alert('Campos vacíos');
 
     try {
-      const res = await axios.get('http://localhost:3000/api/ExisteMail', { withCredentials: true }, {
+      const res =await axios.get('http://localhost:3000/api/ExisteMail', {
+        withCredentials: true,
         params: { email }
-      });
-
+      });      
       if (res.data.existe) {
         document.getElementById('emailModal').style.display = 'block';
       } else {
