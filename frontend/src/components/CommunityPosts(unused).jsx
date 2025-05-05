@@ -4,9 +4,9 @@ const CommunityPosts = () => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    // fetch("/api/posts/last3")  // ← Ejemplo de conexión
-    //   .then(res => res.json())
-    //   .then(data => setPosts(data));
+     fetch("/api/posts/last3")  // ← Ejemplo de conexión
+      .then(res => res.json())
+       .then(data => setPosts(data));
   }, []);
 
   return (
