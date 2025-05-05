@@ -6,21 +6,21 @@ const Functionalities = () => {
       img: './img/imgCard1.png',
       title: 'Comparador de alimentos y bebidas',
       desc: 'Compara de manera visual y rápida el valor nutricional...',
-      href: '/home/index',
+      href: '/index',
       btn: 'Pruébalo Ahora'
     },
     {
       img: './img/imgCard2.png',
       title: 'Interactuá con usuarios de intereses similares',
       desc: 'Conectate con personas que comparten tus metas...',
-      href: '/home/community',
+      href: '/community',
       btn: 'Ir a comunidad'
     },
     {
       img: './img/imgCard3.png',
       title: 'Aprendé sobre diversos temas de nutrición',
       desc: 'Explorá artículos creados por nuestro equipo...',
-      href: '/home/blog',
+      href: '/blog',
       btn: 'Ir al Blog'
     }
   ];
