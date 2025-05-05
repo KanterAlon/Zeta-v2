@@ -108,9 +108,19 @@ const homeController = {
 
   existeMail: async (req, res) => {
     const { email } = req.query;
-    const user = await prisma.usuarios.findUnique({ where: { email } });
-    res.json({ existe: !!user });
+  
+    if (!email) {
+      return res.status(400).json({ error: 'El parámetro "email" es requerido' });
+    }
+  
+    try {
+      const user = await prisma.usuarios.findUnique({ where: { email } });
+      res.json({ existe: !!user });
+    } catch (error) {
+      res.status(500).json({ error: 'Error al verificar el correo', detalles: error.message });
+    }
   },
+  
 
   product: async (req, res) => {
     const { query } = req.query;
