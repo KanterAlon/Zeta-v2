@@ -16,15 +16,31 @@ const BlogPage = () => {
     setPosts([
       {
         titulo_post: 'Alimentación intuitiva',
-        contenido_post: 'Escuchá a tu cuerpo...',
+        contenido_post:
+          'Escuchá a tu cuerpo y aprendé a reconocer las señales internas de hambre y saciedad. Esta práctica busca reconectar con tus necesidades reales, dejando de lado las dietas restrictivas.',
         imagen_url: 'imgBlog1.jpg',
         fecha_creacion: '2024-04-01'
       },
       {
         titulo_post: 'Hábitos sostenibles',
-        contenido_post: 'Cómo comer mejor...',
-        imagen_url: 'imgBlog2.jpg',
+        contenido_post:
+          'Cómo comer mejor sin complicarte la vida: pequeñas acciones diarias pueden generar grandes cambios en tu salud y en el planeta. Empezá por lo simple.',
+        imagen_url: 'imgBlog1.jpg',
         fecha_creacion: '2024-03-28'
+      },
+      {
+        titulo_post: 'Mindful eating: comer con atención',
+        contenido_post:
+          'Aprendé a disfrutar cada bocado, prestando atención al momento presente. Esta técnica mejora la relación con la comida y reduce los atracones.',
+        imagen_url: 'imgBlog1.jpg',
+        fecha_creacion: '2024-03-15'
+      },
+      {
+        titulo_post: 'Organización semanal de comidas',
+        contenido_post:
+          'Planificar tus comidas no solo te ahorra tiempo, también mejora tu nutrición. Te mostramos cómo hacerlo de forma práctica y flexible.',
+        imagen_url: 'imgBlog1.jpg',
+        fecha_creacion: '2024-03-05'
       }
     ]);
   }, []);
@@ -52,7 +68,8 @@ const BlogPage = () => {
       <section className="page" style={{ width: '90%' }}>
         <div className="inner">
           <div className="evaluation-content">
-            <h1>¿QUÉ QUERÉS APRENDER?</h1>
+            <h1>¿QUÉ QUERÉS APRENDER HOY?</h1>
+            <p>Descubrí herramientas prácticas, consejos útiles y perspectivas actuales para transformar tu relación con la comida.</p>
             <div className="search-bar">
               <button className="search-button">
                 <img src="./img/icon_search.svg" alt="Search Icon" width="20" height="20" />
@@ -75,7 +92,7 @@ const BlogPage = () => {
         <div className="nutrition-lifestyle-inner">
           <h3>Nutrición y Estilo de Vida</h3>
           <p>
-            Explorá temas clave relacionados con una alimentación equilibrada y las últimas tendencias en salud...
+            Explorá artículos cuidadosamente seleccionados sobre bienestar integral, alimentación consciente y hábitos saludables. Inspirate para hacer cambios positivos y sostenibles.
           </p>
           <div className="cards-row" id="cardsContainer">
             {posts.map((post, idx) => (
