@@ -311,6 +311,7 @@ span.button-text{
 }
 
 .evaluation-content {
+  width: 90% !important;
   background-color: var(--whiteback-color);
   padding: 30px;
   border-radius: 15px;
@@ -2069,15 +2070,16 @@ textarea:focus, input:focus {
   }
 
   .welcome-message {
-    flex: .5;
+    flex: .8;
   }
 
   .illustration {
-    flex: .5;
+    padding-block: 1rem;
+    flex: .2;
   }
 
   .illustration img {
-    width: 100%;
+    max-width: 350px;
   }
 }
 
@@ -2110,6 +2112,10 @@ textarea:focus, input:focus {
 
   header {
     padding: 1rem;
+  }
+
+  .login-form {
+    width: 100%;
   }
 
   .login-content {
@@ -2162,7 +2168,7 @@ textarea:focus, input:focus {
   }
 
   .nutritional-info {
-    width: 100%;
+    width: 90%;
     max-width: 995px;
     padding-inline: 2rem;
   }

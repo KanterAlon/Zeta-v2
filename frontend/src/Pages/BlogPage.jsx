@@ -49,7 +49,7 @@ const BlogPage = () => {
   return (
     <>
       {/* HERO CON BUSCADOR */}
-      <section className="page">
+      <section className="page" style={{ width: '90%' }}>
         <div className="inner">
           <div className="evaluation-content">
             <h1>¿QUÉ QUERÉS APRENDER?</h1>
