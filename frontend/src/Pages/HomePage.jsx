@@ -8,14 +8,14 @@ import ContactSection from '../components/ContactSection';
 
 const HomePage = () => {
   return (
-    <>
+    <div class="index-main">
       <HeroSection />
       <InfoButtons />
       <NutritionEvaluation />
       <Functionalities />
       <CommunityPosts />
       <ContactSection />
-    </>
+    </div>
   );
 };
 

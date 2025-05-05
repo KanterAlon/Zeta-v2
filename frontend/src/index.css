@@ -145,12 +145,16 @@ button {
 }
 
 main {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 1440px;
+
 }
 
+.index-main {
+  max-width: 1440px;
+}
 
 ::placeholder {
   font-size: var(--placeholder-text-size);
@@ -1432,7 +1436,8 @@ textarea:focus, input:focus {
 
 /********************* LOGIN **************************/
 
-.login-container {
+.login-container, .ca1-container {
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1441,18 +1446,24 @@ textarea:focus, input:focus {
   background-size: cover;
 }
 
-.login-content {
+.login-content, .ca1-content {
   background-color: var(--secondary3-color); 
   display: flex;
   justify-content: center;
-  align-items: center;
   border-radius: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   width: 90%;
   height: 90%;
-  padding: 60px;
   gap: 4rem;
+}
+
+.ca1-content {
+  flex-direction: column;
+  justify-content: left;
+  padding: 3rem;
+  box-sizing: border-box;
+  height: fit-content;
 }
 
 .illustration {
@@ -1662,33 +1673,6 @@ textarea:focus, input:focus {
   background-color: rgba(0, 0, 0, 0.03);
 }
 
-/* Styles for ca1.cshtml layout */
-
-.ca1-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background: url('./img/img_fondo-login.svg') no-repeat center center;
-  background-size: cover;
-}
-
-.ca1-content {
-  background-color: var(--secondary3-color);
-  padding: 40px;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-  gap: 4rem;
-  min-height: 600px;
-  width: 95%;
-  max-width: 60rem;
-  position: relative;
-  justify-content: space-between;
-}
-
 .ca1-inputs-grid {
   grid-gap: 1rem;
   display: grid;
@@ -1734,7 +1718,6 @@ textarea:focus, input:focus {
   text-align: center;
   cursor: pointer;
   transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
-  align-self: end;
 }
 
 .ca1-btn-next:hover {
