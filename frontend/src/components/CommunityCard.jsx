@@ -1,6 +1,10 @@
 import React from 'react';
 
 const CommunityCard = ({ post, onLike, onDislike }) => {
+  // Determinar si está likeado o dislikeado en base al valor 1
+  const isLiked = parseInt(post.likes) === 1;
+  const isDisliked = parseInt(post.dislikes) === 1;
+
   return (
     <div className="community-card">
       {post.imagen_url && (
@@ -10,17 +14,17 @@ const CommunityCard = ({ post, onLike, onDislike }) => {
         <p className="community-card-text">{post.contenido}</p>
         <span className="community-time-posted">{post.fecha}</span>
         <div className="community-card-footer">
-          <button className={`like-button ${post.liked ? 'active' : ''}`} onClick={() => onLike(post.id)}>
+          <button className={`like-button ${isLiked ? 'active' : ''}`} onClick={() => onLike(post.id)}>
             <img
-              src={`./img/icon_like${post.liked ? '-fill' : ''}.svg`}
+              src={`./img/icon_like${isLiked ? '-fill' : ''}.svg`}
               className="img-like"
               alt="like"
             />
             <span className="like-count">{post.likes}</span>
           </button>
-          <button className={`dislike-button ${post.disliked ? 'active' : ''}`} onClick={() => onDislike(post.id)}>
+          <button className={`dislike-button ${isDisliked ? 'active' : ''}`} onClick={() => onDislike(post.id)}>
             <img
-              src={`./img/icon_dislike${post.disliked ? '-fill' : ''}.svg`}
+              src={`./img/icon_dislike${isDisliked ? '-fill' : ''}.svg`}
               className="img-dislike"
               alt="dislike"
             />
