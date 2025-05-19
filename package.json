@@ -2,9 +2,7 @@
   "name": "my-app",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {
-    "dev": "concurrently \"npm run server --prefix backend\" \"npm run dev --prefix frontend\""
-  },
+  
   "repository": {
     "type": "git",
     "url": "git+https://github.com/KanterAlon/Zeta-v2.git"
@@ -22,5 +20,10 @@
   },
   "dependencies": {
     "react-router-dom": "^7.5.0"
+  },
+  "scripts": {
+    "dev": "concurrently \"npm run server --prefix backend\" \"npm run dev --prefix frontend\"",
+    "init": "npm install && npm install --prefix backend && npm install --prefix frontend && npm install concurrently --save-dev && cd backend && set NODE_TLS_REJECT_UNAUTHORIZED=0 && npx prisma generate --schema prisma/schema.prisma && npx prisma migrate dev --name init --schema prisma/schema.prisma && cd .. && npm run dev"
+    
   }
 }
