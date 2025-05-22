@@ -3,13 +3,13 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model Actividades {
   id_actividad       Int                  @id @default(autoincrement())
-  nombre_actividad   String               @db.VarChar(100)
+  nombre_actividad   String
   coef_actividad     Decimal              @db.Decimal(3, 2)
   actividadesUsuario ActividadesUsuario[]
 }
@@ -26,10 +26,10 @@ model ActividadesUsuario {
 
 model Articulos {
   id_articulo          Int                         @id
-  nombre_articulo      String                      @db.VarChar(50)
-  img_portada_articulo String                      @db.VarChar(50)
-  autor                String                      @db.VarChar(50)
-  texto_articulo       String                      @db.LongText
+  nombre_articulo      String
+  img_portada_articulo String
+  autor                String
+  texto_articulo       String
   fecha_creacion       DateTime
   categorias           CategoriasArticulosBlog[]
   imagenes             IntermediaArticulosImagenes[]
@@ -47,8 +47,8 @@ model CategoriasArticulosBlog {
 
 model CategoriasDeArticulos {
   id_categoria          Int                      @id
-  nombre_categoria      String                   @db.VarChar(50)
-  descripcion_categoria String                   @db.VarChar(50)
+  nombre_categoria      String
+  descripcion_categoria String
   articulos             CategoriasArticulosBlog[]
 }
 
@@ -56,17 +56,17 @@ model Comentarios {
   id_comentario        Int             @id @default(autoincrement())
   id_post              Int
   id_usuario           Int?
-  contenido_comentario String          @db.Text
+  contenido_comentario String
   fecha_comentario     DateTime
 
   usuario       Usuarios?       @relation(fields: [id_usuario], references: [id_usuario])
   post          Posts           @relation(fields: [id_post], references: [id_post])
-  interacciones Interacciones[] // 🔥 relación inversa agregada acá
+  interacciones Interacciones[]
 }
 
 model ImagenesDeArticulos {
   id_imagen  Int                         @id
-  src_imagen String                      @db.Char(10)
+  src_imagen String
   articulos  IntermediaArticulosImagenes[]
 }
 
@@ -96,9 +96,9 @@ model IntermediaArticulosImagenes {
 model Logs {
   id_log       Int       @id @default(autoincrement())
   id_usuario   Int?
-  accion       String    @db.VarChar(200)
+  accion       String
   fecha_accion DateTime
-  descripcion  String?   @db.Text
+  descripcion  String?
 
   usuario Usuarios? @relation(fields: [id_usuario], references: [id_usuario])
 }
@@ -106,7 +106,7 @@ model Logs {
 model Notificaciones {
   id_notificacion     Int      @id @default(autoincrement())
   id_usuario          Int?
-  mensaje             String   @db.Text
+  mensaje             String
   fecha_notificacion  DateTime
   leida               Boolean  @default(false)
 
@@ -115,18 +115,18 @@ model Notificaciones {
 
 model Patologias {
   id_patologia     Int                 @id @default(autoincrement())
-  nombre_patologia String              @db.VarChar(100)
+  nombre_patologia String
   usuarios         UsuariosPatologias[]
 }
 
 model Posts {
   id_post         Int             @id @default(autoincrement())
   id_usuario      Int?
-  titulo_post     String?         @db.VarChar(200)
-  contenido_post  String          @db.Text
+  titulo_post     String?
+  contenido_post  String
   fecha_creacion  DateTime
   version         Int?            @default(1)
-  imagen_url      String?         @db.VarChar(50)
+  imagen_url      String?
 
   usuario        Usuarios?       @relation(fields: [id_usuario], references: [id_usuario])
   comentarios    Comentarios[]
@@ -135,8 +135,8 @@ model Posts {
 
 model Usuarios {
   id_usuario      Int     @id @default(autoincrement())
-  nombre          String  @db.VarChar(100)
-  email           String  @unique @db.VarChar(100)
+  nombre          String
+  email           String  @unique
   fecha_registro  DateTime?
   ultima_sesion   DateTime?
   edad            Int?
