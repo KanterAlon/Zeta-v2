@@ -24,6 +24,7 @@ export default function LoginSection({ goTo }) {
       alert('Credenciales inválidas');
     }
   };
+
   return (
     <section id="login-section" className="login-container">
       <div className="login-content">
@@ -38,7 +39,9 @@ export default function LoginSection({ goTo }) {
           <form className="login-form" onSubmit={handleLogin}>
             <div className="inputs-group">
               <div className="input-group">
-                <input type="email" name="email" placeholder="Correo electrónico" required autoComplete="off" />
+                {/* En desarrollo, usamos type="text" para evitar validación del formato de email */}
+                {/* <input type="email" name="email" placeholder="Correo electrónico" required autoComplete="off" /> */}
+                <input type="text" name="email" placeholder="Correo electrónico" required autoComplete="off" />
               </div>
               <div className="input-group">
                 <input type="password" name="password" placeholder="Contraseña" required />

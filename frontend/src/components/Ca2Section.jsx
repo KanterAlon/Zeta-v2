@@ -42,7 +42,6 @@ export default function Ca2Section({ goTo, updateForm }) {
                   <option value="">Selecciona tu género</option>
                   <option value="1">Masculino</option>
                   <option value="2">Femenino</option>
-                  <option value="3">Otro</option>
                 </select>
               </div>
               <div className="ca1-input-group">
