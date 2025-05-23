@@ -22,6 +22,6 @@
   },
   "scripts": {
     "dev": "concurrently \"npm run server --prefix backend\" \"npm run dev --prefix frontend\"",
-    "init": "npm install && npm install --prefix backend && npm install --prefix frontend && npm install concurrently --save-dev && powershell -Command \"cd backend; $env:NODE_TLS_REJECT_UNAUTHORIZED='0'; npx prisma generate --schema prisma/schema.prisma; npx prisma migrate dev --name init --schema prisma/schema.prisma\" && npm run dev"
+    "init": "npm install && npm install --prefix backend && npm install --prefix frontend && npm install concurrently --save-dev && powershell -Command \"cd backend; $env:NODE_TLS_REJECT_UNAUTHORIZED='0'; npx prisma generate --schema prisma/schema.prisma;\" && npm run dev"
   }
 }
