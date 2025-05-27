@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import HomePage from './Pages/HomePage';
 import BlogPage from './Pages/BlogPage';
@@ -9,18 +9,16 @@ import SearchResults from './Pages/SearchResults';
 
 function App() {
   return (
-    <Router>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/blog" element={<BlogPage />} />
-          <Route path="/community" element={<CommunityPage />} />
-          <Route path="/producto" element={<ProductPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/search" element={<SearchResults />} />
-        </Routes>
-      </Layout>
-    </Router>
+    <Layout>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/community" element={<CommunityPage />} />
+        <Route path="/producto" element={<ProductPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/search" element={<SearchResults />} />
+      </Routes>
+    </Layout>
   );
 }
 
