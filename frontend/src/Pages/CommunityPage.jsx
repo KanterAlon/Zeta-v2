@@ -13,7 +13,7 @@ const CommunityPage = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = axios.get(`${import.meta.env.VITE_API_URL}/api/obtenerPosts`, {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/obtenerPosts`, {
   withCredentials: true
       });
       if (response.data.success) {
