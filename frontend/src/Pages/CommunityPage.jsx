@@ -36,7 +36,7 @@ const CommunityPage = () => {
 
   const checkAuth = async () => {
     try {
-      const res = await axios.get('/api/auth', {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/auth`, {
         withCredentials: true
       });
       setAuth(res.data);
@@ -53,7 +53,7 @@ const CommunityPage = () => {
   const handleLike = async (id) => {
     if (!auth.authenticated) return navigate('/login');
     try {
-      await axios.post('/api/darLike', { idPost: id }, {
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/darLike`, { idPost: id }, {
         withCredentials: true
       });
       fetchPosts();
@@ -65,7 +65,7 @@ const CommunityPage = () => {
   const handleDislike = async (id) => {
     if (!auth.authenticated) return navigate('/login');
     try {
-      await axios.post('/api/darDislike', { idPost: id }, {
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/darDislike`, { idPost: id }, {
         withCredentials: true
       });
       fetchPosts();
@@ -80,7 +80,7 @@ const CommunityPage = () => {
       return alert('El contenido no puede estar vacío.');
     }
     try {
-      await axios.post('/api/publicarPost', { contenidoPost: newPostContent }, {
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/publicarPost`, { contenidoPost: newPostContent }, {
         withCredentials: true
       });
       fetchPosts();
