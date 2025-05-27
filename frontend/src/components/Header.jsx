@@ -8,7 +8,7 @@ const Header = () => {
 
   useEffect(() => {
     // Verificar sesión activa en backend
-    axios.get('http://localhost:3000/api/auth', { withCredentials: true })
+    axios.get(`${import.meta.env.VITE_API_URL}/api/auth`, { withCredentials: true })
       .then(res => setAuth(res.data))
       .catch(() => setAuth({ authenticated: false }));
 
@@ -48,7 +48,7 @@ const Header = () => {
   }, []);
 
   const handleLogout = () => {
-    axios.post('http://localhost:3000/api/logout', {}, { withCredentials: true })
+    axios.post(`${import.meta.env.VITE_API_URL}/api/logout`, {}, { withCredentials: true })
       .then(() => {
         setAuth({ authenticated: false, user: null });
         navigate('/');

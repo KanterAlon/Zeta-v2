@@ -8,8 +8,8 @@ export default function Ca3Section({ goTo, formData }) {
 
   // Cargar patologías y actividades desde backend
   useEffect(() => {
-    axios.get('http://localhost:3000/api/patologias').then(res => setPatologias(res.data));
-    axios.get('http://localhost:3000/api/actividades').then(res => setActividades(res.data));
+    axios.get(`${import.meta.env.VITE_API_URL}/api/patologias`).then(res => setPatologias(res.data));
+    axios.get(`${import.meta.env.VITE_API_URL}/api/actividades`).then(res => setActividades(res.data));
   }, []);
 
   const handleCantidadChange = (e) => {
@@ -36,7 +36,7 @@ export default function Ca3Section({ goTo, formData }) {
     };
 
     try {
-      await axios.post('http://localhost:3000/api/CreateAccount', payload),  { withCredentials: true };
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/CreateAccount`, payload),  { withCredentials: true };
       alert('Cuenta creada exitosamente');
       goTo('login');
     } catch (err) {

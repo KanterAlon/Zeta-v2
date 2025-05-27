@@ -9,7 +9,7 @@ export default function LoginSection({ goTo }) {
   
     try {
       const res = await axios.post(
-        'http://localhost:3000/api/login',
+        `${import.meta.env.VITE_API_URL}/api/login`,
         { email, password },
         { withCredentials: true }
       );
