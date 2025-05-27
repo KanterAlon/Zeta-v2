@@ -10,13 +10,14 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // 🌐 CORS con cookies
-app.use(cors({
-  origin: 'http://localhost:5173',
-  credentials: true
-}));
 
 // 🔐 JSON y Sesión
 app.use(express.json());
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
 
 app.use(session({
   secret: 'zeta_secret', // Cambialo en producción
@@ -41,3 +42,8 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
+
+const allowedOrigins = [
+  'http://localhost:5173',               // Para desarrollo local
+  'https://zeta-v2-1.onrender.com'       // Tu frontend en producción
+];
