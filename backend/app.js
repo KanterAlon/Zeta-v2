@@ -6,21 +6,25 @@ const homeRoutes = require('./routes/home.routes');
 
 dotenv.config();
 
+const allowedOrigins = [
+  'http://localhost:5173',               // Para desarrollo local
+  'https://zeta-v2-1.onrender.com'       // Tu frontend en producción
+];
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // 🌐 CORS con cookies
-
-// 🔐 JSON y Sesión
-app.use(express.json());
-
 app.use(cors({
   origin: allowedOrigins,
   credentials: true
 }));
 
+// 🔐 JSON y Sesión
+app.use(express.json());
+
 app.use(session({
-  secret: 'zeta_secret', // Cambialo en producción
+  secret: 'zeta_secret',
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -42,8 +46,3 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
-
-const allowedOrigins = [
-  'http://localhost:5173',               // Para desarrollo local
-  'https://zeta-v2-1.onrender.com'       // Tu frontend en producción
-];
