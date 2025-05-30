@@ -47,14 +47,3 @@ app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
 
-
-app.use(session({
-  secret: 'zeta_secret', // Cambialo en producción
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    secure: false, // true si usás HTTPS
-    httpOnly: true,
-    sameSite: 'lax'
-  }
-}));
