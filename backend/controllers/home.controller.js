@@ -19,7 +19,7 @@ const homeController = {
       email: usuario.email
     };
 
-    res.json({ success: true, usuario: req.session.user });
+    res.json({ success: true, usuario: req.session.user, session: req.session.authenticated});
   },
 
   logout: (req, res) => {
@@ -29,6 +29,7 @@ const homeController = {
       res.sendStatus(200);
     });
   },
+
 
   isAuthenticated: (req, res) => {
     res.json({

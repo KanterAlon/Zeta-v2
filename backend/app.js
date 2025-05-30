@@ -26,7 +26,7 @@ app.use(express.json());
 app.use(session({
   secret: 'zeta_secret',
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {
     secure: false, // true si usás HTTPS
     httpOnly: true,

@@ -5,13 +5,15 @@ import axios from 'axios';
 const Header = () => {
   const [auth, setAuth] = useState({ authenticated: false, user: null });
   const navigate = useNavigate();
-
+  
   useEffect(() => {
     // Verificar sesión activa en backend
     axios.get(`${import.meta.env.VITE_API_URL}/api/auth`, { withCredentials: true })
       .then(res => setAuth(res.data))
       .catch(() => setAuth({ authenticated: false }));
 
+
+  
     // Config hamburguesa
     const hamburgerBtn = document.querySelector('.hamburger-btn');
     const navLinks = document.querySelector('.nav-links');

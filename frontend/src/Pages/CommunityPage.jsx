@@ -13,9 +13,7 @@ const CommunityPage = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/obtenerPosts`, {
-  withCredentials: true
-      });
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/obtenerPosts`, {withCredentials: true});
       if (response.data.success) {
         const mappedPosts = response.data.posts.map(post => ({
           id: post.id_post,
