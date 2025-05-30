@@ -4,14 +4,18 @@ import axios from 'axios';
 
 const Header = () => {
   const [auth, setAuth] = useState({ authenticated: false, user: null });
+  const [loading, setLoading] = useState(true); // nuevo estado
   const navigate = useNavigate();
   
   useEffect(() => {
     // Verificar sesión activa en backend
     axios.get(`${import.meta.env.VITE_API_URL}/api/auth`, { withCredentials: true })
-      .then(res => {setAuth(res.data); console.log(res.data)})
-      .catch(() => setAuth({ authenticated: false }));
-      
+    .then(res => {
+      setAuth(res.data);
+    })
+    .catch(() => setAuth({ authenticated: false }))
+    .finally(() => setLoading(false)); // marcar como terminado
+
 
   
     // Config hamburguesa
@@ -48,6 +52,8 @@ const Header = () => {
       window.removeEventListener('resize', closeMenuOnResize);
     };
   }, []);
+
+  if (loading) return null; 
 
   const handleLogout = () => {
     axios.post(`${import.meta.env.VITE_API_URL}/api/logout`, {}, { withCredentials: true })

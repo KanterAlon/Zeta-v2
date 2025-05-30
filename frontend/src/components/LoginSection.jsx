@@ -20,7 +20,7 @@ export default function LoginSection({ goTo }) {
        alert(`Bienvenido, ${res.data.usuario.nombre}`);
   
       // ✅ Redireccionar al home
-    //  window.location.href = '/';
+     window.location.href = '/';
     } catch (err) {
       console.error('Error de login', err);
       alert('Credenciales inválidas');
