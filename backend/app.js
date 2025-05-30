@@ -27,11 +27,11 @@ app.use(session({
   secret: 'zeta_secret',
   resave: false,
   saveUninitialized: false,
-  cookie: {
-    secure: false, // true si usás HTTPS
-    httpOnly: true,
-    sameSite: 'lax'
-  }
+  // cookie: {
+  //   secure: false, // true si usás HTTPS
+  //   httpOnly: true,
+  //   sameSite: 'lax'
+  // }
 }));
 
 // 📦 Rutas
