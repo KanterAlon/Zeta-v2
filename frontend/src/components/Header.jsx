@@ -9,9 +9,9 @@ const Header = () => {
   useEffect(() => {
     // Verificar sesión activa en backend
     axios.get(`${import.meta.env.VITE_API_URL}/api/auth`, { withCredentials: true })
-      .then(res => setAuth(res.data))
+      .then(res => {setAuth(res.data); console.log(res.data)})
       .catch(() => setAuth({ authenticated: false }));
-
+      
 
   
     // Config hamburguesa

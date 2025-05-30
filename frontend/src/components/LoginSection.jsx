@@ -13,12 +13,14 @@ export default function LoginSection({ goTo }) {
         { email, password },
         { withCredentials: true }
       );
+
+      console.log(res)
   
       // ✅ Opcional: mostrar notificación si querés
-      // alert(`Bienvenido, ${res.data.usuario.nombre}`);
+       alert(`Bienvenido, ${res.data.usuario.nombre}`);
   
       // ✅ Redireccionar al home
-      window.location.href = '/';
+    //  window.location.href = '/';
     } catch (err) {
       console.error('Error de login', err);
       alert('Credenciales inválidas');

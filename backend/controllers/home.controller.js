@@ -35,7 +35,7 @@ const homeController = {
         return res.status(500).json({ error: 'Error al guardar sesión' });
       }
   
-      console.log('[LOGIN] Sesión guardada:', req.session);
+      console.log('[LOGIN] Sesión guardada:', req.session, req.session.user);
       res.json({ success: true, usuario: req.session.user });
     });
   },  
