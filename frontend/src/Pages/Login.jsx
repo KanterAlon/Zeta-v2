@@ -2,7 +2,7 @@ import { useState } from 'react';
 import LoginSection from '../components/LoginSection';
 import Ca1Section from '../components/Ca1Section';
 import Ca2Section from '../components/Ca2Section';
-import Ca3Section from '../components/Ca3Section';
+// import Ca3Section from '../components/Ca3Section';
 
 export default function Login() {
   const [step, setStep] = useState('login');
@@ -26,8 +26,10 @@ export default function Login() {
     <>
       {step === 'login' && <LoginSection goTo={setStep} />}
       {step === 'ca1' && <Ca1Section goTo={setStep} updateForm={updateForm} />}
-      {step === 'ca2' && <Ca2Section goTo={setStep} updateForm={updateForm} />}
-      {step === 'ca3' && <Ca3Section goTo={setStep} formData={formData} />}
+      {step === 'ca2' && <Ca2Section goTo={setStep} updateForm={updateForm} formData={formData} />}
+
+
+      {/* {step === 'ca3' && <Ca3Section goTo={setStep} formData={formData} />} */}
     </>
   );
 }

@@ -61,40 +61,50 @@ const homeController = {
     });
   },
 
-  registrarUsuario: async (req, res) => {
+registrarUsuario: async (req, res) => {
     try {
-      const {
-        email, password, nombre, apellido,
-        fecha_nacimiento, genero, altura, peso,
-        patologias, actividades
-      } = req.body;
-
+      const { nombre, apellido, email, password } = req.body;
+  
+      if (!nombre || !apellido || !email || !password) {
+        return res.status(400).json({ error: 'Faltan campos obligatorios' });
+      }
+  
+      const usuarioExistente = await prisma.usuarios.findUnique({
+        where: { email }
+      });
+  
+      if (usuarioExistente) {
+        return res.status(409).json({ error: 'El email ya está registrado' });
+      }
+  
       const nuevoUsuario = await prisma.usuarios.create({
         data: {
+          nombre: `${nombre} ${apellido}`,
           email,
           password,
-          nombre: `${nombre} ${apellido}`,
           fecha_registro: new Date(),
-          sexo: genero === "1",
-          altura: parseFloat(altura),
-          peso: parseFloat(peso),
-          patologias: {
-            create: patologias.map(id => ({ id_patologia: parseInt(id) }))
-          },
-          actividades: {
-            create: actividades.map(a => ({
-              id_actividad: parseInt(a.id),
-              frecuencia_semanal: parseInt(a.frecuencia)
-            }))
-          }
+          ultima_sesion: null,
+          edad: null,
+          sexo: null,
+          peso: null,
+          altura: null
         }
       });
-
-      res.status(201).json({ message: 'Cuenta creada', usuario: nuevoUsuario });
+  
+      return res.status(201).json({
+        message: 'Cuenta creada exitosamente',
+        usuario: nuevoUsuario
+      });
+  
     } catch (error) {
-      res.status(500).json({ error: 'Error al registrar usuario', detalles: error.message });
+      console.error('Error al registrar usuario:', error);
+      return res.status(500).json({
+        error: 'Error al registrar usuario',
+        detalles: error.message
+      });
     }
-  },
+  },  
+  
 
   getPatologias: async (req, res) => {
     const data = await prisma.patologias.findMany();
