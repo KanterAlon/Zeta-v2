@@ -7,7 +7,7 @@ const homeRoutes = require('./routes/home.routes');
 dotenv.config();
 
 const allowedOrigins = [
-  'http://localhost:5173',               // Para desarrollo local
+  'http://localhost:5174',               // Para desarrollo local
   'https://zeta-v2-1.onrender.com'       // Tu frontend en producción
 ];
 
