@@ -39,7 +39,8 @@ export default function Ca3Section({ goTo, formData }) {
       await axios.post(`${import.meta.env.VITE_API_URL}/api/CreateAccount`, payload),  { withCredentials: true };
       alert('Cuenta creada exitosamente');
       goTo('login');
-    } catch (err) {
+    } catch (error) {
+      console.error(error);
       alert('Error al crear cuenta');
     }
   };
