@@ -1,8 +1,9 @@
-import { SignIn } from '@clerk/clerk-react';
+import { SignUp } from '@clerk/clerk-react';
+import LoginSection from '../components/LoginSection';
 
-export default function LoginSection() {
+export default function SignUpPage() {
   return (
-    <section id="login-section" className="login-container">
+    <section id="signup-section" className="login-container">
       <div className="login-content">
         <button className="back-button" onClick={() => window.location.href = '/'}>
           <img src="/img/icon_back.svg" alt="Back" />
@@ -11,7 +12,7 @@ export default function LoginSection() {
           <img src="/img/img_login.svg" alt="Ilustración" />
         </div>
         <div className="welcome-message">
-          <SignIn path="/login" routing="path" signUpUrl="/sign-up" afterSignInUrl="/" />
+          <SignUp path="/sign-up" routing="path" signInUrl="/login" afterSignUpUrl="/" />
         </div>
       </div>
     </section>
