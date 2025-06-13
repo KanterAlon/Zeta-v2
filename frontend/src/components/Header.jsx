@@ -1,21 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '@clerk/clerk-react';
 
 const Header = () => {
+  const { isSignedIn, getToken, signOut } = useAuth();
   const [auth, setAuth] = useState({ authenticated: false, user: null });
   const [loading, setLoading] = useState(true); // nuevo estado
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
   
   useEffect(() => {
-    // Verificar sesión activa en backend
-    axios.get(`${import.meta.env.VITE_API_URL}/api/auth`, { withCredentials: true })
-    .then(res => {
-      setAuth(res.data);
-    })
-    .catch(() => setAuth({ authenticated: false }))
-    .finally(() => setLoading(false)); // marcar como terminado
+    const syncSession = async () => {
+      try {
+        if (isSignedIn) {
+          const token = await getToken();
+          await axios.post(
+            `${import.meta.env.VITE_API_URL}/api/clerk/sync`,
+            {},
+            { headers: { Authorization: `Bearer ${token}` }, withCredentials: true }
+          );
+        }
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/auth`, { withCredentials: true });
+        setAuth(res.data);
+      } catch {
+        setAuth({ authenticated: false });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    syncSession();
 
 
   
@@ -52,11 +67,12 @@ const Header = () => {
       hamburgerBtn?.removeEventListener('click', toggleMenu);
       window.removeEventListener('resize', closeMenuOnResize);
     };
-  }, []);
+  }, [isSignedIn]);
 
   if (loading) return null; 
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await signOut();
     axios.post(`${import.meta.env.VITE_API_URL}/api/logout`, {}, { withCredentials: true })
       .then(() => {
         setAuth({ authenticated: false, user: null });

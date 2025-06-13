@@ -61,6 +61,47 @@ const homeController = {
     });
   },
 
+  // 🔐 Sincronizar sesión con Clerk
+  clerkSync: async (req, res) => {
+    try {
+      const { verifySessionToken } = require('@clerk/clerk-sdk-node');
+      const token = req.body.token || req.headers.authorization?.replace('Bearer ', '');
+      if (!token) return res.status(400).json({ error: 'Token requerido' });
+
+      const session = await verifySessionToken(token);
+      const email = session?.session?.user?.email_addresses?.[0]?.email_address;
+
+      if (!email) throw new Error('No se pudo obtener email');
+
+      let usuario = await prisma.usuarios.findUnique({ where: { email } });
+
+      if (!usuario) {
+        usuario = await prisma.usuarios.create({
+          data: {
+            nombre: session.session.user.first_name || 'Usuario',
+            email,
+            fecha_registro: new Date(),
+          }
+        });
+      }
+
+      req.session.authenticated = true;
+      req.session.user = {
+        id: usuario.id_usuario,
+        nombre: usuario.nombre,
+        email: usuario.email,
+      };
+
+      req.session.save(err => {
+        if (err) return res.status(500).json({ error: 'No se pudo guardar sesión' });
+        res.json({ success: true, usuario: req.session.user });
+      });
+    } catch (error) {
+      console.error('Error clerkSync:', error);
+      res.status(401).json({ error: 'Token inválido' });
+    }
+  },
+
 registrarUsuario: async (req, res) => {
     try {
       const { nombre, apellido, email, password } = req.body;

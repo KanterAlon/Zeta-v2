@@ -174,3 +174,11 @@ npm run dev
 ---
 
 Hecho con 💻 por el equipo de Zeta.
+
+## 🔑 Autenticación Clerk
+
+El frontend utiliza [Clerk](https://clerk.com/) para el inicio de sesión. Al iniciar o crear una cuenta,
+se sincroniza automáticamente con nuestro backend y la base de datos en Supabase.
+
+1. Configurá la clave `VITE_CLERK_PUBLISHABLE_KEY` en `frontend/.env`.
+2. Iniciá la app con `npm run dev` y Clerk manejará las sesiones.
