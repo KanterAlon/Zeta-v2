@@ -9,6 +9,7 @@ const controller = require('../controllers/home.controller');
 router.get('/', controller.index);
 router.get('/product', controller.product);
 router.get('/SearchProducts', controller.searchProducts);
+router.get('/blog', controller.blog);
 router.post('/darLike', controller.darLike);
 router.post('/darDislike', controller.darDislike);
 router.post('/publicarPost', controller.publicarPost);

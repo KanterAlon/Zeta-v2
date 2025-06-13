@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import BlogCard from '../components/BlogCard';
 import BlogPopup from '../components/BlogPopup';
 
@@ -8,41 +9,15 @@ const BlogPage = () => {
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    // fetch('/api/blogposts') // <-- acá conectás con el backend
-    //   .then(res => res.json())
-    //   .then(data => setPosts(data));
-
-    // TEMP: Posts simulados
-    setPosts([
-      {
-        titulo_post: 'Alimentación intuitiva',
-        contenido_post:
-          'Escuchá a tu cuerpo y aprendé a reconocer las señales internas de hambre y saciedad. Esta práctica busca reconectar con tus necesidades reales, dejando de lado las dietas restrictivas.',
-        imagen_url: 'imgBlog1.jpg',
-        fecha_creacion: '2024-04-01'
-      },
-      {
-        titulo_post: 'Hábitos sostenibles',
-        contenido_post:
-          'Cómo comer mejor sin complicarte la vida: pequeñas acciones diarias pueden generar grandes cambios en tu salud y en el planeta. Empezá por lo simple.',
-        imagen_url: 'imgBlog1.jpg',
-        fecha_creacion: '2024-03-28'
-      },
-      {
-        titulo_post: 'Mindful eating: comer con atención',
-        contenido_post:
-          'Aprendé a disfrutar cada bocado, prestando atención al momento presente. Esta técnica mejora la relación con la comida y reduce los atracones.',
-        imagen_url: 'imgBlog1.jpg',
-        fecha_creacion: '2024-03-15'
-      },
-      {
-        titulo_post: 'Organización semanal de comidas',
-        contenido_post:
-          'Planificar tus comidas no solo te ahorra tiempo, también mejora tu nutrición. Te mostramos cómo hacerlo de forma práctica y flexible.',
-        imagen_url: 'imgBlog1.jpg',
-        fecha_creacion: '2024-03-05'
+    const fetchPosts = async () => {
+      try {
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/blog`);
+        setPosts(data);
+      } catch (err) {
+        console.error('Error al obtener posts del blog:', err);
       }
-    ]);
+    };
+    fetchPosts();
   }, []);
 
   const handleSearch = (e) => {

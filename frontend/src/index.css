@@ -865,22 +865,24 @@ gap: .5rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2rem;
+  padding: 0;
   z-index: 1000;
   overflow-y: auto;
 }
 
 .pop-up-info-articulo-inner {
   width: 100%;
-  max-width: 700px;
+  height: 100%;
+  max-width: none;
   background-color: var(--whiteback-color);
-  border-radius: 10px;
+  border-radius: 0;
   padding: 2rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 1.5rem;
   position: relative;
+  overflow-y: auto;
 }
 
 .pop-up-info-articulo-inner img {
