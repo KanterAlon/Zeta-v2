@@ -1,6 +1,7 @@
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 const prisma = require('../prisma/client');
 const axios = require('axios');
+const { clerkClient } = require('@clerk/clerk-sdk-node');
 
 const homeController = {
   // 🔐 LOGIN
@@ -297,6 +298,37 @@ registrarUsuario: async (req, res) => {
     } catch (err) {
       console.error('❌ Error en publicarPost:', err.message);
       res.status(500).json({ success: false, message: err.message });
+    }
+  },
+
+  clerkSync: async (req, res) => {
+    try {
+      const { userId } = req.auth || {};
+      if (!userId) return res.status(401).json({ error: 'No autenticado' });
+
+      const clerkUser = await clerkClient.users.getUser(userId);
+      const email = clerkUser.emailAddresses[0]?.emailAddress;
+      const nombre = [clerkUser.firstName, clerkUser.lastName].filter(Boolean).join(' ');
+
+      const usuario = await prisma.usuarios.upsert({
+        where: { email },
+        update: { ultima_sesion: new Date(), nombre },
+        create: { nombre, email, fecha_registro: new Date() }
+      });
+
+      req.session.authenticated = true;
+      req.session.user = { id: usuario.id_usuario, nombre: usuario.nombre, email: usuario.email };
+
+      req.session.save(err => {
+        if (err) {
+          console.error('[clerkSync] Error al guardar sesión:', err);
+          return res.status(500).json({ error: 'Error al guardar sesión' });
+        }
+        res.json({ success: true });
+      });
+    } catch (error) {
+      console.error('[clerkSync] error', error);
+      res.status(500).json({ error: 'Error al sincronizar usuario' });
     }
   },
 

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const homeController = require('../controllers/home.controller'); // ✅ ESTO FALTABA
+const { ClerkExpressWithAuth } = require('@clerk/clerk-sdk-node');
 
 
 const controller = require('../controllers/home.controller'); 
@@ -21,6 +22,8 @@ router.post('/CreateAccount', homeController.registrarUsuario);
 router.get('/ExisteMail', homeController.existeMail);
 router.get('/patologias', homeController.getPatologias);
 router.get('/actividades', homeController.getActividades);
+
+router.post('/clerk/sync', ClerkExpressWithAuth(), homeController.clerkSync);
 
 
 
