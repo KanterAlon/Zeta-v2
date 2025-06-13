@@ -94,10 +94,11 @@
 }
 
 .pop-up-info-articulo-inner img {
-  width: 100%;
-  height: 100px;
+  margin-block: 2rem;
+  width: 70%;
   object-fit: cover;
   border-radius: 8px;
+  align-self: center;
 }
 
 .pop-up-info-articulo-inner hr {
@@ -109,3 +110,12 @@
   color: var(--primary-color);
 }
 
+.close-btn-popup {
+  margin: 0 !important;
+  width: 40px !important;
+  position: absolute;
+  top: 50px;
+  right: 5px;
+  width: 40px;
+  cursor: pointer;
+}

@@ -10,7 +10,7 @@ const BlogPopup = ({ post, onClose }) => {
   return (
     <div className="pop-up-info-articulo" onClick={handleContainerClick}>
       <div className="pop-up-info-articulo-inner" onClick={(e) => e.stopPropagation()}>
-        <img src="./img/icon_close.svg" className="close-btn" onClick={onClose} alt="Cerrar" />
+        <img src="./img/icon_close.svg" className="close-btn-popup" onClick={onClose} alt="Cerrar" />
         <img src={`./img/${post.imagen_url}`} alt="Imagen del post" />
         <h1>{post.titulo_post}</h1>
         <h3>Escrito por todo el equipo de Zeta</h3>

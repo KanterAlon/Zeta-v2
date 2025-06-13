@@ -343,13 +343,3 @@ textarea:focus, input:focus {
 .share-options a img:hover {
   transform: scale(1.1);
 }
-
-.close-btn {
-  position: absolute;
-  top: 50px;
-  right: 5px;
-  width: 40px !important;
-  cursor: pointer;
-}
-
-
