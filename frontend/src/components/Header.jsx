@@ -5,6 +5,7 @@ import axios from 'axios';
 const Header = () => {
   const [auth, setAuth] = useState({ authenticated: false, user: null });
   const [loading, setLoading] = useState(true); // nuevo estado
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
   
   useEffect(() => {
@@ -63,10 +64,7 @@ const Header = () => {
       });
   };
 
-  const toggleDropdown = () => {
-    const dropdown = document.getElementById('profile-dropdown');
-    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-  };
+  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
   return (
     <header>
@@ -89,17 +87,17 @@ const Header = () => {
         {!auth.authenticated ? (
           <Link to="/login" className="login-button"><span className="button-text">Login</span></Link>
         ) : (
-          <div className="icon-group">
-            <a href="#"><img src="/img/icon_notif.svg" alt="Notif" className="icon-img" /></a>
-            <a href="#"><img src="/img/icon_save.svg" alt="Save" className="icon-img" /></a>
-            <a href="#" id="icon_profile" onClick={toggleDropdown}>
-              <img src="/img/icon_profile.svg" alt="Profile" className="icon-img" />
-            </a>
-            <div id="profile-dropdown" className="profile-dropdown">
-              <Link to="/profile">Mi perfil</Link>
-              <Link to="/settings">Configuración</Link>
-              <a href="#" onClick={handleLogout}>Cerrar sesión</a>
-            </div>
+          <div className="user-menu">
+            <button className="user-button" onClick={toggleDropdown}>
+              <img src="/img/icon_profile.svg" alt="Cuenta" />
+              <span className="user-name">{auth.user?.nombre}</span>
+              <img src="/img/icon_arrow-down.svg" alt="Abrir" className="arrow" />
+            </button>
+            {dropdownOpen && (
+              <div id="profile-dropdown" className="profile-dropdown">
+                <a href="#" onClick={handleLogout}>Cerrar sesión</a>
+              </div>
+            )}
           </div>
         )}
       </nav>
