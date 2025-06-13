@@ -5,6 +5,7 @@ import BlogPage from './Pages/BlogPage';
 import CommunityPage from './Pages/CommunityPage';
 import ProductPage from './Pages/ProductPage';
 import LoginPage from './Pages/Login';
+import SignUpPage from './Pages/SignUp';
 import SearchResults from './Pages/SearchResults'; 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="/community" element={<CommunityPage />} />
         <Route path="/producto" element={<ProductPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/sign-up" element={<SignUpPage />} />
         <Route path="/search" element={<SearchResults />} />
       </Routes>
     </Layout>
