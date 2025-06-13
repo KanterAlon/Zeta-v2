@@ -1,0 +1,64 @@
+/* ------------------ SIGNUP SECTION ------------------ */
+
+.signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: url('./img/img_fondo-login.svg') no-repeat center center;
+  background-size: cover;
+}
+
+.signup-content {
+  background-color: var(--secondary3-color);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  height: 90%;
+  text-align: center;
+  width: 90%;
+  max-width: 1700px;
+}
+
+.signup-text {
+  height: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.signup-heading {
+  font-size: var(--heading1-size);
+  color: var(--secondary2-color);
+}
+
+.signup-subheading {
+  font-size: var(--heading3-size);
+  color: var(--secondary2-color);
+}
+
+.signup-btn-next {
+  background-color: var(--primary-color);
+  width: 225px;
+  height: 40px;
+  color: var(--secondary3-color);
+  border: none;
+  border-radius: 6px;
+  font-family: var(--font-family-button);
+  font-size: var(--button-text-size);
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.signup-btn-next:hover {
+  transform: translateY(-1px);
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.12);
+}
+

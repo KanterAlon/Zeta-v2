@@ -1,0 +1,114 @@
+/* ------------------ NUTRITION EVALUATION ------------------ */
+
+.sec-nutrition-evaluation {
+  display: flex;
+  padding-block: 4rem;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.nutrition-evaluation-inner {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  
+}
+
+.product-info {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2rem;
+}
+
+.product-image {
+  width: 180px;
+  height: auto;
+}
+
+.nutrition-evaluation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  border-radius: 15px;
+}
+
+.img-rating {
+  position: relative;
+}
+
+.product-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2rem;
+  position: relative;
+}
+
+.product-image {
+  width: 225px;
+  height: auto;
+}
+
+.rating {
+  position: absolute;
+  top: -30px;
+  right: -190px;
+  background-color: var(--secondary5-color);
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.12rem;
+  width: 225px;
+  height: 60px;
+}
+
+.circle {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+
+.red {
+  background-color: var(--error-color);
+}
+
+.nutrition-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.nutrition-detail {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
+  background-color: var(--secondary5-color);
+  border-radius: 0 10px 10px 10px;
+  height: 49px;
+  width: 178px;
+}
+
+.nutrition-detail img {
+  width: 25px;
+  height: 25px;
+}
+
+.nutritional-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-self: flex-start;
+  max-width: 500px;
+}
+
+.nutritional-info h2, .nutritional-info p {
+  color: var(--secondary2-color);
+}
+

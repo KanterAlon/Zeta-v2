@@ -1,0 +1,74 @@
+/* ------------------ FUNCIONALIDADES ------------------ */
+.funcionalidades-inner, .advertisements-blog-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  gap: 1rem;
+}
+
+.cards-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  gap: 1rem;
+}
+
+.card-funcionalidad, .card-advertisement-blog {
+  background-color: var(--whiteback-color);
+  border-radius: 17px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: justify;
+  min-width: 300px;
+  max-width: 400px;
+  min-height: 500px;
+  gap: .5rem;
+  padding-bottom: 1.5rem;
+}
+
+.contenedor-imagen-card-funcionalidad, .contenedor-imagen-card-blog {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 230px;
+}
+
+.contenedor-imagen-card-funcionalidad img {
+  width: 100%;
+  max-height: 100%;
+}
+
+.titulo-card-funcionalidad, .descripcion-card-funcionalidad {
+  color: var(--secondary2-color);
+}
+
+.funcionalidades-inner h2 {
+  color: var(--secondary2-color);
+}
+
+.card-funcionalidad h3, .card-funcionalidad p {
+  width: 89%;
+}
+
+.button-card {
+  background-color: var(--primary-color);
+  width: 89%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  text-decoration: none;
+  color: var(--whiteback-color);
+  border-radius: 4px;
+}
+
+.button-card:hover {
+  color: var(--whiteback-color);
+  transform: scale(1.01);
+}
+

@@ -1,0 +1,49 @@
+:root {
+  --primary-color: #788A55;
+  --secondary1-color: #D9C86D;
+  --secondary2-color: #4D4D4D;
+  --secondary3-color: #f4f1e9;
+  --secondary4-color: #A7A297;
+  --secondary5-color: #e0e0e0;
+  --secondary6-color: #E8E8E8;
+  --whiteback-color: #ffffff;
+  --info-color: #42B2E0;
+  --success-color: #42B285;
+  --warning-color: #E0B248;
+  --error-color: #ff000d;
+
+  /* Typography Variables */
+  --font-family-heading: 'Codec Pro', sans-serif;
+  --font-family-body: 'Codec Pro', sans-serif;
+  --font-family-button: 'TT Norms', sans-serif;
+
+  --heading1-size: 48px;
+  --heading1-weight: 700;
+  --heading1-line-height: 48px;
+
+  --heading2-size: 36px;
+  --heading2-weight: 700;
+  --heading2-line-height: 36px;
+
+  --heading3-size: 28px;
+  --heading3-weight: 400;
+  --heading3-line-height: 28px;
+
+  --body-text-size: 16px;
+  --body-text-weight: 400;
+  --body-text-line-height: 16px;
+
+  --button-text-size: 16px;
+  --button-text-weight: 400;
+  --button-text-line-height: 16px;
+
+  --small-text-size: 12px;
+  --small-text-weight: 400;
+  --small-text-line-height: 12px;
+
+  --placeholder-text-size: 16px;
+  --placeholder-text-weight: 400;
+  --placeholder-text-line-height: 16px;
+  --placeholder-text-color: #A7A297;
+}
+

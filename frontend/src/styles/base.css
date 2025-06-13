@@ -1,0 +1,118 @@
+body {
+  background-color: var(--secondary3-color);
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family-body);
+}
+
+h1, h2, h3, h4, p, button, a, label {
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  font-family: var(--font-family-heading);
+  font-size: var(--heading1-size);
+  font-weight: var(--heading1-weight);
+  line-height: var(--heading1-line-height);
+  color: var(--secondary2-color);
+}
+
+h2 {
+  font-family: var(--font-family-heading);
+  font-size: var(--heading2-size);
+  font-weight: var(--heading2-weight);
+  line-height: var(--heading2-line-height);
+    color: var(--secondary2-color);
+
+}
+
+h3 {
+  font-family: var(--font-family-heading);
+  font-size: var(--heading3-size);
+  font-weight: var(--heading3-weight);
+  line-height: var(--heading3-line-height);
+    color: var(--secondary2-color);
+}
+
+p, span, a, label {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family-body);
+  font-size: var(--body-text-size);
+  font-weight: var(--body-text-weight);
+  line-height: var(--body-text-line-height);
+    color: var(--secondary2-color);
+}
+
+button {
+  font-size: var(--button-text-size);
+  font-weight: var(--button-text-weight);
+  line-height: var(--button-text-line-height);
+  font-family: var(--font-family-button);
+  background-color: transparent;
+  border: transparent;
+    color: var(--secondary2-color);
+}
+
+#root {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 72vh;
+}
+
+.index-main {
+  max-width: 1440px;
+}
+
+::placeholder {
+  font-size: var(--placeholder-text-size);
+  font-weight: var(--placeholder-text-weight);
+  line-height: var(--placeholder-text-line-height);
+  color: var(--placeholder-text-color);
+}
+
+.sec-nutrition-evaluation, .sec-funcionalidades, .sec-nutrition-lifestyle, .sec-advertisements-blog {
+  display: flex;
+  padding-top: 4rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.sec-nutrition-lifestyle {
+  padding-block: 4rem;
+  padding-top: 0;
+}
+
+.back-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.back-button img {
+  width: 32px;
+  height: 32px;
+  transition: transform 0.3s ease;
+}
+
+.back-button img:hover {
+  transform: scale(1.1);
+}
+
+
+
