@@ -18,6 +18,7 @@ router.post('/login', homeController.login);
 router.post('/logout', homeController.logout);
 router.get('/auth', homeController.isAuthenticated);
 router.post('/CreateAccount', homeController.registrarUsuario);
+router.post('/clerk/sync', homeController.clerkSync);
 router.get('/ExisteMail', homeController.existeMail);
 router.get('/patologias', homeController.getPatologias);
 router.get('/actividades', homeController.getActividades);
