@@ -1,0 +1,76 @@
+/* ------------------ NUTRITION EVALUATION SECTION ------------------ */
+
+.nutrition-evaluation {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.nutrition-category {
+  flex: 1;
+}
+
+.nutrition-category h2 {
+  font-family: var(--font-family-heading);
+  font-size: var(--heading2-size);
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.nutrition-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: transparent;
+  width: 1200px;
+  margin: 0 auto;
+}
+
+.nutrition-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.nutrition-description {
+  flex-grow: 1;
+}
+
+.nutrition-description h3 {
+  font-family: var(--font-family-heading);
+  font-size: var(--heading3-size);
+  color: var(--secondary2-color);
+  margin-bottom: 0.5rem;
+}
+
+.nutrition-description p {
+  font-family: var(--font-family-body);
+  font-size: var(--body-text-size);
+  color: var(--secondary2-color);
+}
+
+.nutrition-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 24px;
+}
+
+.nutrition-status.positive {
+  color: var(--success-color);
+}
+
+.nutrition-status.negative {
+  color: var(--error-color);
+}
+
+.nutrition-detail {
+  font-family: var(--font-family-body);
+  font-size: var(--body-text-size);
+  color: var(--secondary4-color);
+}
+

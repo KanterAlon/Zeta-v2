@@ -1,0 +1,295 @@
+/* ------------------ SEARCH RESULTS PAGE ------------------ */
+
+.search-results-page {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.search-results-page .results-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.search-results-page .loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+/* Grid de tarjetas */
+.search-results-page .cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  width: 100%;
+}
+
+/* Tarjeta de producto */
+.search-results-page .product-card {
+  background-color: var(--whiteback-color);
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  max-width: 280px;
+}
+
+.search-results-page .product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Imagen dentro de la tarjeta */
+.search-results-page .product-card .card-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+/* Título dentro de la tarjeta */
+.search-results-page .product-card .card-title {
+  padding: 1rem;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* MEDIAQUERIES */
+
+@media (max-width: 768px) {
+  .search-results-page {
+    padding: 1.5rem 0.5rem;
+  }
+  .search-results-page .results-header h2 {
+    font-size: 2rem;
+  }
+  .search-results-page .product-card .card-image {
+    height: 180px;
+  }
+}
+
+@media (max-width: 1400px) {
+  .login-content {
+    gap: .3rem;
+  }
+
+  .welcome-message {
+    flex: .8;
+  }
+
+  .illustration {
+    padding-block: 1rem;
+    flex: .2;
+  }
+
+  .illustration img {
+    max-width: 350px;
+  }
+}
+
+@media (max-width: 1250px) {
+  .nutrition-lifestyle-inner {
+    text-align: center;
+  }
+  
+  .cards-row {
+    justify-content: center;
+  }
+  .funcionalidades-inner, .advertisements-blog-inner {
+    text-align: center;
+  }
+
+  .cards-container {
+    grid-gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+}
+
+@media (max-width: 1165px) {
+  .info-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    place-items: center;
+  }
+
+  header {
+    padding: 1rem;
+  }
+
+  .login-form {
+    width: 100%;
+  }
+
+  .login-content {
+    padding: .1rem;
+  }
+
+  .welcome-message {
+    gap: 1rem;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .button-group {
+    align-items: center;
+    padding-top: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .forgot-password {
+    width: 100%;
+    text-align: center;
+  }
+
+  .inputs-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .input-group{
+    width: 80%;
+  }
+
+  .login-content {
+    flex-direction: column;
+  }
+
+
+}
+
+@media (max-width: 995px) {
+
+  .nutrition-evaluation-inner {
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    gap: 2rem;
+  }
+
+  .nutritional-info {
+    width: 90%;
+    max-width: 995px;
+    padding-inline: 2rem;
+  }
+}
+
+@media (max-width: 995px) {
+  .contact-inner {
+    text-align: center;
+    flex-direction: column;
+    padding-block: 1rem;
+    gap: 2rem;
+  }
+
+  .contact-content {
+    align-items: center;
+  }
+
+  .contact-page {
+    flex-direction: column;
+  }
+
+  .contact-image-section, .contact-form-section {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 670px) {
+
+  .info-buttons {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .info-button {
+    width: 100%;
+    justify-content: space-evenly;
+  }
+
+  .info-button span {
+    width: 80%;
+  }
+
+  .evaluation-content h1 {
+    font-size: 2.4rem;
+  }
+
+}
+
+
+@media (max-width: 940px) {
+  header {
+    padding: 20px 30px;
+  }
+  
+  .hamburger-btn {
+    display: block;
+  }
+  
+  .nav-links {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 70%;
+    max-width: 300px;
+    height: 100vh;
+    background-color: var(--secondary3-color);
+    flex-direction: column;
+    gap: 30px;
+    padding: 80px 20px;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+    transition: right 0.3s ease;
+    z-index: 1000;
+  }
+  
+  .nav-links.active {
+    right: 0;
+  }
+  
+  .nav-links a {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 10px 15px;
+  }
+  
+  .icon-group, .login-button, .user-menu {
+    width: 100%;
+    justify-content: flex-start;
+    margin-top: 20px;
+  }
+  
+  /* Animación del botón hamburguesa a X */
+  .hamburger-btn.active .hamburger-line:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+  
+  .hamburger-btn.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+  }
+  
+  .hamburger-btn.active .hamburger-line:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+
+  .button-text {
+    width: 100%;
+    text-align: center;
+  }

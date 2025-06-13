@@ -1,0 +1,48 @@
+/* ------------------ FOOTER ------------------ */
+
+.footer {
+  width: 100%;
+  background-color: var(--secondary2-color);
+  padding-block: 2rem;
+  color: var(--secondary3-color);
+  display: flex;
+  justify-content: center;
+}
+
+.footer-content {
+width: 90%; 
+display: flex;
+flex-direction: column;
+gap: .5rem;
+}
+
+.footer h2, .footer p {
+  text-align: left; /* Align text to the left */
+  margin: 0;
+}
+
+.footer h2 {
+  font-family: var(--font-family-heading);
+  font-size: var(--heading2-size);
+  color: var(--whiteback-color);
+}
+
+.footer p {
+  font-family: var(--font-family-body);
+  font-size: var(--body-text-size);
+  color: var(--secondary3-color);
+}
+
+.footer-line {
+  width: 100%;
+  border: 0;
+  border-top: 1px solid var(--secondary3-color);
+  margin-top: 1rem;
+}
+
+.footer-content p.footer-copyright {
+  font-size: var(--body-text-size);
+  color: var(--secondary3-color);
+  text-align: center;
+}
+

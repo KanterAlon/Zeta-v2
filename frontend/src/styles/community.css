@@ -1,0 +1,355 @@
+/* ------------------ COMMUNITY SECTION STYLES  ------------------ */
+
+.like-button.active .img-like {
+  filter: brightness(1.5);
+}
+.dislike-button.active .img-dislike {
+  filter: brightness(0.5);
+}
+
+.community-section {
+  padding: 4rem 0;
+  background-color: var(--secondary3-color);
+  display: flex;
+  justify-content: center;
+  min-height: 80vh;
+  position: relative;
+}
+
+.inner-community {
+  
+  width: 100%;
+}
+
+.community-title {
+  text-align: center;
+  font-family: var(--font-family-heading);
+  font-size: var(--heading1-size);
+  color: var(--primary-color);
+  margin-bottom: 2rem;
+}
+
+.community-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  justify-items: center;
+}
+
+.community-card {
+  background-color: var(--whiteback-color);
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  min-width: 280px;
+  max-width: 300px;
+  height: fit;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 1.5rem;
+  gap: 1.2rem;
+}
+
+
+.bottom-community-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  width: 95%;
+}
+
+.community-card-image {
+  width: 100%;
+  height: auto;
+  border-radius: 7px;
+}
+
+.community-card-text {
+  font-family: var(--font-family-body);
+  font-size: var(--body-text-size);
+  color: var(--secondary2-color);
+  text-align: center;
+}
+
+.community-time-posted {
+  color: var(--secondary4-color);
+  font-size: var(--small-text-size);
+  margin-left: 10px;
+}
+
+.community-card-footer {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.community-card-footer button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background-color: transparent;
+  gap: .3rem;
+}
+
+.button-add-post {
+  position: fixed;
+  bottom: 10vh;
+  right: 1.2rem;
+}
+
+.button-add-post img {
+  width: 80px;
+}
+
+/* Popup Container */
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Popup Content */
+.popup-content {
+  background-color: var(--secondary6-color);
+  width: 95%;
+  height: 60%;
+  
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: space-between;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  border-radius: 60px;
+  position: relative;
+}
+
+.top-pop-up-add-post textarea::placeholder {
+  position: relative;
+  top: 10px; /* Desplaza el placeholder 10px hacia abajo */
+  color: #aaa; /* Opcional: cambia el color del placeholder si es necesario */
+  font-size: inherit; /* Mantiene el tamaño de fuente consistente */
+}
+
+.top-pop-up-add-post textarea {
+  padding-top: 10px; /* Empuja el contenido del textarea, incluyendo el placeholder */
+  border: none;
+  resize: none;
+  overflow: hidden;
+  box-sizing: border-box;
+  background: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+.top-pop-up-add-post {
+  display: flex;
+  align-items: start;
+  gap: 1rem;
+  position: relative;
+  width: 90%;
+  height: 80%;
+}
+
+.top-pop-up-add-post textarea {
+  width: 100%;
+  height: 100%;
+  border: none;
+  resize: none;
+  overflow: hidden; /* Evita las barras de desplazamiento */
+  box-sizing: border-box; /* Asegura que el padding no afecte el tamaño */
+  background: transparent; /* Sin fondo visible */
+  font-family: inherit; /* Usa la misma fuente que el contenedor */
+  font-size: inherit; /* Usa el mismo tamaño de fuente */
+  color: inherit; /* Usa el mismo color del texto */
+  padding: 0; /* Elimina el padding */
+}
+
+textarea#postInput {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none; /* Sin borde de enfoque */
+}
+
+textarea:focus, input:focus {
+  outline: none;
+}
+
+*:focus {
+  outline: none;
+}
+
+.button-select-img {
+  position: absolute;
+  top: 60px;
+  left: 5px;
+}
+
+/* Close Button */
+.close-btn {
+  position: absolute;
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--secondary2-color);
+  cursor: pointer;
+  top: 1.5rem;
+  right: 2rem;
+}
+
+/* Publish Button */
+.publish-btn {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: var(--primary-color);
+  color: var(--whiteback-color);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 10%;
+}
+
+#postInput {
+  border: none;
+  outline: none;
+  font-size: 16px;
+  font-family: inherit;
+  color: inherit;
+  background-color: transparent;
+  width: 100%;
+  cursor: text;
+}
+
+#postInput::placeholder {
+  color: #666;
+}
+
+/* CSS para el popup de comentarios */
+.popup-comments-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  width: 50%;
+  max-width: 600px;
+  max-height: 80%;
+  padding: 20px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  border-radius: 10px;
+}
+
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-comments-content h2 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.comment-item {
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 10px;
+}
+
+.comment-item p {
+  margin: 0;
+}
+
+.reply-btn {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+  margin-top: 5px;
+}
+
+.publish-comment-btn {
+  margin-top: 10px;
+  background-color: #32d5b6;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#newCommentInput {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: none;
+  overflow-y:scroll;
+}
+
+.popup-share-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  width: 30%;
+  max-width: 400px;
+  padding: 20px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  text-align: center;
+}
+
+.popup-share-content h2 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 18px;
+}
+
+.share-options {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.share-options a img {
+  width: 50px;
+  height: 50px;
+  transition: transform 0.3s ease;
+}
+
+.share-options a img:hover {
+  transform: scale(1.1);
+}
+
+.close-btn {
+  position: absolute;
+  top: 50px;
+  right: 5px;
+  width: 40px !important;
+  cursor: pointer;
+}
+
+

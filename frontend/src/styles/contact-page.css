@@ -1,0 +1,98 @@
+/* Contact Page Layout */
+.contact-page {
+  display: flex;
+  width: 100%;
+  height: 100vh; /* Full viewport height */
+}
+
+.contact-image-section, .contact-form-section {
+  width: 50%; /* Each section takes half the width */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.contact-image-section img {
+  width: 80%; /* Adjust the image size within its container */
+  height: auto;
+}
+
+/* Contact Form Section */
+
+.contact-form-section {
+  flex-direction: column;
+  gap: 1rem;
+  color: var(--secondary2-color);
+  background-color: var(--whiteback-color);
+  flex: 1;
+}
+
+.contact-form-section h2 {
+  font-family: var(--font-family-heading);
+  font-size: var(--heading2-size);
+  color: var(--secondary2-color);
+}
+
+.contact-form-section p {
+  font-family: var(--font-family-body);
+  font-size: var(--body-text-size);
+  color: var(--secondary4-color);
+}
+
+.contact-form-section form {
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.contact-form-section .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.contact-form-section label {
+  font-size: var(--small-text-size);
+  color: var(--secondary2-color);
+}
+
+.contact-form-section input, 
+.contact-form-section select, 
+.contact-form-section textarea {
+  padding: 10px;
+  font-size: var(--body-text-size);
+  border: 1px solid var(--secondary4-color);
+  border-radius: 5px;
+  color: var(--secondary2-color);
+  background-color: var(--whiteback-color);
+  width: 100%;
+}
+
+.contact-form-section input::placeholder,
+.contact-form-section textarea::placeholder {
+  color: var(--placeholder-text-color);
+}
+
+.contact-form-section textarea {
+  resize: none;
+  height: 100px;
+}
+
+.send-message-button {
+  background-color: var(--primary-color);
+  color: var(--whiteback-color);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: var(--button-text-size);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.send-message-button:hover {
+  background-color: var(--secondary1-color);
+}
+

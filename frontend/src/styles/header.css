@@ -1,0 +1,133 @@
+/* ------------------ HEADER ------------------ */
+header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--secondary3-color);
+  position: relative;
+  box-sizing: border-box;
+  max-width: 100%;
+  padding-inline: 6rem;
+  padding-block: 1rem;
+}
+
+.logo img {
+  height: 50px;
+}
+
+.nav-links {
+  margin-left: auto;
+  display: flex;
+  gap: 50px;
+  align-items: center;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--secondary2-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-links a img {
+  margin-right: 15px;
+  height: 30px;
+  width: 30px;
+}
+
+.login-button, .icon-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 160px;
+  height: 50px;
+  border-radius: 6px;
+}
+
+.icon-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 160px;
+  height: 50px;
+  border-radius: 6px;
+}
+
+.icon-group a {
+  margin: 0 5px;
+}
+
+.icon-group .icon-img {
+  height: 30px;
+  width: 30px;
+}
+
+a.login-button{
+  background-color: var(--primary-color);
+}
+
+span.button-text{
+  color: var(--secondary3-color) !important;
+}
+
+/* -------- USER MENU -------- */
+.user-menu {
+  position: relative;
+}
+
+.user-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-family-button);
+  color: var(--secondary2-color);
+}
+
+.user-button img {
+  height: 30px;
+  width: 30px;
+}
+
+.user-button .arrow {
+  width: 20px;
+  height: 20px;
+}
+
+.profile-dropdown {
+  position: absolute;
+  right: 0;
+  top: 110%;
+  background-color: var(--secondary3-color);
+  border: 1px solid var(--secondary5-color);
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+}
+
+/* ------------------ HAMBURGER MENU ------------------ */
+.hamburger-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 1001;
+}
+
+.hamburger-line {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background-color: var(--secondary2-color);
+  margin: 5px 0;
+  transition: all 0.3s ease;
+}
+

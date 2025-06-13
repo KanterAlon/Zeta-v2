@@ -1,0 +1,194 @@
+/* ------------------ PRODUCT PAGE STYLES NEW ------------------ */
+
+.product-title {
+  text-align: center;
+  font-family: var(--font-family-heading);
+  font-size: var(--heading1-size);
+  color: var(--primary-color);
+}
+
+.product-section {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.product-inner {
+  
+  width: 100%;
+}
+
+.product-details-container {
+  display: flex;
+  gap: 5rem;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.product-image-rating {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.product-image-wrapper {
+  position: relative;
+  background-color: white;
+  min-width: 300px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.product-image-new {
+  width: auto;
+  height: 100%;
+}
+
+.product-rating {
+  position: absolute;
+  background-color: var(--secondary5-color);
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.12rem;
+  width: 225px;
+  height: 60px;
+  top: 0;
+  left: -200px;
+}
+
+.rating-circle {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+
+.rating-red {
+  background-color: var(--error-color);
+}
+
+.product-nutrition-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: center;
+}
+
+.nutrition-info-item {
+  background-color: var(--secondary5-color);
+  border-radius: 0 10px 10px 10px;
+  height: 70px;
+  width: 280px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.nutrition-info-item img {
+  position: absolute;
+  left: 20px;
+}
+
+.nutrition-info-item span {
+  position: absolute;
+  left: 75px;
+}
+
+.icon-container-info-item {
+  display: grid;
+  place-items: center;
+  min-width: 60px;
+  max-width: 60px;
+}
+
+.nutrition-info-item span {
+  font-size: 1.2rem;
+}
+
+.nutrition-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.tick-icon, .close-icon {
+  width: 45px;
+}
+
+.nutrition-evaluation {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.nutrition-category {
+  flex: 1;
+}
+
+.nutrition-category h2 {
+  font-family: var(--font-family-heading);
+  font-size: var(--heading2-size);
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.nutrition-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: transparent;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.nutrition-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.nutrition-description {
+  flex-grow: 1;
+}
+
+.nutrition-description h3 {
+  font-family: var(--font-family-heading);
+  font-size: var(--heading3-size);
+  color: var(--secondary2-color);
+  margin-bottom: 0.5rem;
+}
+
+.nutrition-description p {
+  font-family: var(--font-family-body);
+  font-size: var(--body-text-size);
+  color: var(--secondary2-color);
+}
+
+.nutrition-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 24px;
+}
+
+.nutrition-status.positive {
+  color: var(--success-color);
+}
+
+.nutrition-status.negative {
+  color: var(--error-color);
+}
+
+.nutrition-detail {
+  font-family: var(--font-family-body);
+  font-size: var(--body-text-size);
+  color: var(--secondary4-color);
+}
+

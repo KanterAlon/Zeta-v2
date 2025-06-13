@@ -1,0 +1,32 @@
+/* ------------------ PRESETS ------------------ */
+
+/* Typography */
+
+@font-face {
+  font-family: 'Codec Pro';
+  src: url('../fonts/codec-pro-regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Codec Pro';
+  src: url('/fonts/CodecPro-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'TT Norms Pro';
+  src: url('/fonts/TT Norms Pro Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'TT Norms Pro';
+  src: url('/fonts/TT Norms Pro Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+

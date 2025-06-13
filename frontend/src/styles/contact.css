@@ -1,0 +1,65 @@
+/* ------------------ CONTACT SECTION ------------------ */
+
+.contact-section {
+  background-color: var(--secondary3-color);
+  padding-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contact-inner {
+  display: flex;
+  align-items: center;
+  gap: 8rem; /* Increased gap for more space between image and text/button */
+  max-width: 1100px;
+  width: 100%;
+}
+
+.contact-image {
+  flex-shrink: 0;
+}
+
+.contact-image img {
+  width: 300px;
+  height: auto;
+}
+
+.contact-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Gap between heading, subheading, and button */
+}
+
+.contact-content h1 {
+  font-family: var(--font-family-heading);
+  font-size: var(--heading1-size);
+  color: var(--primary-color);
+}
+
+.contact-content h3 {
+  font-family: var(--font-family-body);
+  font-size: var(--heading3-size);
+  color: var(--secondary2-color);
+}
+
+.contact-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 9rem;
+  height: 3rem;
+  background-color: var(--primary-color);
+  text-decoration: none;
+  border-radius: 8px;
+  text-align: center;
+  color: var(--whiteback-color);
+}
+
+.contact-button span {
+  font-size: var(--button-text-size);
+  color: var(--whiteback-color);
+  margin: 0;
+}
+

@@ -1,0 +1,111 @@
+/* ------------------ PAGINA BLOG ------------------ */
+
+.nutrition-lifestyle-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 90%;
+  gap: 1rem;
+}
+
+.nutrition-lifestyle-inner h3 {
+  font-family: var(--font-family-heading);
+  font-size: var(--heading3-size);
+  font-weight: var(--heading3-weight);
+  color: var(--secondary2-color);
+  margin-top: 50px;
+}
+
+.nutrition-lifestyle-inner p {
+  font-family: var(--font-family-body);
+  font-size: var(--body-text-size);
+  color: var(--secondary2-color);
+}
+
+.cards-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: space-between;
+}
+
+.nutrition-card {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.nutrition-card:hover {
+  transform: translateY(-10px);
+}
+
+.nutrition-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.nutrition-card h3 {
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  right: 0;
+  color: var(--whiteback-color);
+  font-family: var(--font-family-heading);
+  font-size: var(--heading3-size);
+  font-weight: 1000;
+  padding: 0.5rem;
+  margin: 0;
+  text-align: left;
+  width: 90%;
+}
+
+.pop-up-info-articulo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.pop-up-info-articulo-inner {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  background-color: var(--whiteback-color);
+  border-radius: 0;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+  position: relative;
+  overflow-y: auto;
+}
+
+.pop-up-info-articulo-inner img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.pop-up-info-articulo-inner hr {
+  border: solid 1px black;
+  width: 100%;
+}
+
+.pop-up-info-articulo-inner h1 {
+  color: var(--primary-color);
+}
+
