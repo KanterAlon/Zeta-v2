@@ -1,10 +1,12 @@
 import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
+import ClerkSync from './ClerkSync';
 
 const Layout = ({ children }) => {
   return (
     <>
+      <ClerkSync />
       <Header />
       <main>{children}</main>
       <Footer />
