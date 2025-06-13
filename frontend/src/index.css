@@ -271,6 +271,46 @@ span.button-text{
   color: var(--secondary3-color) !important;
 }
 
+/* -------- USER MENU -------- */
+.user-menu {
+  position: relative;
+}
+
+.user-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-family-button);
+  color: var(--secondary2-color);
+}
+
+.user-button img {
+  height: 30px;
+  width: 30px;
+}
+
+.user-button .arrow {
+  width: 20px;
+  height: 20px;
+}
+
+.profile-dropdown {
+  position: absolute;
+  right: 0;
+  top: 110%;
+  background-color: var(--secondary3-color);
+  border: 1px solid var(--secondary5-color);
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+}
+
 /* ------------------ HAMBURGER MENU ------------------ */
 .hamburger-btn {
   display: none;
@@ -2268,7 +2308,7 @@ textarea:focus, input:focus {
     padding: 10px 15px;
   }
   
-  .icon-group, .login-button {
+  .icon-group, .login-button, .user-menu {
     width: 100%;
     justify-content: flex-start;
     margin-top: 20px;
