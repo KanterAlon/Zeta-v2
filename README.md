@@ -39,11 +39,9 @@ Antes de correr el proyecto, asegurate de:
    - En Windows: ejecutá `services.msc` y asegurate que el servicio `MySQL` o `wampmysqld64` esté corriendo.
    - Si usás WAMP, el ícono debe estar **verde**.
 
-2. Tener configurado correctamente el archivo `.env` dentro de `backend/src/prisma/.env`:
-```env
-DATABASE_URL="mysql://root:TU_PASSWORD@localhost:3306/zeta_local"
-PORT=3001
-```
+2. Copiar los archivos `backend/.env.example` y `backend/.env.secrets.example` a
+   `backend/.env` y `backend/.env.secrets` respectivamente. Allí deberás colocar
+   tu cadena `DATABASE_URL`, la clave de Clerk y cualquier otra credencial.
 
 ---
 
@@ -147,7 +145,7 @@ Se usaba esta URL:
 DATABASE_URL="mysql://user:pass@railway_host:port/db"
 ```
 
-Solo hay que reemplazar en `.env` si se quiere volver a usar Railway.
+Solo hay que actualizar `DATABASE_URL` en `backend/.env.secrets` si se quiere volver a usar Railway.
 
 ---
 
@@ -180,6 +178,6 @@ Hecho con 💻 por el equipo de Zeta.
 El frontend utiliza [Clerk](https://clerk.com/) para el inicio de sesión. Al iniciar o crear una cuenta,
 se sincroniza automáticamente con nuestro backend y la base de datos en Supabase.
 
-1. Configurá la clave `VITE_CLERK_PUBLISHABLE_KEY` en `frontend/.env`.
-2. En `backend/.env` agregá tu `CLERK_SECRET_KEY` para que el servidor pueda verificar los tokens de sesión.
+1. Copiá `frontend/.env.example` a `frontend/.env` y completá `VITE_CLERK_PUBLISHABLE_KEY`.
+2. En `backend/.env.secrets` colocá tu `CLERK_SECRET_KEY` para que el servidor pueda verificar los tokens.
 3. Iniciá la app con `npm run dev` y Clerk manejará las sesiones.

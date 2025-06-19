@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const homeRoutes = require('./routes/home.routes');
 
 dotenv.config();
+dotenv.config({ path: '.env.secrets', override: true });
 
 const allowedOrigins = [
   'http://localhost:5174',   
