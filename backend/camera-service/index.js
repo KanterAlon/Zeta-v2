@@ -1,9 +1,11 @@
 // backend/camera-service/index.js
 // Backend separado para búsqueda por cámara
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-require('dotenv').config();
-
 const path = require('path');
+const dotenv = require('dotenv');
+dotenv.config({ path: path.join(__dirname, '..', '.env') });
+dotenv.config({ path: path.join(__dirname, '..', '.env.secrets'), override: true });
+
 const express = require('express');
 const multer = require('multer');
 const cors = require('cors');
