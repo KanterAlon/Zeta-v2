@@ -1,12 +1,12 @@
 import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
-import HomePage from './Pages/HomePage';
-import BlogPage from './Pages/BlogPage';
-import CommunityPage from './Pages/CommunityPage';
-import ProductPage from './Pages/ProductPage';
-import LoginPage from './Pages/Login';
-import SignUpPage from './Pages/SignUp';
-import SearchResults from './Pages/SearchResults'; 
+import HomePage from './pages/HomePage';
+import BlogPage from './pages/BlogPage';
+import CommunityPage from './pages/CommunityPage';
+import ProductPage from './pages/ProductPage';
+import LoginPage from './pages/Login';
+import SignUpPage from './pages/SignUp';
+import SearchResults from './pages/SearchResults';
 
 function App() {
   return (
