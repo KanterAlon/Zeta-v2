@@ -64,12 +64,13 @@ const homeController = {
   // 🔐 Sincronizar sesión con Clerk
   clerkSync: async (req, res) => {
     try {
-      const { verifySessionToken } = require('@clerk/clerk-sdk-node');
+      const { clerkClient } = require('@clerk/clerk-sdk-node');
       const token = req.body.token || req.headers.authorization?.replace('Bearer ', '');
       if (!token) return res.status(400).json({ error: 'Token requerido' });
 
-      const session = await verifySessionToken(token);
-      const email = session?.session?.user?.email_addresses?.[0]?.email_address;
+      const payload = await clerkClient.base.verifySessionToken(token);
+      const userData = await clerkClient.users.getUser(payload.sub);
+      const email = userData.email_addresses?.[0]?.email_address;
 
       if (!email) throw new Error('No se pudo obtener email');
 
@@ -78,7 +79,7 @@ const homeController = {
       if (!usuario) {
         usuario = await prisma.usuarios.create({
           data: {
-            nombre: session.session.user.first_name || 'Usuario',
+            nombre: userData.firstName || 'Usuario',
             email,
             fecha_registro: new Date(),
           }

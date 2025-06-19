@@ -12,5 +12,9 @@ yarn-error.log*
 
 # Build
 build
+
+.env
+backend/.env
+
 backend/camera-service/credentials/*
 !backend/camera-service/credentials/.gitkeep
