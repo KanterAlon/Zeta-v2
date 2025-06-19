@@ -13,11 +13,9 @@ yarn-error.log*
 # Build
 build
 
-.env
-backend/.env
+# backend/.env
 backend/.env.secrets
-backend/prisma/.env
-frontend/.env
+
 
 backend/camera-service/credentials/*
 !backend/camera-service/credentials/.gitkeep
