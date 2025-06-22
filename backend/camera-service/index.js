@@ -3,7 +3,9 @@
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 const path = require('path');
 const dotenv = require('dotenv');
+// Cargar variables de entorno para el servicio de cámara
 dotenv.config({ path: path.join(__dirname, '..', '.env') });
+dotenv.config({ path: path.join(__dirname, '..', '.env.local'), override: true });
 dotenv.config({ path: path.join(__dirname, '..', '.env.secrets'), override: true });
 
 const express = require('express');

@@ -39,9 +39,9 @@ Antes de correr el proyecto, asegurate de:
    - En Windows: ejecutá `services.msc` y asegurate que el servicio `MySQL` o `wampmysqld64` esté corriendo.
    - Si usás WAMP, el ícono debe estar **verde**.
 
-2. Copiar los archivos `backend/.env.example` y `backend/.env.secrets.example` a
-   `backend/.env` y `backend/.env.secrets` respectivamente. Allí deberás colocar
-   tu cadena `DATABASE_URL`, la clave de Clerk y cualquier otra credencial.
+2. Revisar `backend/.env.local` y completa las variables que necesites, como
+   `DATABASE_URL` o `CLERK_SECRET_KEY`. Si deseas separar secretos, crea un
+   archivo `backend/.env.secrets` con esos datos.
 
 ---
 
@@ -178,6 +178,6 @@ Hecho con 💻 por el equipo de Zeta.
 El frontend utiliza [Clerk](https://clerk.com/) para el inicio de sesión. Al iniciar o crear una cuenta,
 se sincroniza automáticamente con nuestro backend y la base de datos en Supabase.
 
-1. Copiá `frontend/.env.example` a `frontend/.env` y completá `VITE_CLERK_PUBLISHABLE_KEY`.
-2. En `backend/.env.secrets` colocá tu `CLERK_SECRET_KEY` para que el servidor pueda verificar los tokens.
+1. Editá `frontend/.env` y completá `VITE_CLERK_PUBLISHABLE_KEY`.
+2. En `backend/.env.secrets` (o en `backend/.env.local`) agrega tu `CLERK_SECRET_KEY` para que el servidor pueda verificar los tokens.
 3. Iniciá la app con `npm run dev` y Clerk manejará las sesiones.
