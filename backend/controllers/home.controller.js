@@ -1,4 +1,3 @@
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 const prisma = require('../prisma/client');
 const axios = require('axios');
 
@@ -6,22 +5,18 @@ const homeController = {
   // 🔐 LOGIN
   login: async (req, res) => {
     const { email, password } = req.body;
-    console.log('[LOGIN] Intentando login con:', email);
   
     const usuario = await prisma.usuarios.findUnique({ where: { email } });
   
     if (!usuario) {
-      console.log('[LOGIN] Usuario no encontrado');
       return res.status(401).json({ error: 'Credenciales inválidas' });
     }
   
     // ⚠️ Aquí deberías usar bcrypt si las contraseñas están hasheadas
     if (usuario.password !== password) {
-      console.log('[LOGIN] Contraseña incorrecta');
       return res.status(401).json({ error: 'Credenciales inválidas' });
     }
   
-    console.log('[LOGIN] Autenticación exitosa, creando sesión...');
     req.session.authenticated = true;
     req.session.user = {
       id: usuario.id_usuario,
@@ -31,30 +26,24 @@ const homeController = {
   
     req.session.save(err => {
       if (err) {
-        console.log('[LOGIN] Error al guardar sesión:', err);
         return res.status(500).json({ error: 'Error al guardar sesión' });
       }
   
-      console.log('[LOGIN] Sesión guardada:', req.session, req.session.user);
       res.json({ success: true, usuario: req.session.user });
     });
   },  
   logout: (req, res) => {
-    console.log('[LOGOUT] Cerrando sesión...');
     req.session.destroy(err => {
       if (err) {
-        console.log('[LOGOUT] Error al cerrar sesión:', err);
         return res.status(500).send('Error al cerrar sesión');
       }
       res.clearCookie('connect.sid');
-      console.log('[LOGOUT] Sesión cerrada y cookie limpiada');
       res.sendStatus(200);
     });
   },
 
 
   isAuthenticated: (req, res) => {
-    console.log('[CHECK] Verificando sesión:', req.session);
     res.json({
       authenticated: !!req.session.authenticated,
       user: req.session.user || null

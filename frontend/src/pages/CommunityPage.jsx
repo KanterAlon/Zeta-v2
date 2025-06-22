@@ -37,7 +37,6 @@ const CommunityPage = () => {
       const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/auth`, {
         withCredentials: true
       });
-      console.log(res)
       setAuth(res.data);
     } catch (err) {
       console.error('Error al verificar sesión:', err);

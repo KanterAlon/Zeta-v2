@@ -1,28 +1,11 @@
 {
-  "name": "my-app",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/KanterAlon/Zeta-v2.git"
+  "name": "zeta-monorepo",
+  "private": true,
+  "workspaces": ["backend", "frontend"],
+  "scripts": {
+    "dev": "concurrently \"npm start --workspace backend\" \"npm run dev --workspace frontend\""
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/KanterAlon/Zeta-v2/issues"
-  },
-  "homepage": "https://github.com/KanterAlon/Zeta-v2#readme",
-  "description": "",
   "devDependencies": {
     "concurrently": "^9.2.0"
-  },
-  "dependencies": {
-    "@clerk/clerk-react": "^5.31.9",
-    "react-router-dom": "^7.5.0"
-  },
-  "scripts": {
-    "dev": "concurrently \"npm run server --prefix backend\" \"npm run dev --prefix frontend\"",
-    "init": "npm install && npm install --prefix backend && npm install --prefix frontend && npm install concurrently --save-dev && powershell -Command \"cd backend; $env:NODE_TLS_REJECT_UNAUTHORIZED='0'; npx prisma generate --schema prisma/schema.prisma;\" && npm run dev"
   }
 }
