@@ -15,7 +15,7 @@
   "homepage": "https://github.com/KanterAlon/Zeta-v2#readme",
   "description": "",
   "devDependencies": {
-    "concurrently": "^9.1.2"
+    "concurrently": "^9.2.0"
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.31.9",
