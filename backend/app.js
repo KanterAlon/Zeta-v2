@@ -3,6 +3,7 @@ const cors = require('cors');
 const session = require('express-session');
 const dotenv = require('dotenv');
 const homeRoutes = require('./routes/home.routes');
+const cameraRoutes = require('./routes/camera.routes');
 
 // Cargar variables de entorno
 dotenv.config({ path: '.env' });
@@ -40,6 +41,7 @@ app.use(session({
 
 // 📦 Rutas
 app.use('/api', homeRoutes);
+app.use('/api/camera', cameraRoutes);
 
 // 🏠 Ruta base
 app.get('/', (req, res) => {

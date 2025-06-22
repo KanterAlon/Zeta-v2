@@ -23,7 +23,7 @@ const HeroSection = () => {
     const formData = new FormData();
     formData.append('image', file);
     try {
-      const res = await fetch('http://localhost:5000/upload', {
+      const res = await fetch('http://localhost:3000/api/camera/upload', {
         method: 'POST',
         body: formData,
       });
