@@ -21,7 +21,7 @@ yarn-error.log*
 # Sensitive environment variables
 backend/.env.secrets
 backend/.env.local
-backend/credentials/
+backend/credentials/google-vision.json
 
 # Example folder no longer used
 clerk-react/
