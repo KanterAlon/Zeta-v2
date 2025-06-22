@@ -8,3 +8,19 @@ The project uses two environment files inside the `backend` folder:
 - `.env.secrets` holds sensitive keys like database credentials, the OpenAI API key and the Google Vision credentials path. This file is ignored by Git. Use `.env.secrets.example` as a template.
 
 The frontend keeps its own public variables in `frontend/.env`.
+
+## Development
+
+Install dependencies for both the backend and frontend using npm workspaces:
+
+```bash
+npm install
+```
+
+Then start the application:
+
+```bash
+npm run dev
+```
+
+This will run the backend server and the Vite frontend concurrently.

@@ -1,21 +1,27 @@
 # Node
 node_modules
+
+# Build outputs
+build
 dist
-.prisma
+
+# IDE files
 .idea
 .vscode
+
+# Prisma generated
+.prisma
+backend/prisma/migrations
 
 # Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Build
-build
-
 # Sensitive environment variables
 backend/.env.secrets
 backend/.env.local
+backend/credentials/
 
-
-backend/credentials/*
+# Example folder no longer used
+clerk-react/
