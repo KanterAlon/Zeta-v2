@@ -4,7 +4,9 @@ const session = require('express-session');
 const dotenv = require('dotenv');
 const homeRoutes = require('./routes/home.routes');
 
-dotenv.config();
+// Cargar variables de entorno
+dotenv.config({ path: '.env' });
+dotenv.config({ path: '.env.local', override: true });
 dotenv.config({ path: '.env.secrets', override: true });
 
 const allowedOrigins = [
