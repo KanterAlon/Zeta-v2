@@ -70,7 +70,11 @@ const homeController = {
 
       const payload = await clerkClient.base.verifySessionToken(token);
       const userData = await clerkClient.users.getUser(payload.sub);
-      const email = userData.email_addresses?.[0]?.email_address;
+
+      // Clerk's SDK returns camelCase properties
+      const email =
+        userData.primaryEmailAddress?.emailAddress ||
+        userData.emailAddresses?.[0]?.emailAddress;
 
       if (!email) throw new Error('No se pudo obtener email');
 
