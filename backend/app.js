@@ -7,7 +7,6 @@ const cameraRoutes = require('./routes/camera.routes');
 
 // Cargar variables de entorno
 dotenv.config({ path: '.env' });
-dotenv.config({ path: '.env.local', override: true });
 dotenv.config({ path: '.env.secrets', override: true });
 
 const allowedOrigins = [

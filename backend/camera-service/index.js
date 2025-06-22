@@ -5,7 +5,6 @@ const path = require('path');
 const dotenv = require('dotenv');
 // Cargar variables de entorno para el servicio de cámara
 dotenv.config({ path: path.join(__dirname, '..', '.env') });
-dotenv.config({ path: path.join(__dirname, '..', '.env.local'), override: true });
 dotenv.config({ path: path.join(__dirname, '..', '.env.secrets'), override: true });
 
 const express = require('express');
@@ -18,7 +17,9 @@ const app = express();
 app.use(cors());
 
 // Ruta a credenciales de Google Vision
-process.env.GOOGLE_APPLICATION_CREDENTIALS = path.join(__dirname, 'credentials', 'google-vision.json');
+if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+  process.env.GOOGLE_APPLICATION_CREDENTIALS = path.join(__dirname, 'credentials', 'google-vision.json');
+}
 
 const OFF_PROD_URL = process.env.OPENFOODFACTS_PRODUCT_URL;
 const OFF_SEARCH_URL = process.env.OPENFOODFACTS_SEARCH_URL;
