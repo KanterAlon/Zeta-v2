@@ -5,7 +5,15 @@ const vision = require('@google-cloud/vision');
 const OFF_PROD_URL = process.env.OPENFOODFACTS_PRODUCT_URL;
 const OFF_SEARCH_URL = process.env.OPENFOODFACTS_SEARCH_URL;
 
-process.env.GOOGLE_APPLICATION_CREDENTIALS = path.join(__dirname, '..', 'camera-service', 'credentials', 'google-vision.json');
+if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+  process.env.GOOGLE_APPLICATION_CREDENTIALS = path.join(
+    __dirname,
+    '..',
+    'camera-service',
+    'credentials',
+    'google-vision.json'
+  );
+}
 
 const visionClient = new vision.ImageAnnotatorClient();
 

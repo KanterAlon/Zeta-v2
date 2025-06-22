@@ -13,8 +13,9 @@ yarn-error.log*
 # Build
 build
 
-# backend/.env
+# Sensitive environment variables
 backend/.env.secrets
+backend/.env.local
 
 
 backend/camera-service/credentials/*
