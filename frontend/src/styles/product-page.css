@@ -71,6 +71,18 @@
   background-color: var(--error-color);
 }
 
+.rating-green {
+  background-color: var(--success-color);
+}
+
+.rating-yellow {
+  background-color: var(--warning-color);
+}
+
+.rating-orange {
+  background-color: #ff8c00;
+}
+
 .product-nutrition-info {
   display: flex;
   flex-direction: column;
