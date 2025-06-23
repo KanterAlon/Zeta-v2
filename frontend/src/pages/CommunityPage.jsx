@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Loader from '../components/Loader';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import CommunityCard from '../components/CommunityCard';
@@ -10,9 +11,11 @@ const CommunityPage = () => {
   const [popupOpen, setPopupOpen] = useState(false);
   const [newPostContent, setNewPostContent] = useState('');
   const [auth, setAuth] = useState({ authenticated: false });
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const fetchPosts = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/obtenerPosts`, {withCredentials: true});
       if (response.data.success) {
@@ -30,6 +33,8 @@ const CommunityPage = () => {
       }
     } catch (error) {
       console.error('Error al obtener posts:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -96,7 +101,9 @@ const CommunityPage = () => {
         <div className="inner-community">
           <h1 className="community-title">Comunidad</h1>
           <div className="community-cards-container">
-            {posts.length === 0 ? (
+            {loading ? (
+              <Loader />
+            ) : posts.length === 0 ? (
               <p>No hay posts aún. ¡Sé el primero en publicar!</p>
             ) : (
               posts.map(post => (

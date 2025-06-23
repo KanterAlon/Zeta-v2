@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Loader from '../components/Loader';
 import axios from 'axios';
 import BlogCard from '../components/BlogCard';
 import BlogPopup from '../components/BlogPopup';
@@ -8,14 +9,18 @@ const BlogPage = () => {
   const [posts, setPosts] = useState([]);
   const [popupPost, setPopupPost] = useState(null);
   const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPosts = async () => {
+      setLoading(true);
       try {
         const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/blog`);
         setPosts(data);
       } catch (err) {
         console.error('Error al obtener posts del blog:', err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchPosts();
@@ -71,9 +76,13 @@ const BlogPage = () => {
             Explorá artículos cuidadosamente seleccionados sobre bienestar integral, alimentación consciente y hábitos saludables. Inspirate para hacer cambios positivos y sostenibles.
           </p>
           <div className="cards-row" id="cardsContainer">
-            {posts.map((post, idx) => (
-              <BlogCard key={idx} post={post} onClick={handleCardClick} />
-            ))}
+            {loading ? (
+              <Loader />
+            ) : (
+              posts.map((post, idx) => (
+                <BlogCard key={idx} post={post} onClick={handleCardClick} />
+              ))
+            )}
           </div>
         </div>
       </section>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '@clerk/clerk-react';
+import Loader from './Loader';
 import {
   FaHome,
   FaUsers,
@@ -12,13 +13,14 @@ import {
 } from 'react-icons/fa';
 
 const Header = () => {
-  const { isSignedIn, getToken, signOut } = useAuth();
+  const { isLoaded, isSignedIn, getToken, signOut } = useAuth();
   const [auth, setAuth] = useState({ authenticated: false, user: null });
   const [loading, setLoading] = useState(true); // nuevo estado
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
   
   useEffect(() => {
+    if (!isLoaded) return;
     const syncSession = async () => {
       try {
         if (isSignedIn) {
@@ -75,9 +77,9 @@ const Header = () => {
       hamburgerBtn?.removeEventListener('click', toggleMenu);
       window.removeEventListener('resize', closeMenuOnResize);
     };
-  }, [isSignedIn]);
+  }, [isLoaded, isSignedIn]);
 
-  if (loading) return null; 
+  if (!isLoaded || loading) return <Loader />;
 
   const handleLogout = async () => {
     await signOut();
