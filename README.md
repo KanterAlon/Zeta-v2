@@ -2,6 +2,8 @@
 
 ## Environment configuration
 
+## Comando para evitar problema del firewall: set NODE_TLS_REJECT_UNAUTHORIZED=0
+
 The project uses two environment files inside the `backend` folder:
 
 - `.env` contains public configuration and **is committed** to the repository.
