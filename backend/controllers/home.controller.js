@@ -313,13 +313,17 @@ registrarUsuario: async (req, res) => {
 
     try {
       const result = await axios.get(`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&json=1`);
-      const productos = result.data.products.filter(p =>
-        ['es', 'en'].includes(p.lang) &&
-        (p.countries?.toLowerCase()?.includes('argentina') || true)
-      ).map(p => ({
-        name: p.product_name,
-        image: p.image_url || "/img/default_product.png"
-      }));
+      const productos = result.data.products
+        .filter(p =>
+          ['es', 'en'].includes(p.lang) &&
+          p.product_name &&
+          p.image_url &&
+          (p.countries?.toLowerCase()?.includes('argentina') || true)
+        )
+        .map(p => ({
+          name: p.product_name,
+          image: p.image_url
+        }));
 
       res.json({ success: true, products: productos });
     } catch (error) {
