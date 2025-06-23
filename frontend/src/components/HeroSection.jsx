@@ -1,9 +1,11 @@
 // src/components/HeroSection.jsx
 import React, { useState, useRef } from 'react';
+import CameraModal from './CameraModal';
 import { useNavigate } from 'react-router-dom';
 
 const HeroSection = () => {
   const [query, setQuery] = useState('');
+  const [showCamera, setShowCamera] = useState(false);
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
 
@@ -14,14 +16,19 @@ const HeroSection = () => {
   };
 
   const handleCameraClick = () => {
-    fileInputRef.current?.click();
+    setShowCamera(true);
   };
 
-  const handleCapture = async (e) => {
-    const file = e.target.files[0];
+  const handleCapture = async (source) => {
+    let file = null;
+    if (source && source.target) {
+      file = source.target.files[0];
+    } else if (source instanceof Blob) {
+      file = source;
+    }
     if (!file) return;
     const formData = new FormData();
-    formData.append('image', file);
+    formData.append('image', file, 'capture.jpg');
     try {
       const res = await fetch('http://localhost:3000/api/camera/upload', {
         method: 'POST',
@@ -34,6 +41,8 @@ const HeroSection = () => {
       }
     } catch (err) {
       console.error('Camera search error', err);
+    } finally {
+      setShowCamera(false);
     }
   };
 
@@ -80,6 +89,11 @@ const HeroSection = () => {
                 ref={fileInputRef}
                 style={{ display: 'none' }}
                 onChange={handleCapture}
+              />
+              <CameraModal
+                isOpen={showCamera}
+                onClose={() => setShowCamera(false)}
+                onCapture={handleCapture}
               />
             </div>
           </div>

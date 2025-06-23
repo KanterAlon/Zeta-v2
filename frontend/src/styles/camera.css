@@ -1,0 +1,14 @@
+.camera-wrapper video {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.capture-btn {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: var(--primary-color);
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+}
