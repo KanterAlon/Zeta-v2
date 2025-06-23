@@ -13,7 +13,7 @@ export default function SignUpPage() {
           <img src="/img/img_login.svg" alt="Ilustración" />
         </div>
         <div className="welcome-message">
-          <SignUp path="/sign-up/*" routing="path" signInUrl="/login" afterSignUpUrl="/" />
+          <SignUp path="/sign-up" routing="path" signInUrl="/login" afterSignUpUrl="/" />
         </div>
       </div>
     </section>
