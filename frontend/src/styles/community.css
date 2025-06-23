@@ -93,6 +93,12 @@
   gap: .3rem;
 }
 
+/* Like/Dislike icons */
+.community-card-footer svg {
+  width: 20px;
+  height: 20px;
+}
+
 .button-add-post {
   position: fixed;
   bottom: 10vh;
@@ -206,6 +212,11 @@ textarea:focus, input:focus {
   cursor: pointer;
   top: 1.5rem;
   right: 2rem;
+}
+
+.close-btn svg {
+  width: 20px;
+  height: 20px;
 }
 
 /* Publish Button */

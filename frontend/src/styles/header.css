@@ -37,6 +37,13 @@ header {
   width: 30px;
 }
 
+/* Ensure react-icon SVGs align with text like images */
+.nav-links a svg {
+  margin-right: 15px;
+  width: 30px;
+  height: 30px;
+}
+
 .login-button, .icon-group {
   display: flex;
   align-items: center;
@@ -91,6 +98,12 @@ span.button-text{
 .user-button img {
   height: 30px;
   width: 30px;
+}
+
+/* Normalize icon size inside the user menu */
+.user-button svg {
+  width: 24px;
+  height: 24px;
 }
 
 .user-button .arrow {
