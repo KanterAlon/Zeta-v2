@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { FaArrowLeft } from 'react-icons/fa';
 
 export default function Ca2Section({ goTo, updateForm, formData}) {
   const handleSubmit = async (e) => {
@@ -35,7 +36,7 @@ export default function Ca2Section({ goTo, updateForm, formData}) {
   return (
     <section id="ca2-section" className="ca1-container" style={{ display: 'flex' }}>
       <button className="back-button" onClick={() => goTo('ca1')} type="button">
-        <img src="/img/icon_back.svg" alt="Back" />
+        <FaArrowLeft />
       </button>
       <div className="ca1-content">
         <form onSubmit={handleSubmit}>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import BlogCard from '../components/BlogCard';
 import BlogPopup from '../components/BlogPopup';
+import { FaSearch } from 'react-icons/fa';
 
 const BlogPage = () => {
   const [posts, setPosts] = useState([]);
@@ -47,7 +48,7 @@ const BlogPage = () => {
             <p>Descubrí herramientas prácticas, consejos útiles y perspectivas actuales para transformar tu relación con la comida.</p>
             <div className="search-bar">
               <button className="search-button">
-                <img src="./img/icon_search.svg" alt="Search Icon" width="20" height="20" />
+                <FaSearch size={20} />
               </button>
               <input
                 type="text"

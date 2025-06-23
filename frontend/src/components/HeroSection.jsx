@@ -2,6 +2,7 @@
 import React, { useState, useRef } from 'react';
 import CameraModal from './CameraModal';
 import { useNavigate } from 'react-router-dom';
+import { FaSearch, FaCamera } from 'react-icons/fa';
 
 const HeroSection = () => {
   const [query, setQuery] = useState('');
@@ -65,14 +66,14 @@ const HeroSection = () => {
                 className="search-button"
                 onClick={handleSearch}
               >
-                <img src="/img/icon_search.svg" alt="Buscar" width="20" height="20" />
+                <FaSearch size={20} />
               </button>
               <button
                 type="button"
                 className="search-button"
                 onClick={handleCameraClick}
               >
-                <img src="/img/icon_camera.svg" alt="Cámara" width="20" height="20" />
+                <FaCamera size={20} />
               </button>
               <input
                 type="text"

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import CommunityCard from '../components/CommunityCard';
 import CommunityPopup from '../components/CommunityPopup';
+import { FaPlus } from 'react-icons/fa';
 
 const CommunityPage = () => {
   const [posts, setPosts] = useState([]);
@@ -114,7 +115,7 @@ const CommunityPage = () => {
           if (!auth.authenticated) return navigate('/login');
           setPopupOpen(true);
         }}>
-          <img src="./img/icon_button_add.svg" alt="Agregar post" />
+          <FaPlus />
         </button>
       </section>
 
