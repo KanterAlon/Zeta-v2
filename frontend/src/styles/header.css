@@ -110,6 +110,32 @@ span.button-text{
   display: flex;
   flex-direction: column;
   z-index: 1000;
+  animation: fadeSlide 0.2s ease;
+}
+
+.profile-dropdown .dropdown-item {
+  background: none;
+  border: none;
+  padding: 8px 12px;
+  text-align: left;
+  cursor: pointer;
+  color: var(--secondary2-color);
+  font-family: var(--font-family-button);
+}
+
+.profile-dropdown .dropdown-item:hover {
+  background-color: var(--secondary5-color);
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ------------------ HAMBURGER MENU ------------------ */
