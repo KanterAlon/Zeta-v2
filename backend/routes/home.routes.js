@@ -22,6 +22,8 @@ router.post('/clerk/sync', homeController.clerkSync);
 router.get('/ExisteMail', homeController.existeMail);
 router.get('/patologias', homeController.getPatologias);
 router.get('/actividades', homeController.getActividades);
+router.get('/user/me', homeController.obtenerPerfil);
+router.post('/user/update', homeController.actualizarPerfil);
 
 const contactController = require('../controllers/contact.controller');
 router.post('/contact', contactController.sendContactEmail);
