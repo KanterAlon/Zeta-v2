@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '@clerk/clerk-react';
 import Loader from './Loader';
+import { useProfilePopup } from '../context/ProfilePopupContext';
 import {
   FaHome,
   FaUsers,
@@ -17,6 +18,8 @@ const Header = () => {
   const [auth, setAuth] = useState({ authenticated: false, user: null });
   const [loading, setLoading] = useState(true); // nuevo estado
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const { openProfile } = useProfilePopup();
   const navigate = useNavigate();
   
   useEffect(() => {
@@ -73,11 +76,19 @@ const Header = () => {
       link.addEventListener('click', closeMenuOnClick);
     });
 
+    const handleOutside = e => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleOutside);
+
     return () => {
       hamburgerBtn?.removeEventListener('click', toggleMenu);
       window.removeEventListener('resize', closeMenuOnResize);
+      document.removeEventListener('mousedown', handleOutside);
     };
-  }, [isLoaded, isSignedIn]);
+  }, [isLoaded, isSignedIn, getToken]);
 
   if (!isLoaded || loading) return <Loader />;
 
@@ -125,15 +136,16 @@ const Header = () => {
         {!auth.authenticated ? (
           <Link to="/login" className="login-button"><span className="button-text">Login</span></Link>
         ) : (
-          <div className="user-menu">
-            <button className="user-button" onClick={toggleDropdown}>
+          <div className="user-menu" ref={dropdownRef}>
+            <button className="user-button" onClick={toggleDropdown} aria-expanded={dropdownOpen} aria-haspopup="true">
               <FaUserCircle size={24} />
               <span className="user-name">{auth.user?.nombre}</span>
               <FaChevronDown className="arrow" />
             </button>
             {dropdownOpen && (
               <div id="profile-dropdown" className="profile-dropdown">
-                <a href="#" onClick={handleLogout}>Cerrar sesión</a>
+                <button type="button" className="dropdown-item" onClick={openProfile}>Editar perfil</button>
+                <button type="button" className="dropdown-item" onClick={handleLogout}>Cerrar sesión</button>
               </div>
             )}
           </div>
