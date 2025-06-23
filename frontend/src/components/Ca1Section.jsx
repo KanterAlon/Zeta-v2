@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { FaArrowLeft } from 'react-icons/fa';
 
 
 export default function Ca1Section({ goTo, updateForm }) {
@@ -33,7 +34,7 @@ export default function Ca1Section({ goTo, updateForm }) {
   return (
     <section id="ca1-section" className="ca1-container" style={{ display: 'flex' }}>
       <button className="back-button" onClick={() => goTo('login')} type="button">
-        <img src="/img/icon_back.svg" alt="Back" />
+        <FaArrowLeft />
       </button>
       <div className="ca1-content">
         <div className="ca1-text">

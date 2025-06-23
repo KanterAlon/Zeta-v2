@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import Webcam from 'react-webcam';
+import { FaTimes } from 'react-icons/fa';
 
 const CameraModal = ({ isOpen, onClose, onCapture }) => {
   const webcamRef = useRef(null);
@@ -24,7 +25,9 @@ const CameraModal = ({ isOpen, onClose, onCapture }) => {
   return (
     <div className="popup-container" onClick={handleContainerClick}>
       <div className="popup-content" onClick={e => e.stopPropagation()}>
-        <img src="./img/icon_close.svg" className="close-btn" onClick={onClose} alt="Cerrar" />
+        <button className="close-btn" onClick={onClose} aria-label="Cerrar">
+          <FaTimes />
+        </button>
         <div className="camera-wrapper">
           <Webcam
             audio={false}

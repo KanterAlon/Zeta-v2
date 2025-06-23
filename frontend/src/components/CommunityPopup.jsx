@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaTimes, FaImage } from 'react-icons/fa';
 
 const CommunityPopup = ({ isOpen, onClose, onPost, content, setContent }) => {
   if (!isOpen) return null;
@@ -6,7 +7,9 @@ const CommunityPopup = ({ isOpen, onClose, onPost, content, setContent }) => {
   return (
     <div className="popup-container">
       <div className="popup-content">
-        <img src="./img/icon_close.svg" className="close-btn" onClick={onClose} />
+        <button className="close-btn" onClick={onClose} aria-label="Cerrar">
+          <FaTimes />
+        </button>
         <div className="top-pop-up-add-post">
           <textarea
             id="postInput"
@@ -15,9 +18,9 @@ const CommunityPopup = ({ isOpen, onClose, onPost, content, setContent }) => {
             placeholder="¿Qué quieres decir?"
             required
           />
-          <button className="button-select-img">
-            <img src="./img/icon_img.svg" alt="Seleccionar imagen" />
-          </button>
+        <button className="button-select-img" aria-label="Seleccionar imagen">
+          <FaImage />
+        </button>
         </div>
         <button className="publish-btn" onClick={onPost}>Publicar</button>
       </div>

@@ -1,12 +1,13 @@
 import { SignUp } from '@clerk/clerk-react';
 import LoginSection from '../components/LoginSection';
+import { FaArrowLeft } from 'react-icons/fa';
 
 export default function SignUpPage() {
   return (
     <section id="signup-section" className="login-container">
       <div className="login-content">
         <button className="back-button" onClick={() => window.location.href = '/'}>
-          <img src="/img/icon_back.svg" alt="Back" />
+          <FaArrowLeft />
         </button>
         <div className="illustration">
           <img src="/img/img_login.svg" alt="Ilustración" />

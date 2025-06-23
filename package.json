@@ -1,7 +1,10 @@
 {
   "name": "zeta-monorepo",
   "private": true,
-  "workspaces": ["backend", "frontend"],
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
   "scripts": {
     "dev": "concurrently \"npm start --workspace backend\" \"npm run dev --workspace frontend\""
   },

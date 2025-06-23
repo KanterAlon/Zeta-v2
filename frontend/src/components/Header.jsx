@@ -2,6 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '@clerk/clerk-react';
+import {
+  FaHome,
+  FaUsers,
+  FaBlog,
+  FaEnvelopeOpenText,
+  FaUserCircle,
+  FaChevronDown,
+} from 'react-icons/fa';
 
 const Header = () => {
   const { isSignedIn, getToken, signOut } = useAuth();
@@ -95,19 +103,31 @@ const Header = () => {
       </button>
 
       <nav className="nav-links">
-        <Link to="/"><img src="/img/icon_home.svg" alt="Inicio" width="30" height="30" /><span>Inicio</span></Link>
-        <Link to="/community"><img src="/img/icon_community.svg" alt="Comunidad" width="30" height="30" /><span>Comunidad</span></Link>
-        <Link to="/blog"><img src="/img/icon_blog.svg" alt="Blog" width="30" height="30" /><span>Blog</span></Link>
-        <Link to="/contact"><img src="/img/icon_contact.svg" alt="Contacto" width="30" height="30" /><span>Contacto</span></Link>
+        <Link to="/">
+          <FaHome size={30} />
+          <span>Inicio</span>
+        </Link>
+        <Link to="/community">
+          <FaUsers size={30} />
+          <span>Comunidad</span>
+        </Link>
+        <Link to="/blog">
+          <FaBlog size={30} />
+          <span>Blog</span>
+        </Link>
+        <Link to="/contact">
+          <FaEnvelopeOpenText size={30} />
+          <span>Contacto</span>
+        </Link>
 
         {!auth.authenticated ? (
           <Link to="/login" className="login-button"><span className="button-text">Login</span></Link>
         ) : (
           <div className="user-menu">
             <button className="user-button" onClick={toggleDropdown}>
-              <img src="/img/icon_profile.svg" alt="Cuenta" />
+              <FaUserCircle size={24} />
               <span className="user-name">{auth.user?.nombre}</span>
-              <img src="/img/icon_arrow-down.svg" alt="Abrir" className="arrow" />
+              <FaChevronDown className="arrow" />
             </button>
             {dropdownOpen && (
               <div id="profile-dropdown" className="profile-dropdown">

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { FaCheck, FaTimes, FaMinus } from 'react-icons/fa';
 
 const ProductPage = () => {
   const [searchParams] = useSearchParams();
@@ -101,7 +102,6 @@ const ProductPage = () => {
                     title="Bajo en Grasas"
                     description="Ideal para una dieta equilibrada en grasas."
                     value={productData.nutriments?.fat_100g}
-                    tick="/img/icon_tick.svg"
                   />
                 )}
                 {getLevel('saturated-fat') === 'low' && (
@@ -111,7 +111,6 @@ const ProductPage = () => {
                     title="Bajo en Grasas Saturadas"
                     description="Ayuda a mantener niveles saludables de colesterol."
                     value={productData.nutriments?.["saturated-fat_100g"]}
-                    tick="/img/icon_tick.svg"
                   />
                 )}
                 {getLevel('sugars') === 'low' && (
@@ -121,7 +120,6 @@ const ProductPage = () => {
                     title="Bajo en Azúcares"
                     description="Bueno para controlar el azúcar diario."
                     value={productData.nutriments?.sugars_100g}
-                    tick="/img/icon_tick.svg"
                   />
                 )}
                 {getLevel('salt') === 'low' && (
@@ -131,7 +129,6 @@ const ProductPage = () => {
                     title="Bajo en Sodio"
                     description="Ayuda a controlar la presión arterial."
                     value={productData.nutriments?.salt_100g}
-                    tick="/img/icon_tick.svg"
                   />
                 )}
               </>
@@ -147,7 +144,6 @@ const ProductPage = () => {
                     title="Grasas Moderadas"
                     description="Consumir con moderación."
                     value={productData.nutriments?.fat_100g}
-                    tick="/img/icon_less.svg"
                   />
                 )}
                 {/* Repetí saturadas, azúcar, etc si querés */}
@@ -164,7 +160,6 @@ const ProductPage = () => {
                     title="Alto en Azúcares"
                     description="Puede afectar la salud dental y aumentar calorías."
                     value={productData.nutriments?.sugars_100g}
-                    tick="/img/icon_close.svg"
                   />
                 )}
                 {productData.nova_group === '4' && (
@@ -173,7 +168,6 @@ const ProductPage = () => {
                     icon="/img/icon_nova.svg"
                     title="Ultra Procesado"
                     description="Clasificado NOVA 4, muy procesado."
-                    tick="/img/icon_close.svg"
                   />
                 )}
               </>
@@ -187,7 +181,7 @@ const ProductPage = () => {
   );
 };
 
-const NutritionItem = ({ type, icon, title, description, value, tick }) => (
+const NutritionItem = ({ type, icon, title, description, value }) => (
   <div className={`nutrition-item ${type}`}>
     <img src={icon} className="nutrition-icon" alt={title} />
     <div className="nutrition-description">
@@ -195,7 +189,9 @@ const NutritionItem = ({ type, icon, title, description, value, tick }) => (
       <p>{description}</p>
     </div>
     {value !== undefined && <span>{value} g cada 100 g</span>}
-    <img src={tick} className={type === 'negative' ? 'close-icon' : 'tick-icon'} />
+    {type === 'negative' && <FaTimes className="close-icon" />}
+    {type === 'moderate' && <FaMinus className="less-icon" />}
+    {type === 'positive' && <FaCheck className="tick-icon" />}
   </div>
 );
 

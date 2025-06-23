@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { FaArrowLeft } from 'react-icons/fa';
 
 export default function Ca3Section({ goTo, formData }) {
   const [patologias, setPatologias] = useState([]);
@@ -48,7 +49,7 @@ export default function Ca3Section({ goTo, formData }) {
   return (
     <section id="ca3-section" className="ca1-container" style={{ display: 'flex' }}>
       <button className="back-button" onClick={() => goTo('ca2')} type="button">
-        <img src="/img/icon_back.svg" alt="Back" />
+        <FaArrowLeft />
       </button>
       <div className="ca1-content">
         <form onSubmit={handleSubmit}>
