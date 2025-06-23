@@ -56,6 +56,42 @@
   object-fit: cover;
 }
 
+/* Lazy image wrapper to handle skeleton */
+.search-results-page .lazy-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.search-results-page .lazy-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.search-results-page .image-skeleton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--secondary6-color);
+  animation: skeleton-loading 1.2s infinite ease-in-out;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
 /* Título dentro de la tarjeta */
 .search-results-page .product-card .card-title {
   padding: 1rem;
