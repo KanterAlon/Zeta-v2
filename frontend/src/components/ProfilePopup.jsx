@@ -91,6 +91,7 @@ const ProfilePopup = ({ isOpen, onClose, onSaved }) => {
           <input type="number" name="frecuencia" placeholder="Horas semanales" value={form.frecuencia} onChange={handleChange} />
 
           <button type="submit" className="publish-btn">Guardar</button>
+          <button type="button" className="skip-btn" onClick={onClose}>Omitir</button>
         </form>
       </div>
     </div>

@@ -6,12 +6,16 @@ import Functionalities from '../components/Functionalities';
 import CommunityPosts from '../components/CommunityPosts';
 import ContactSection from '../components/ContactSection';
 import ProfilePopup from '../components/ProfilePopup';
+import { useAuth } from '@clerk/clerk-react';
 import axios from 'axios';
 
 const HomePage = () => {
   const [showPopup, setShowPopup] = useState(false);
+  const { isLoaded, isSignedIn } = useAuth();
 
   useEffect(() => {
+    if (!isLoaded || !isSignedIn) return;
+
     const checkProfile = async () => {
       try {
         const auth = await axios.get(`${import.meta.env.VITE_API_URL}/api/auth`, { withCredentials: true });
@@ -22,8 +26,10 @@ const HomePage = () => {
         console.error('Error al verificar perfil', err);
       }
     };
-    checkProfile();
-  }, []);
+
+    const timer = setTimeout(checkProfile, 300);
+    return () => clearTimeout(timer);
+  }, [isLoaded, isSignedIn]);
 
   return (
     <div className="index-main">
