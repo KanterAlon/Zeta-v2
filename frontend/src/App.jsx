@@ -9,6 +9,7 @@ import LoginPage from './pages/Login';
 import SignUpPage from './pages/SignUp';
 import SearchResults from './pages/SearchResults';
 import ContactPage from './pages/ContactPage';
+import ProfilePage from './pages/ProfilePage';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
         <Route path="/search" element={<SearchResults />} />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/contact" element={<ContactPage />} />
       </Routes>
       </Layout>

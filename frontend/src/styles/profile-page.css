@@ -1,0 +1,23 @@
+.profile-page {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.profile-container {
+  background-color: var(--secondary3-color);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.profile-container h1 {
+  font-size: var(--heading2-size);
+  color: var(--secondary2-color);
+}

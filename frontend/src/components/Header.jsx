@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '@clerk/clerk-react';
 import Loader from './Loader';
-import { useProfilePopup } from '../context/ProfilePopupContext';
 import {
   FaHome,
   FaUsers,
@@ -19,7 +18,6 @@ const Header = () => {
   const [loading, setLoading] = useState(true); // nuevo estado
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const { openProfile } = useProfilePopup();
   const navigate = useNavigate();
   
   useEffect(() => {
@@ -144,7 +142,16 @@ const Header = () => {
             </button>
             {dropdownOpen && (
               <div id="profile-dropdown" className="profile-dropdown">
-                <button type="button" className="dropdown-item" onClick={openProfile}>Editar perfil</button>
+                <button
+                  type="button"
+                  className="dropdown-item"
+                  onClick={() => {
+                    setDropdownOpen(false);
+                    navigate('/profile');
+                  }}
+                >
+                  Mi perfil
+                </button>
                 <button type="button" className="dropdown-item" onClick={handleLogout}>Cerrar sesión</button>
               </div>
             )}
