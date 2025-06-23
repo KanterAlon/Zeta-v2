@@ -2,9 +2,8 @@ import React from 'react';
 import { FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
 
 const CommunityCard = ({ post, onLike, onDislike }) => {
-  // Determinar si está likeado o dislikeado en base al valor 1
-  const isLiked = parseInt(post.likes) === 1;
-  const isDisliked = parseInt(post.dislikes) === 1;
+  const isLiked = post.liked;
+  const isDisliked = post.disliked;
 
   return (
     <div className="community-card">

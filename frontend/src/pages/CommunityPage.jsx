@@ -26,8 +26,8 @@ const CommunityPage = () => {
           imagen_url: post.imagen_url,
           likes: post.likes,
           dislikes: post.dislikes,
-          liked: false,
-          disliked: false
+          liked: post.liked,
+          disliked: post.disliked
         }));
         setPosts(mappedPosts);
       }
