@@ -95,6 +95,12 @@
   height: 33px;
 }
 
+/* Consistent sizing for icon components */
+.search-button svg {
+  width: 33px;
+  height: 33px;
+}
+
 .info-buttons {
   display: flex;
   justify-content: space-around;

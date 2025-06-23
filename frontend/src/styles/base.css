@@ -110,6 +110,17 @@ main {
   transition: transform 0.3s ease;
 }
 
+/* Support SVG icons for back button */
+.back-button svg {
+  width: 32px;
+  height: 32px;
+  transition: transform 0.3s ease;
+}
+
+.back-button svg:hover {
+  transform: scale(1.1);
+}
+
 .back-button img:hover {
   transform: scale(1.1);
 }
