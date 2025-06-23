@@ -20,8 +20,8 @@ function App() {
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/community" element={<CommunityPage />} />
         <Route path="/producto" element={<ProductPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/sign-up" element={<SignUpPage />} />
+        <Route path="/login/*" element={<LoginPage />} />
+        <Route path="/sign-up/*" element={<SignUpPage />} />
         <Route path="/search" element={<SearchResults />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/contact" element={<ContactPage />} />
