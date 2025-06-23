@@ -76,6 +76,20 @@
   cursor: pointer;
 }
 
+.search-icon-button {
+  margin-right: 0.5rem;
+}
+
+.camera-icon-button {
+  margin-left: 0.5rem;
+}
+
+.search-hint {
+  color: var(--secondary2-color);
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+}
+
 .search-button img {
   width: 33px;
   height: 33px;
