@@ -10,7 +10,7 @@ const ContactSection = () => {
         <div className="contact-content">
           <h2 style={{ color: 'var(--primary-color)' }}>¿Te quedó alguna inquietud?</h2>
           <h3>Escribinos que a la brevedad te contestamos.</h3>
-          <a href="/home/contact" className="contact-button">
+          <a href="/contact" className="contact-button">
             <span>Ir a contacto</span>
           </a>
         </div>
