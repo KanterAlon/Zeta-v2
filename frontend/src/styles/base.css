@@ -116,3 +116,11 @@ main {
 
 
 
+
+/* Global loader style */
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}

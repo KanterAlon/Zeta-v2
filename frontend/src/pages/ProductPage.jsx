@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Loader from '../components/Loader';
 import { useSearchParams } from 'react-router-dom';
 import { FaCheck, FaTimes, FaMinus } from 'react-icons/fa';
 
@@ -175,7 +176,7 @@ const ProductPage = () => {
           </div>
         </>
       ) : (
-        <p>Cargando...</p>
+        <Loader />
       )}
     </div>
   );

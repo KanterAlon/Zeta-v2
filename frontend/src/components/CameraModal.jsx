@@ -1,9 +1,11 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Webcam from 'react-webcam';
 import { FaTimes } from 'react-icons/fa';
+import Loader from './Loader';
 
 const CameraModal = ({ isOpen, onClose, onCapture }) => {
   const webcamRef = useRef(null);
+  const [capturing, setCapturing] = useState(false);
 
   if (!isOpen) return null;
 
@@ -11,9 +13,11 @@ const CameraModal = ({ isOpen, onClose, onCapture }) => {
     if (webcamRef.current) {
       const imageSrc = webcamRef.current.getScreenshot();
       if (imageSrc) {
+        setCapturing(true);
         const res = await fetch(imageSrc);
         const blob = await res.blob();
-        onCapture(blob);
+        await onCapture(blob);
+        setCapturing(false);
       }
     }
   };
@@ -37,6 +41,11 @@ const CameraModal = ({ isOpen, onClose, onCapture }) => {
           />
         </div>
         <button className="capture-btn" onClick={capture}>Tomar foto</button>
+        {capturing && (
+          <div className="capture-loader">
+            <Loader />
+          </div>
+        )}
       </div>
     </div>
   );
