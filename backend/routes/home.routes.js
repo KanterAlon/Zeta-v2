@@ -23,6 +23,9 @@ router.get('/ExisteMail', homeController.existeMail);
 router.get('/patologias', homeController.getPatologias);
 router.get('/actividades', homeController.getActividades);
 
+const contactController = require('../controllers/contact.controller');
+router.post('/contact', contactController.sendContactEmail);
+
 
 
 module.exports = router;
