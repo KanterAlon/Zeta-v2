@@ -1,4 +1,5 @@
 const prisma = require('../prisma/client');
+const { Prisma } = require('@prisma/client');
 const axios = require('axios');
 
 const homeController = {
@@ -149,6 +150,99 @@ registrarUsuario: async (req, res) => {
   getActividades: async (req, res) => {
     const data = await prisma.actividades.findMany();
     res.json(data);
+  },
+
+  obtenerPerfil: async (req, res) => {
+    try {
+      if (!req.session?.user?.email) return res.status(401).json({ error: 'No autenticado' });
+
+      const email = req.session.user.email;
+      const usuario = await prisma.usuarios.findUnique({
+        where: { email },
+        include: {
+          actividades: { include: { actividad: true } },
+          patologias: { include: { patologia: true } }
+        }
+      });
+
+      if (!usuario) return res.status(404).json({ error: 'Usuario no encontrado' });
+
+      const perfil = {
+        edad: usuario.edad,
+        sexo: usuario.sexo,
+        peso: usuario.peso,
+        altura: usuario.altura,
+        actividades: usuario.actividades.map(a => ({
+          id: a.id_actividad,
+          nombre: a.actividad?.nombre_actividad,
+          frecuencia: a.frecuencia_semanal
+        })),
+        patologias: usuario.patologias.map(p => ({
+          id: p.id_patologia,
+          nombre: p.patologia.nombre_patologia
+        }))
+      };
+
+      const completo = perfil.edad && perfil.sexo !== null && perfil.peso && perfil.altura && perfil.patologias.length > 0 && perfil.actividades.length > 0;
+
+      res.json({ perfil, completo });
+    } catch (err) {
+      console.error('Error obtenerPerfil:', err);
+      res.status(500).json({ error: 'Error al obtener perfil' });
+    }
+  },
+
+  actualizarPerfil: async (req, res) => {
+    try {
+      if (!req.session?.user?.email) return res.status(401).json({ error: 'No autenticado' });
+
+      const {
+        edad,
+        sexo,
+        peso,
+        altura,
+        patologias = [],
+        actividades = []
+      } = req.body;
+
+      const email = req.session.user.email;
+      const usuario = await prisma.usuarios.findUnique({ where: { email } });
+      if (!usuario) return res.status(404).json({ error: 'Usuario no encontrado' });
+
+      await prisma.usuarios.update({
+        where: { id_usuario: usuario.id_usuario },
+        data: { edad, sexo, peso, altura }
+      });
+
+      await prisma.usuariosPatologias.deleteMany({ where: { id_usuario: usuario.id_usuario } });
+      for (const p of patologias) {
+        let id = p.id;
+        if (!id && p.nombre) {
+          const nuevo = await prisma.patologias.create({ data: { nombre_patologia: p.nombre } });
+          id = nuevo.id_patologia;
+        }
+        if (id) {
+          await prisma.usuariosPatologias.create({ data: { id_usuario: usuario.id_usuario, id_patologia: id } });
+        }
+      }
+
+      await prisma.actividadesUsuario.deleteMany({ where: { id_usuario: usuario.id_usuario } });
+      for (const a of actividades) {
+        let id = a.id;
+        if (!id && a.nombre) {
+          const nuevo = await prisma.actividades.create({ data: { nombre_actividad: a.nombre, coef_actividad: new Prisma.Decimal(1) } });
+          id = nuevo.id_actividad;
+        }
+        if (id) {
+          await prisma.actividadesUsuario.create({ data: { id_usuario: usuario.id_usuario, id_actividad: id, frecuencia_semanal: parseInt(a.frecuencia || 0) } });
+        }
+      }
+
+      res.json({ success: true });
+    } catch (err) {
+      console.error('Error actualizarPerfil:', err);
+      res.status(500).json({ error: 'Error al actualizar perfil' });
+    }
   },
 
   index: async (req, res) => {

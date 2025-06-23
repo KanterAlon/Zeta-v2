@@ -1,0 +1,14 @@
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  align-items: stretch;
+}
+
+.profile-form input,
+.profile-form select {
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid var(--primary-color);
+}
