@@ -336,14 +336,16 @@ registrarUsuario: async (req, res) => {
       const user = await prisma.usuarios.findUnique({ where: { email } });
       const idUsuario = user.id_usuario;
 
-      const yaTieneLike = await prisma.interacciones.findFirst({
-        where: { id_post: idPost, id_usuario: idUsuario, tipo_interaccion: 1 }
+      const existente = await prisma.interacciones.findFirst({
+        where: { id_post: idPost, id_usuario: idUsuario }
       });
 
-      if (!yaTieneLike) {
-        await prisma.interacciones.deleteMany({
-          where: { id_post: idPost, id_usuario: idUsuario, tipo_interaccion: 2 }
-        });
+      if (existente?.tipo_interaccion === 1) {
+        await prisma.interacciones.delete({ where: { id_interaccion: existente.id_interaccion } });
+      } else {
+        if (existente) {
+          await prisma.interacciones.delete({ where: { id_interaccion: existente.id_interaccion } });
+        }
 
         await prisma.interacciones.create({
           data: {
@@ -370,14 +372,16 @@ registrarUsuario: async (req, res) => {
       const user = await prisma.usuarios.findUnique({ where: { email } });
       const idUsuario = user.id_usuario;
 
-      const yaTieneDislike = await prisma.interacciones.findFirst({
-        where: { id_post: idPost, id_usuario: idUsuario, tipo_interaccion: 2 }
+      const existente = await prisma.interacciones.findFirst({
+        where: { id_post: idPost, id_usuario: idUsuario }
       });
 
-      if (!yaTieneDislike) {
-        await prisma.interacciones.deleteMany({
-          where: { id_post: idPost, id_usuario: idUsuario, tipo_interaccion: 1 }
-        });
+      if (existente?.tipo_interaccion === 2) {
+        await prisma.interacciones.delete({ where: { id_interaccion: existente.id_interaccion } });
+      } else {
+        if (existente) {
+          await prisma.interacciones.delete({ where: { id_interaccion: existente.id_interaccion } });
+        }
 
         await prisma.interacciones.create({
           data: {
@@ -438,15 +442,31 @@ registrarUsuario: async (req, res) => {
       }
     });
 
-    const formatted = posts.map(post => ({
-      id_post: post.id_post,
-      contenido_post: post.contenido_post,
-      fecha_creacion: post.fecha_creacion,
-      autor: post.usuario.nombre,
-      imagen_url: post.imagen_url,
-      likes: post.interacciones.filter(i => i.tipo_interaccion === 1).length,
-      dislikes: post.interacciones.filter(i => i.tipo_interaccion === 2).length
-    }));
+    let idUsuario = null;
+    if (req.session?.user?.email) {
+      const user = await prisma.usuarios.findUnique({ where: { email: req.session.user.email } });
+      idUsuario = user?.id_usuario ?? null;
+    }
+
+    const formatted = posts.map(post => {
+      const likes = post.interacciones.filter(i => i.tipo_interaccion === 1);
+      const dislikes = post.interacciones.filter(i => i.tipo_interaccion === 2);
+
+      const liked = idUsuario ? likes.some(i => i.id_usuario === idUsuario) : false;
+      const disliked = idUsuario ? dislikes.some(i => i.id_usuario === idUsuario) : false;
+
+      return {
+        id_post: post.id_post,
+        contenido_post: post.contenido_post,
+        fecha_creacion: post.fecha_creacion,
+        autor: post.usuario.nombre,
+        imagen_url: post.imagen_url,
+        likes: likes.length,
+        dislikes: dislikes.length,
+        liked,
+        disliked
+      };
+    });
 
     res.json({ success: true, posts: formatted });
   }
