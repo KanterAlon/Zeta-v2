@@ -12,3 +12,13 @@
   border-radius: 5px;
   border: 1px solid var(--primary-color);
 }
+
+.skip-btn {
+  margin-top: 0.5rem;
+  padding: 10px 20px;
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  cursor: pointer;
+}
