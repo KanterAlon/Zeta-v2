@@ -3,6 +3,24 @@ import Loader from '../components/Loader';
 import { useSearchParams } from 'react-router-dom';
 import { FaCheck, FaTimes, FaMinus } from 'react-icons/fa';
 
+// Convert OpenFoodFacts nutriscore (-15 best to 40 worst) to a 1-10 scale
+const mapScoreToRating = (score) => {
+  if (typeof score !== 'number') return null;
+  const min = -15;
+  const max = 40;
+  const clamped = Math.min(Math.max(score, min), max);
+  const scaled = ((max - clamped) / (max - min)) * 9 + 1;
+  return Math.round(scaled);
+};
+
+// Determine color class based on rating value
+const getRatingColorClass = (rating) => {
+  if (rating >= 8) return 'green';
+  if (rating >= 6) return 'yellow';
+  if (rating >= 4) return 'orange';
+  return 'red';
+};
+
 const ProductPage = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('query');
@@ -43,6 +61,9 @@ const ProductPage = () => {
     ['sugars', 'saturated-fat', 'salt'].some(key => getLevel(key) === 'high') ||
     productData?.nova_group === '4';
 
+  const ratingValue = mapScoreToRating(productData?.nutriscore_score);
+  const ratingColor = getRatingColorClass(ratingValue);
+
   return (
     <div className="product-page">
       <h1 className="product-title">{productName}</h1>
@@ -64,10 +85,9 @@ const ProductPage = () => {
                       className="product-image-new"
                     />
                     <div className="product-rating">
-                      <span className="rating-circle rating-red" />
+                      <span className={`rating-circle rating-${ratingColor}`} />
                       <h3>
-                        Calidad:{' '}
-                        {productData.nutrition_grades_tags?.[0]?.toUpperCase() || 'Sin calificación'}
+                        Calidad: {ratingValue ? `${ratingValue}/10` : 'Sin calificación'}
                       </h3>
                     </div>
                   </div>
