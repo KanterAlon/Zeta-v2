@@ -63,17 +63,10 @@ const HeroSection = () => {
           <div className="search-bar">
             <div className="search-wrapper">
               <button
-                className="search-button"
+                className="search-button search-icon-button"
                 onClick={handleSearch}
               >
                 <FaSearch size={20} />
-              </button>
-              <button
-                type="button"
-                className="search-button"
-                onClick={handleCameraClick}
-              >
-                <FaCamera size={20} />
               </button>
               <input
                 type="text"
@@ -83,6 +76,13 @@ const HeroSection = () => {
                 onChange={e => setQuery(e.target.value)}
                 onKeyDown={onKeyDown}
               />
+              <button
+                type="button"
+                className="search-button camera-icon-button"
+                onClick={handleCameraClick}
+              >
+                <FaCamera size={20} />
+              </button>
               <input
                 type="file"
                 accept="image/*"
@@ -98,6 +98,7 @@ const HeroSection = () => {
               />
             </div>
           </div>
+          <div className="search-hint">Presioná Enter o la lupa para buscar</div>
         </div>
       </div>
     </section>

@@ -52,7 +52,7 @@ const BlogPage = () => {
             <h1>¿QUÉ QUERÉS APRENDER HOY?</h1>
             <p>Descubrí herramientas prácticas, consejos útiles y perspectivas actuales para transformar tu relación con la comida.</p>
             <div className="search-bar">
-              <button className="search-button">
+              <button className="search-button search-icon-button" onClick={() => handleSearch({ key: 'Enter' })}>
                 <FaSearch size={20} />
               </button>
               <input
@@ -64,6 +64,7 @@ const BlogPage = () => {
                 onKeyDown={handleSearch}
               />
             </div>
+            <div className="search-hint">Presioná Enter o la lupa para buscar</div>
           </div>
         </div>
       </section>
