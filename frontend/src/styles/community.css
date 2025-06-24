@@ -214,6 +214,13 @@ textarea:focus, input:focus {
   left: 5px;
 }
 
+.post-image-preview {
+  max-width: 100%;
+  height: auto;
+  margin-top: 1rem;
+  border-radius: 8px;
+}
+
 /* Close Button */
 .close-btn {
   position: absolute;

@@ -407,7 +407,7 @@ registrarUsuario: async (req, res) => {
   publicarPost: async (req, res) => {
     try {
       if (!req.session?.user?.email) throw new Error('Usuario no autenticado');
-      const { contenidoPost } = req.body;
+      const { contenidoPost, imagenUrl } = req.body;
       const email = req.session.user.email;
       const user = await prisma.usuarios.findUnique({ where: { email } });
       const idUsuario = user.id_usuario;
@@ -418,7 +418,8 @@ registrarUsuario: async (req, res) => {
         data: {
           contenido_post: contenidoPost,
           id_usuario: idUsuario,
-          fecha_creacion: new Date()
+          fecha_creacion: new Date(),
+          imagen_url: imagenUrl ?? null
         }
       });
 
@@ -428,7 +429,8 @@ registrarUsuario: async (req, res) => {
           id_post: nuevo.id_post,
           contenido_post: nuevo.contenido_post,
           fecha_creacion: nuevo.fecha_creacion,
-          autor: user.nombre
+          autor: user.nombre,
+          imagen_url: nuevo.imagen_url
         }
       });
     } catch (err) {
