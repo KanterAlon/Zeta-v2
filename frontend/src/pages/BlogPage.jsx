@@ -3,7 +3,7 @@ import Loader from '../components/Loader';
 import axios from 'axios';
 import BlogCard from '../components/BlogCard';
 import BlogPopup from '../components/BlogPopup';
-import { FaSearch } from 'react-icons/fa';
+import { FiSearch } from 'react-icons/fi';
 
 const BlogPage = () => {
   const [posts, setPosts] = useState([]);
@@ -53,7 +53,7 @@ const BlogPage = () => {
             <p>Descubrí herramientas prácticas, consejos útiles y perspectivas actuales para transformar tu relación con la comida.</p>
             <div className="search-bar">
               <button className="search-button search-icon-button" onClick={() => handleSearch({ key: 'Enter' })}>
-                <FaSearch size={20} />
+                <FiSearch size={20} />
               </button>
               <input
                 type="text"
@@ -71,21 +71,23 @@ const BlogPage = () => {
 
       {/* LISTADO DE ARTÍCULOS */}
       <section className="sec-nutrition-lifestyle" style={{ display: popupPost ? 'none' : 'block' }}>
-        <div className="nutrition-lifestyle-inner">
-          <h3>Nutrición y Estilo de Vida</h3>
-          <p>
-            Explorá artículos cuidadosamente seleccionados sobre bienestar integral, alimentación consciente y hábitos saludables. Inspirate para hacer cambios positivos y sostenibles.
-          </p>
-          <div className="cards-row" id="cardsContainer">
-            {loading ? (
-              <Loader />
-            ) : (
-              posts.map((post, idx) => (
-                <BlogCard key={idx} post={post} onClick={handleCardClick} />
-              ))
-            )}
+        {loading ? (
+          <div className="loader">
+            <Loader />
           </div>
-        </div>
+        ) : (
+          <div className="nutrition-lifestyle-inner">
+            <h3>Nutrición y Estilo de Vida</h3>
+            <p>
+              Explorá artículos cuidadosamente seleccionados sobre bienestar integral, alimentación consciente y hábitos saludables. Inspirate para hacer cambios positivos y sostenibles.
+            </p>
+            <div className="cards-row" id="cardsContainer">
+              {posts.map((post, idx) => (
+                <BlogCard key={idx} post={post} onClick={handleCardClick} />
+              ))}
+            </div>
+          </div>
+        )}
       </section>
 
       {/* POPUP DE ARTÍCULO */}

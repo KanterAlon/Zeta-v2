@@ -6,7 +6,7 @@ import Loader from './Loader';
 import {
   FaHome,
   FaUsers,
-  FaBlog,
+  FaRegNewspaper,
   FaEnvelopeOpenText,
   FaUserCircle,
   FaChevronDown,
@@ -123,7 +123,7 @@ const Header = () => {
           <span>Comunidad</span>
         </Link>
         <Link to="/blog">
-          <FaBlog size={30} />
+          <FaRegNewspaper size={30} />
           <span>Blog</span>
         </Link>
         <Link to="/contact">

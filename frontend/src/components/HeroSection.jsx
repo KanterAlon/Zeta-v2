@@ -2,7 +2,7 @@
 import React, { useState, useRef } from 'react';
 import CameraModal from './CameraModal';
 import { useNavigate } from 'react-router-dom';
-import { FaSearch, FaCamera } from 'react-icons/fa';
+import { FiSearch, FiCamera } from 'react-icons/fi';
 
 const HeroSection = () => {
   const [query, setQuery] = useState('');
@@ -66,7 +66,7 @@ const HeroSection = () => {
                 className="search-button search-icon-button"
                 onClick={handleSearch}
               >
-                <FaSearch size={20} />
+                <FiSearch size={20} />
               </button>
               <input
                 type="text"
@@ -81,7 +81,7 @@ const HeroSection = () => {
                 className="search-button camera-icon-button"
                 onClick={handleCameraClick}
               >
-                <FaCamera size={20} />
+                <FiCamera size={20} />
               </button>
               <input
                 type="file"
