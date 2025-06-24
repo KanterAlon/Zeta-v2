@@ -103,27 +103,36 @@ const CommunityPage = () => {
           <div className="community-cards-container">
             {loading ? (
               <Loader />
-            ) : posts.length === 0 ? (
-              <p>No hay posts aún. ¡Sé el primero en publicar!</p>
             ) : (
-              posts.map(post => (
-                <CommunityCard
-                  key={post.id}
-                  post={post}
-                  onLike={handleLike}
-                  onDislike={handleDislike}
-                />
-              ))
+              <>
+                <div
+                  className="community-card create-post-card"
+                  onClick={() => {
+                    if (!auth.authenticated) return navigate('/login');
+                    setPopupOpen(true);
+                  }}
+                >
+                  <div className="bottom-community-card" style={{ alignItems: 'center' }}>
+                    <FaPlus size={24} />
+                    <p className="community-card-text">Crear un post</p>
+                  </div>
+                </div>
+                {posts.length === 0 ? (
+                  <p>No hay posts aún. ¡Sé el primero en publicar!</p>
+                ) : (
+                  posts.map(post => (
+                    <CommunityCard
+                      key={post.id}
+                      post={post}
+                      onLike={handleLike}
+                      onDislike={handleDislike}
+                    />
+                  ))
+                )}
+              </>
             )}
           </div>
         </div>
-
-        <button className="button-add-post" onClick={() => {
-          if (!auth.authenticated) return navigate('/login');
-          setPopupOpen(true);
-        }}>
-          <FaPlus />
-        </button>
       </section>
 
       <CommunityPopup

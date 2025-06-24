@@ -1,10 +1,10 @@
 /* ------------------ COMMUNITY SECTION STYLES  ------------------ */
 
-.like-button.active .img-like {
-  filter: brightness(1.5);
+.like-button .img-like {
+  color: green;
 }
-.dislike-button.active .img-dislike {
-  filter: brightness(0.5);
+.dislike-button .img-dislike {
+  color: red;
 }
 
 .community-section {
@@ -50,6 +50,17 @@
   align-items: center;
   padding-bottom: 1.5rem;
   gap: 1.2rem;
+}
+
+.create-post-card {
+  cursor: pointer;
+  justify-content: center;
+  min-height: 200px;
+}
+.create-post-card svg {
+  width: 40px;
+  height: 40px;
+  color: var(--primary-color);
 }
 
 

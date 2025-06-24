@@ -1,5 +1,10 @@
 import React from 'react';
-import { FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
+import {
+  FaThumbsUp,
+  FaThumbsDown,
+  FaRegThumbsUp,
+  FaRegThumbsDown,
+} from 'react-icons/fa';
 
 const CommunityCard = ({ post, onLike, onDislike }) => {
   const isLiked = post.liked;
@@ -15,11 +20,19 @@ const CommunityCard = ({ post, onLike, onDislike }) => {
         <span className="community-time-posted">{post.fecha}</span>
         <div className="community-card-footer">
           <button className={`like-button ${isLiked ? 'active' : ''}`} onClick={() => onLike(post.id)}>
-            <FaThumbsUp className="img-like" />
+            {isLiked ? (
+              <FaThumbsUp className="img-like" color="green" />
+            ) : (
+              <FaRegThumbsUp className="img-like" color="green" />
+            )}
             <span className="like-count">{post.likes}</span>
           </button>
           <button className={`dislike-button ${isDisliked ? 'active' : ''}`} onClick={() => onDislike(post.id)}>
-            <FaThumbsDown className="img-dislike" />
+            {isDisliked ? (
+              <FaThumbsDown className="img-dislike" color="red" />
+            ) : (
+              <FaRegThumbsDown className="img-dislike" color="red" />
+            )}
             <span className="dislike-count">{post.dislikes}</span>
           </button>
         </div>

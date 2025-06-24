@@ -13,6 +13,11 @@ const HomePage = () => {
   const [showPopup, setShowPopup] = useState(false);
   const { isLoaded, isSignedIn } = useAuth();
 
+  const handleClose = () => {
+    localStorage.setItem('healthPopupSeen', 'true');
+    setShowPopup(false);
+  };
+
   useEffect(() => {
     if (!isLoaded || !isSignedIn) return;
 
@@ -21,7 +26,8 @@ const HomePage = () => {
         const auth = await axios.get(`${import.meta.env.VITE_API_URL}/api/auth`, { withCredentials: true });
         if (!auth.data.authenticated) return;
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/me`, { withCredentials: true });
-        if (!res.data.completo) setShowPopup(true);
+        const seen = localStorage.getItem('healthPopupSeen');
+        if (!seen && !res.data.completo) setShowPopup(true);
       } catch (err) {
         console.error('Error al verificar perfil', err);
       }
@@ -39,7 +45,7 @@ const HomePage = () => {
       <Functionalities />
       {/* Sección que muestra publicaciones de la comunidad, ideal para fomentar la participación del usuario: <CommunityPosts/>*/}
       <ContactSection />
-      <ProfilePopup isOpen={showPopup} onClose={() => setShowPopup(false)} onSaved={() => setShowPopup(false)} />
+      <ProfilePopup isOpen={showPopup} onClose={handleClose} onSaved={handleClose} />
     </div>
   );
 };

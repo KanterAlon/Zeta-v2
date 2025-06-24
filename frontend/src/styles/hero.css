@@ -90,15 +90,16 @@
   margin-top: 0.3rem;
 }
 
+
 .search-button img {
-  width: 33px;
-  height: 33px;
+  width: 24px;
+  height: 24px;
 }
 
 /* Consistent sizing for icon components */
 .search-button svg {
-  width: 33px;
-  height: 33px;
+  width: 24px;
+  height: 24px;
 }
 
 .info-buttons {
