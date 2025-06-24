@@ -10,6 +10,8 @@ const CommunityPage = () => {
   const [posts, setPosts] = useState([]);
   const [popupOpen, setPopupOpen] = useState(false);
   const [newPostContent, setNewPostContent] = useState('');
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
   const [auth, setAuth] = useState({ authenticated: false });
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -56,24 +58,60 @@ const CommunityPage = () => {
 
   const handleLike = async (id) => {
     if (!auth.authenticated) return navigate('/login');
+    const original = [...posts];
+    setPosts(prev => prev.map(p => {
+      if (p.id !== id) return p;
+      let liked = !p.liked;
+      let disliked = liked ? false : p.disliked;
+      let likes = p.likes;
+      let dislikes = p.dislikes;
+      if (p.liked) {
+        likes -= 1;
+      } else if (p.disliked) {
+        dislikes -= 1;
+        likes += 1;
+      } else {
+        likes += 1;
+      }
+      return { ...p, liked, disliked, likes, dislikes };
+    }));
+
     try {
       await axios.post(`${import.meta.env.VITE_API_URL}/api/darLike`, { idPost: id }, {
         withCredentials: true
       });
-      fetchPosts();
     } catch (error) {
+      setPosts(original);
       console.error('Error al dar like:', error);
     }
   };
 
   const handleDislike = async (id) => {
     if (!auth.authenticated) return navigate('/login');
+    const original = [...posts];
+    setPosts(prev => prev.map(p => {
+      if (p.id !== id) return p;
+      let disliked = !p.disliked;
+      let liked = disliked ? false : p.liked;
+      let likes = p.likes;
+      let dislikes = p.dislikes;
+      if (p.disliked) {
+        dislikes -= 1;
+      } else if (p.liked) {
+        likes -= 1;
+        dislikes += 1;
+      } else {
+        dislikes += 1;
+      }
+      return { ...p, liked, disliked, likes, dislikes };
+    }));
+
     try {
       await axios.post(`${import.meta.env.VITE_API_URL}/api/darDislike`, { idPost: id }, {
         withCredentials: true
       });
-      fetchPosts();
     } catch (error) {
+      setPosts(original);
       console.error('Error al dar dislike:', error);
     }
   };
@@ -84,11 +122,28 @@ const CommunityPage = () => {
       return alert('El contenido no puede estar vacío.');
     }
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/api/publicarPost`, { contenidoPost: newPostContent }, {
-        withCredentials: true
-      });
+      let imageUrl = null;
+      if (selectedImage) {
+        const formData = new FormData();
+        formData.append('image', selectedImage);
+        const imgbbRes = await axios.post(
+          `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_KEY}`,
+          formData
+        );
+        imageUrl = imgbbRes.data.data.url;
+      }
+
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/publicarPost`,
+        { contenidoPost: newPostContent, imagenUrl: imageUrl },
+        {
+          withCredentials: true
+        }
+      );
       fetchPosts();
       setNewPostContent('');
+      setSelectedImage(null);
+      setPreviewUrl(null);
       setPopupOpen(false);
     } catch (error) {
       console.error('Error al publicar el post:', error);
@@ -137,10 +192,17 @@ const CommunityPage = () => {
 
       <CommunityPopup
         isOpen={popupOpen}
-        onClose={() => setPopupOpen(false)}
+        onClose={() => {
+          setPopupOpen(false);
+          setPreviewUrl(null);
+          setSelectedImage(null);
+        }}
         onPost={handlePost}
         content={newPostContent}
         setContent={setNewPostContent}
+        previewUrl={previewUrl}
+        setPreviewUrl={setPreviewUrl}
+        setSelectedImage={setSelectedImage}
       />
     </>
   );

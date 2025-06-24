@@ -1,8 +1,30 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { FaTimes, FaImage } from 'react-icons/fa';
+const CommunityPopup = ({
+  isOpen,
+  onClose,
+  onPost,
+  content,
+  setContent,
+  previewUrl,
+  setPreviewUrl,
+  setSelectedImage
+}) => {
+  const fileInputRef = useRef(null);
 
-const CommunityPopup = ({ isOpen, onClose, onPost, content, setContent }) => {
   if (!isOpen) return null;
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedImage(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
+  };
+
+  const triggerFile = () => {
+    fileInputRef.current?.click();
+  };
 
   return (
     <div className="popup-container">
@@ -18,10 +40,24 @@ const CommunityPopup = ({ isOpen, onClose, onPost, content, setContent }) => {
             placeholder="¿Qué quieres decir?"
             required
           />
-        <button className="button-select-img" aria-label="Seleccionar imagen">
-          <FaImage />
-        </button>
+          <input
+            type="file"
+            accept="image/*"
+            ref={fileInputRef}
+            style={{ display: 'none' }}
+            onChange={handleFileChange}
+          />
+          <button
+            className="button-select-img"
+            aria-label="Seleccionar imagen"
+            onClick={triggerFile}
+          >
+            <FaImage />
+          </button>
         </div>
+        {previewUrl && (
+          <img src={previewUrl} className="post-image-preview" alt="previsualización" />
+        )}
         <button className="publish-btn" onClick={onPost}>Publicar</button>
       </div>
     </div>
