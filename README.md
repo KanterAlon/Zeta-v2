@@ -11,7 +11,8 @@ The project uses two environment files inside the `backend` folder:
 
 The frontend keeps its own public variables in `frontend/.env`.
 Add `VITE_IMGBB_KEY` with your imgbb API key to enable image uploads for
-community posts.
+community posts. If the key is missing, posts will still be created but
+any selected images will be ignored.
 
 ## Development
 

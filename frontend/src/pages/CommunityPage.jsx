@@ -124,13 +124,23 @@ const CommunityPage = () => {
     try {
       let imageUrl = null;
       if (selectedImage) {
-        const formData = new FormData();
-        formData.append('image', selectedImage);
-        const imgbbRes = await axios.post(
-          `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_KEY}`,
-          formData
-        );
-        imageUrl = imgbbRes.data.data.url;
+        const key = import.meta.env.VITE_IMGBB_KEY;
+        if (key) {
+          const formData = new FormData();
+          formData.append('image', selectedImage);
+          try {
+            const imgbbRes = await axios.post(
+              `https://api.imgbb.com/1/upload?key=${key}`,
+              formData
+            );
+            imageUrl = imgbbRes.data.data.url;
+          } catch (err) {
+            console.error('Error al subir la imagen a imgbb:', err);
+            alert('No se pudo subir la imagen, se publicará sin ella.');
+          }
+        } else {
+          console.warn('VITE_IMGBB_KEY no definido, omitiendo subida de imagen');
+        }
       }
 
       await axios.post(
