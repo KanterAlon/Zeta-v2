@@ -299,13 +299,21 @@ registrarUsuario: async (req, res) => {
 
     try {
       if (isEAN) {
-        const response = await axios.get(`${OFF_PROD_URL}/${encodeURIComponent(query)}.json`);
+        const productUrl = `${OFF_PROD_URL}/${encodeURIComponent(query)}.json`;
+        console.log('🔍 OFF product URL:', productUrl);
+        const response = await axios.get(productUrl);
         if (response.data.status !== 1) throw new Error("No encontrado");
         return res.json(response.data.product);
       } else {
-        const response = await axios.get(OFF_SEARCH_URL, {
-          params: { search_terms: query, search_simple: 1, action: 'process', json: 1 }
-        });
+        const searchParams = {
+          search_terms: query,
+          search_simple: 1,
+          action: 'process',
+          json: 1
+        };
+        const url = `${OFF_SEARCH_URL}?${new URLSearchParams(searchParams)}`;
+        console.log('🔍 OFF search URL:', url);
+        const response = await axios.get(OFF_SEARCH_URL, { params: searchParams });
         const productos = response.data.products;
         if (!productos.length) return res.status(404).json({ error: 'No hay resultados' });
         return res.json(productos[0]);
@@ -320,13 +328,14 @@ registrarUsuario: async (req, res) => {
     if (!query) return res.status(400).json({ success: false, message: "Falta query" });
 
     try {
-      const result = await axios.get(OFF_API_URL, {
-        params: {
-          search_terms: query,
-          page_size: 20,
-          fields: 'product_name,image_url'
-        }
-      });
+      const searchParams = {
+        search_terms: query,
+        page_size: 20,
+        fields: 'product_name,image_url'
+      };
+      const url = `${OFF_API_URL}?${new URLSearchParams(searchParams)}`;
+      console.log('🔍 OFF API v2 search URL:', url);
+      const result = await axios.get(OFF_API_URL, { params: searchParams });
 
       const productos = (result.data.products || [])
         .filter(p => p.product_name && p.image_url)

@@ -21,13 +21,14 @@ if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
 const visionClient = new vision.ImageAnnotatorClient();
 
 async function searchOFF(terms) {
-  const res = await axios.get(OFF_API_URL, {
-    params: {
-      search_terms: terms,
-      page_size: 1,
-      fields: 'product_name,image_url'
-    }
-  });
+  const searchParams = {
+    search_terms: terms,
+    page_size: 1,
+    fields: 'product_name,image_url'
+  };
+  const url = `${OFF_API_URL}?${new URLSearchParams(searchParams)}`;
+  console.log('[Camera] OFF search URL:', url);
+  const res = await axios.get(OFF_API_URL, { params: searchParams });
   return res.data.count > 0 ? res.data : null;
 }
 
