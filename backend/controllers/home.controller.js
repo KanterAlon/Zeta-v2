@@ -6,6 +6,7 @@ const OFF_PROD_URL = process.env.OPENFOODFACTS_PRODUCT_URL ||
   'https://world.openfoodfacts.org/api/v2/product';
 const OFF_SEARCH_URL = process.env.OPENFOODFACTS_SEARCH_URL ||
   'https://world.openfoodfacts.org/cgi/search.pl';
+const OFF_API_URL = process.env.OPENFOODFACTS_API_URL || 'https://world.openfoodfacts.org/api/v2/search';
 
 const homeController = {
   // 🔐 LOGIN
@@ -319,20 +320,17 @@ registrarUsuario: async (req, res) => {
     if (!query) return res.status(400).json({ success: false, message: "Falta query" });
 
     try {
-      const result = await axios.get(OFF_SEARCH_URL, {
-        params: { search_terms: query, search_simple: 1, action: 'process', json: 1 }
+      const result = await axios.get(OFF_API_URL, {
+        params: {
+          search_terms: query,
+          page_size: 20,
+          fields: 'product_name,image_url'
+        }
       });
-      const productos = result.data.products
-        .filter(p =>
-          ['es', 'en'].includes(p.lang) &&
-          p.product_name &&
-          p.image_url &&
-          (p.countries?.toLowerCase()?.includes('argentina') || true)
-        )
-        .map(p => ({
-          name: p.product_name,
-          image: p.image_url
-        }));
+
+      const productos = (result.data.products || [])
+        .filter(p => p.product_name && p.image_url)
+        .map(p => ({ name: p.product_name, image: p.image_url }));
 
       res.json({ success: true, products: productos });
     } catch (error) {
