@@ -2,8 +2,10 @@ const path = require('path');
 const axios = require('axios');
 const vision = require('@google-cloud/vision');
 
-const OFF_PROD_URL = process.env.OPENFOODFACTS_PRODUCT_URL;
-const OFF_SEARCH_URL = process.env.OPENFOODFACTS_SEARCH_URL;
+const OFF_PROD_URL = process.env.OPENFOODFACTS_PRODUCT_URL ||
+  'https://world.openfoodfacts.org/api/v2/product';
+const OFF_SEARCH_URL = process.env.OPENFOODFACTS_SEARCH_URL ||
+  'https://world.openfoodfacts.org/cgi/search.pl';
 
 if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
   process.env.GOOGLE_APPLICATION_CREDENTIALS = path.join(

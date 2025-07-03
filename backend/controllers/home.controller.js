@@ -2,6 +2,11 @@ const prisma = require('../prisma/client');
 const { Prisma } = require('@prisma/client');
 const axios = require('axios');
 
+const OFF_PROD_URL = process.env.OPENFOODFACTS_PRODUCT_URL ||
+  'https://world.openfoodfacts.org/api/v2/product';
+const OFF_SEARCH_URL = process.env.OPENFOODFACTS_SEARCH_URL ||
+  'https://world.openfoodfacts.org/cgi/search.pl';
+
 const homeController = {
   // 🔐 LOGIN
   login: async (req, res) => {
@@ -293,11 +298,13 @@ registrarUsuario: async (req, res) => {
 
     try {
       if (isEAN) {
-        const response = await axios.get(`https://world.openfoodfacts.org/api/v0/product/${query}.json`);
+        const response = await axios.get(`${OFF_PROD_URL}/${encodeURIComponent(query)}.json`);
         if (response.data.status !== 1) throw new Error("No encontrado");
         return res.json(response.data.product);
       } else {
-        const response = await axios.get(`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&json=1`);
+        const response = await axios.get(OFF_SEARCH_URL, {
+          params: { search_terms: query, search_simple: 1, action: 'process', json: 1 }
+        });
         const productos = response.data.products;
         if (!productos.length) return res.status(404).json({ error: 'No hay resultados' });
         return res.json(productos[0]);
@@ -312,7 +319,9 @@ registrarUsuario: async (req, res) => {
     if (!query) return res.status(400).json({ success: false, message: "Falta query" });
 
     try {
-      const result = await axios.get(`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&json=1`);
+      const result = await axios.get(OFF_SEARCH_URL, {
+        params: { search_terms: query, search_simple: 1, action: 'process', json: 1 }
+      });
       const productos = result.data.products
         .filter(p =>
           ['es', 'en'].includes(p.lang) &&
