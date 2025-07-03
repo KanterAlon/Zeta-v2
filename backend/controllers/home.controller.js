@@ -1,6 +1,7 @@
 const prisma = require('../prisma/client');
 const { Prisma } = require('@prisma/client');
 const axios = require('axios');
+const { HttpsProxyAgent } = require('https-proxy-agent');
 
 const OFF_PROD_URL = process.env.OPENFOODFACTS_PRODUCT_URL ||
   'https://world.openfoodfacts.org/api/v2/product';
@@ -335,7 +336,13 @@ registrarUsuario: async (req, res) => {
       };
       const url = `${OFF_API_URL}?${new URLSearchParams(searchParams)}`;
       console.log('🔍 OFF API v2 search URL:', url);
-      const result = await axios.get(OFF_API_URL, { params: searchParams });
+      const agentUrl = process.env.https_proxy || process.env.HTTPS_PROXY;
+      const options = { params: searchParams };
+      if (agentUrl) {
+        options.proxy = false;
+        options.httpsAgent = new HttpsProxyAgent(agentUrl);
+      }
+      const result = await axios.get(OFF_API_URL, options);
 
       const productos = (result.data.products || [])
         .filter(p => p.product_name && p.image_url)
