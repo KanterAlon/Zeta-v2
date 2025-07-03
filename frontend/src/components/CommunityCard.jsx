@@ -13,7 +13,11 @@ const CommunityCard = ({ post, onLike, onDislike }) => {
   return (
     <div className="community-card">
       {post.imagen_url && (
-        <img src={post.imagen_url} alt="Imagen del post" className="community-card-image" />
+        <img
+          src={post.imagen_url.startsWith('http') ? post.imagen_url : `/img/${post.imagen_url}`}
+          alt="Imagen del post"
+          className="community-card-image"
+        />
       )}
       <div className="bottom-community-card">
         <p className="community-card-text">{post.contenido}</p>

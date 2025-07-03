@@ -29,7 +29,10 @@ const CommunityPosts = () => {
                   <p className="descripcion-card-blog">{post.contenido_post}</p>
                 </div>
                 <div className="contenedor-imagen-card-blog">
-                  <img src={`./public/img/${post.imagen_url}`} alt="Imagen del post" />
+                  <img
+                    src={post.imagen_url.startsWith('http') ? post.imagen_url : `/img/${post.imagen_url}`}
+                    alt="Imagen del post"
+                  />
                 </div>
               </div>
             ))
