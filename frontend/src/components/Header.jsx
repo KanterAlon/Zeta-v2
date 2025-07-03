@@ -104,7 +104,7 @@ const Header = () => {
   return (
     <header>
       <div className="logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
-        <img src="/img/Logo_Nut_Header.svg" alt="Nut Logo" />
+        <img src="/img/Logo_Zeta_Header.svg" alt="Nut Logo" />
       </div>
 
       <button className="hamburger-btn" aria-label="Menú">
