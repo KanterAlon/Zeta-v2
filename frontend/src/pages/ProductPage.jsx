@@ -62,7 +62,10 @@ const ProductPage = () => {
     productData?.nova_group === '4';
 
   const ratingValue = mapScoreToRating(productData?.nutriscore_score);
-  const ratingColor = getRatingColorClass(ratingValue);
+  const ratingColor =
+    ratingValue !== null && ratingValue !== undefined
+      ? getRatingColorClass(ratingValue)
+      : null;
 
   return (
     <div className="product-page">
@@ -84,12 +87,12 @@ const ProductPage = () => {
                       alt={productName}
                       className="product-image-new"
                     />
-                    <div className="product-rating">
-                      <span className={`rating-circle rating-${ratingColor}`} />
-                      <h3>
-                        Calidad: {ratingValue ? `${ratingValue}/10` : 'Sin calificación'}
-                      </h3>
-                    </div>
+                    {ratingValue != null && (
+                      <div className="product-rating">
+                        <span className={`rating-circle rating-${ratingColor}`} />
+                        <h3>Calidad: {`${ratingValue}/10`}</h3>
+                      </div>
+                    )}
                   </div>
                 </div>
 
