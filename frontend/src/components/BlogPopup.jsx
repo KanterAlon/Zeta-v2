@@ -34,7 +34,7 @@ const BlogPopup = ({ post, onClose }) => {
           className="blog-popup-image"
         />
         <h1 id="blog-popup-title">{post.titulo_post}</h1>
-        <h3>Escrito por todo el equipo de Zeta</h3>
+        <h3>Escrito por todo el equipo de Nut</h3>
         <hr />
         <span>{post.fecha_creacion}</span>
         <p>{post.contenido_post}</p>

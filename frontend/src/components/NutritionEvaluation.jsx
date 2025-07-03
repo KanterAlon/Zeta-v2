@@ -30,7 +30,7 @@ const NutritionEvaluation = () => {
         <div className="nutritional-info">
           <h2>Conocé cual es la calidad nutricional de tus comidas y bebidas</h2>
           <p>
-            ¿Sabés realmente lo que estás comprando? ¡Nosotros sí! Zeta escanea y analiza las etiquetas
+            ¿Sabés realmente lo que estás comprando? ¡Nosotros sí! Nut escanea y analiza las etiquetas
             en un abrir y cerrar de ojos para que puedas saber de un vistazo qué productos son buenos para ti y cuáles debes evitar.
           </p>
         </div>

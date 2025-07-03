@@ -28,7 +28,7 @@ const Functionalities = () => {
   return (
     <section className="sec-funcionalidades">
       <div className="funcionalidades-inner">
-        <h2>Otras cosas que podés disfrutar de la plataforma Zeta</h2>
+        <h2>Otras cosas que podés disfrutar de la plataforma Nut</h2>
         <div className="cards-container">
           {cards.map((card, i) => (
             <div className="card-funcionalidad" key={i}>

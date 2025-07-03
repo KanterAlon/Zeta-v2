@@ -260,7 +260,7 @@ registrarUsuario: async (req, res) => {
   blog: async (req, res) => {
     const posts = await prisma.posts.findMany({
       where: { id_usuario: 1 },
-      orderBy: { fecha_creacion: 'desc' },
+      orderBy: { id_post: 'asc' },
       include: {
         usuario: true,
         interacciones: true
