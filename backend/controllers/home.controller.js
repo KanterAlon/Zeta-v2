@@ -332,17 +332,20 @@ registrarUsuario: async (req, res) => {
       const searchParams = {
         search_terms: query,
         page_size: 20,
-        fields: 'product_name,image_url'
+        fields: 'product_name,image_url',
+        search_simple: 1,
+        action: 'process',
+        json: 1
       };
-      const url = `${OFF_API_URL}?${new URLSearchParams(searchParams)}`;
-      console.log('🔍 OFF API v2 search URL:', url);
+      const url = `${OFF_SEARCH_URL}?${new URLSearchParams(searchParams)}`;
+      console.log('🔍 OFF API v1 search URL:', url);
       const agentUrl = process.env.https_proxy || process.env.HTTPS_PROXY;
       const options = { params: searchParams };
       if (agentUrl) {
         options.proxy = false;
         options.httpsAgent = new HttpsProxyAgent(agentUrl);
       }
-      const result = await axios.get(OFF_API_URL, options);
+      const result = await axios.get(OFF_SEARCH_URL, options);
 
       const productos = (result.data.products || [])
         .filter(p => p.product_name && p.image_url)
