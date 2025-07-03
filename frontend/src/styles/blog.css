@@ -23,16 +23,28 @@
 }
 
 .cards-row {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 2rem;
-  justify-content: space-between;
+}
+
+@media (max-width: 900px) {
+  .cards-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .cards-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 .nutrition-card {
   position: relative;
-  width: 320px;
-  height: 320px;
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   transition: transform 0.3s ease;
 }
