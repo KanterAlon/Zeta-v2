@@ -1,0 +1,52 @@
+/* ----------- COMPARE PAGE ----------- */
+.compare-page {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.compare-header {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.compare-product {
+  text-align: center;
+}
+
+.compare-product img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.rating-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin: 0.5rem auto;
+}
+
+.rating-red { background-color: var(--error-color); }
+.rating-green { background-color: var(--success-color); }
+.rating-yellow { background-color: var(--warning-color); }
+.rating-orange { background-color: #ff8c00; }
+
+.compare-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.compare-table th, .compare-table td {
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.compare-loading {
+  text-align: center;
+}

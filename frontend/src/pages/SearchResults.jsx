@@ -8,6 +8,8 @@ const SearchResults = () => {
   const query = params.get('query') || '';
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
+  const [selectionMode, setSelectionMode] = useState(false);
+  const [selected, setSelected] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,7 +29,24 @@ const SearchResults = () => {
   }, [query]);
 
   const handleClick = (name) => {
-    navigate(`/producto?query=${encodeURIComponent(name)}`);
+    if (selectionMode) {
+      setSelected(prev =>
+        prev.includes(name) ? prev.filter(n => n !== name) : [...prev, name]
+      );
+    } else {
+      navigate(`/producto?query=${encodeURIComponent(name)}`);
+    }
+  };
+
+  const toggleSelection = () => {
+    if (selectionMode) setSelected([]);
+    setSelectionMode(!selectionMode);
+  };
+
+  const handleCompare = () => {
+    if (selected.length < 2) return;
+    const names = selected.map(n => encodeURIComponent(n)).join(',');
+    navigate(`/compare?names=${names}`);
   };
 
   const skeletons = Array.from({ length: 6 });
@@ -36,6 +55,9 @@ const SearchResults = () => {
     <div className="search-results-page">
       <header className="results-header">
         <h2>Resultados para &quot;{query}&quot;</h2>
+        <button className="selection-toggle" onClick={toggleSelection}>
+          {selectionMode ? 'Cancelar' : 'Seleccionar'}
+        </button>
       </header>
 
       {loading ? (
@@ -53,16 +75,31 @@ const SearchResults = () => {
         <p className="no-results">No se encontraron productos.</p>
       ) : (
         <div className="cards-container">
-          {products.map((p, i) => (
-            <div
-              key={i}
-              className="product-card"
-              onClick={() => handleClick(p.name)}
-            >
-              <LazyImage src={p.image} alt={p.name} className="card-image" />
-              <h3 className="card-title">{p.name}</h3>
-            </div>
-          ))}
+          {products.map((p, i) => {
+            const isSelected = selected.includes(p.name);
+            return (
+              <div
+                key={i}
+                className={`product-card${isSelected ? ' selected' : ''}`}
+                onClick={() => handleClick(p.name)}
+              >
+                <LazyImage src={p.image} alt={p.name} className="card-image" />
+                <h3 className="card-title">{p.name}</h3>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {selectionMode && (
+        <div className="compare-bar">
+          <button
+            className="compare-button"
+            disabled={selected.length < 2}
+            onClick={handleCompare}
+          >
+            Comparar ({selected.length})
+          </button>
         </div>
       )}
     </div>
