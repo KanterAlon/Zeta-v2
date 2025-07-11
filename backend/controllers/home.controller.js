@@ -351,10 +351,17 @@ registrarUsuario: async (req, res) => {
         .filter(p => p.product_name && p.image_url)
         .map(p => ({ name: p.product_name.trim(), image: p.image_url }));
 
-      // Remove duplicate names (case-insensitive) and gather all images
+      // Normaliza y combina productos duplicados con distintas fotos
+      const normalizeName = (str) =>
+        str
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^a-zA-Z0-9]/g, '')
+          .toLowerCase();
+
       const map = new Map();
       for (const prod of productos) {
-        const key = prod.name.toLowerCase();
+        const key = normalizeName(prod.name);
         if (!map.has(key)) {
           map.set(key, { name: prod.name, images: [prod.image] });
         } else {
