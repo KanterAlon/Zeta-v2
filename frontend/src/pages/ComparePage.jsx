@@ -49,8 +49,24 @@ const ComparePage = () => {
 
   if (loading) return <p className="compare-loading">Cargando...</p>;
 
-  const allKeys = Array.from(
-    new Set(products.flatMap(p => Object.keys(p)))
+  const FIELDS = [
+    { key: 'energy-kcal_100g', label: 'Energía (kcal)', path: ['nutriments', 'energy-kcal_100g'] },
+    { key: 'fat_100g', label: 'Grasas (g)', path: ['nutriments', 'fat_100g'] },
+    { key: 'saturated-fat_100g', label: 'Grasas Saturadas (g)', path: ['nutriments', 'saturated-fat_100g'] },
+    { key: 'carbohydrates_100g', label: 'Carbohidratos (g)', path: ['nutriments', 'carbohydrates_100g'] },
+    { key: 'sugars_100g', label: 'Azúcares (g)', path: ['nutriments', 'sugars_100g'] },
+    { key: 'fiber_100g', label: 'Fibra (g)', path: ['nutriments', 'fiber_100g'] },
+    { key: 'proteins_100g', label: 'Proteínas (g)', path: ['nutriments', 'proteins_100g'] },
+    { key: 'salt_100g', label: 'Sal (g)', path: ['nutriments', 'salt_100g'] },
+    { key: 'nova_group', label: 'Grupo NOVA', path: ['nova_group'] },
+    { key: 'nutriscore_score', label: 'Calidad (1-10)', path: ['nutriscore_score'], transform: mapScoreToRating }
+  ];
+
+  const getValue = (obj, path) =>
+    path.reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), obj);
+
+  const availableFields = FIELDS.filter(field =>
+    products.some(p => getValue(p, field.path) !== undefined && getValue(p, field.path) !== null)
   );
 
   return (
@@ -83,16 +99,14 @@ const ComparePage = () => {
           </div>
           <table>
             <tbody>
-              {allKeys.map(key => (
-                <tr key={key}>
-                  <th>{key}</th>
-                  {products.map((p, i) => (
-                    <td key={i}>{
-                      typeof p[key] === 'object'
-                        ? JSON.stringify(p[key])
-                        : p[key] ?? 'N/A'
-                    }</td>
-                  ))}
+              {availableFields.map(field => (
+                <tr key={field.key}>
+                  <th>{field.label}</th>
+                  {products.map((p, i) => {
+                    let val = getValue(p, field.path);
+                    if (field.transform && val != null) val = field.transform(val);
+                    return <td key={i}>{val != null ? val : 'Sin datos'}</td>;
+                  })}
                 </tr>
               ))}
             </tbody>
