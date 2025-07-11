@@ -349,9 +349,25 @@ registrarUsuario: async (req, res) => {
 
       const productos = (result.data.products || [])
         .filter(p => p.product_name && p.image_url)
-        .map(p => ({ name: p.product_name, image: p.image_url }));
+        .map(p => ({ name: p.product_name.trim(), image: p.image_url }));
 
-      res.json({ success: true, products: productos });
+      // Remove duplicate names (case-insensitive) and gather all images
+      const map = new Map();
+      for (const prod of productos) {
+        const key = prod.name.toLowerCase();
+        if (!map.has(key)) {
+          map.set(key, { name: prod.name, images: [prod.image] });
+        } else {
+          map.get(key).images.push(prod.image);
+        }
+      }
+
+      const uniqueProducts = Array.from(map.values()).map(p => ({
+        name: p.name,
+        image: p.images.find(Boolean)
+      }));
+
+      res.json({ success: true, products: uniqueProducts });
     } catch (error) {
       console.error("🔴 Error en API OpenFood:", error.message);
       res.status(500).json({ success: false, message: "Error en API" });

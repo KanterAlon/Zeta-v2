@@ -36,8 +36,13 @@
 .rating-yellow { background-color: var(--warning-color); }
 .rating-orange { background-color: #ff8c00; }
 
+.compare-table {
+  overflow-x: auto;
+}
+
 .compare-table table {
   width: 100%;
+  min-width: 600px;
   border-collapse: collapse;
 }
 
@@ -49,4 +54,20 @@
 
 .compare-loading {
   text-align: center;
+}
+
+@media (max-width: 768px) {
+  .compare-header {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .compare-product img {
+    width: 120px;
+    height: 120px;
+  }
+
+  .compare-table table {
+    font-size: 0.9rem;
+  }
 }
