@@ -19,10 +19,16 @@ const getRatingColorClass = (rating) => {
 
 const ComparePage = () => {
   const [params] = useSearchParams();
-  const names = (params.get('names') || '')
-    .split(',')
-    .map(n => decodeURIComponent(n))
-    .filter(Boolean);
+  const namesQuery = params.get('names') || '';
+
+  const names = React.useMemo(
+    () =>
+      namesQuery
+        .split(',')
+        .map(n => decodeURIComponent(n))
+        .filter(Boolean),
+    [namesQuery]
+  );
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
