@@ -6,7 +6,8 @@
     "frontend"
   ],
   "scripts": {
-    "dev": "concurrently \"npm start --workspace backend\" \"npm run dev --workspace frontend\""
+    "dev": "concurrently \"npm start --workspace backend\" \"npm run dev --workspace frontend\"",
+    "lint": "npm run lint --workspace frontend"
   },
   "devDependencies": {
     "concurrently": "^9.2.0"

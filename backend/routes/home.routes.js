@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const homeController = require('../controllers/home.controller'); // ✅ ESTO FALTABA
-
-
-const controller = require('../controllers/home.controller'); 
+const controller = require('../controllers/home.controller');
 
 // Rutas GET ya existentes
 router.get('/', controller.index);
@@ -14,16 +11,16 @@ router.post('/darLike', controller.darLike);
 router.post('/darDislike', controller.darDislike);
 router.post('/publicarPost', controller.publicarPost);
 router.get('/obtenerPosts', controller.obtenerPosts);
-router.post('/login', homeController.login);
-router.post('/logout', homeController.logout);
-router.get('/auth', homeController.isAuthenticated);
-router.post('/CreateAccount', homeController.registrarUsuario);
-router.post('/clerk/sync', homeController.clerkSync);
-router.get('/ExisteMail', homeController.existeMail);
-router.get('/patologias', homeController.getPatologias);
-router.get('/actividades', homeController.getActividades);
-router.get('/user/me', homeController.obtenerPerfil);
-router.post('/user/update', homeController.actualizarPerfil);
+router.post('/login', controller.login);
+router.post('/logout', controller.logout);
+router.get('/auth', controller.isAuthenticated);
+router.post('/CreateAccount', controller.registrarUsuario);
+router.post('/clerk/sync', controller.clerkSync);
+router.get('/ExisteMail', controller.existeMail);
+router.get('/patologias', controller.getPatologias);
+router.get('/actividades', controller.getActividades);
+router.get('/user/me', controller.obtenerPerfil);
+router.post('/user/update', controller.actualizarPerfil);
 
 const contactController = require('../controllers/contact.controller');
 router.post('/contact', contactController.sendContactEmail);
