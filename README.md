@@ -9,7 +9,14 @@ The project uses two environment files inside the `backend` folder:
 - `.env` contains public configuration and **is committed** to the repository.
 - `.env.secrets` holds sensitive keys like database credentials, the OpenAI API key and the Google Vision credentials path. This file is ignored by Git. Use `.env.secrets.example` as a template. It also stores the Gmail credentials required for the contact form.
 
-The frontend keeps its own public variables in `frontend/.env`.
+Copy the example files before running the project:
+
+```bash
+cp backend/.env.secrets.example backend/.env.secrets
+cp frontend/.env.example frontend/.env
+```
+
+The frontend keeps its own public variables in `frontend/.env`. A sample file is provided at `frontend/.env.example`.
 Add `VITE_IMGBB_KEY` with your imgbb API key to enable image uploads for
 community posts. If the key is missing, posts will still be created but
 any selected images will be ignored.
@@ -29,3 +36,5 @@ npm run dev
 ```
 
 This will run the backend server and the Vite frontend concurrently.
+
+Run `npm run lint` to check the frontend code with ESLint.
