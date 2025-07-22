@@ -38,3 +38,18 @@ npm run dev
 This will run the backend server and the Vite frontend concurrently.
 
 Run `npm run lint` to check the frontend code with ESLint.
+
+## Prisma
+
+Use Prisma to interact with the database. The CLI looks for the schema at
+`backend/prisma/schema.prisma`, so you can run commands from the repository root
+or inside the `backend` folder.
+
+Introspect the existing database with:
+
+```bash
+npx prisma db pull
+```
+
+Ensure that `backend/.env.secrets` defines both `DATABASE_URL` and
+`DIRECT_URL` so Prisma can connect correctly.
