@@ -9,8 +9,7 @@ import {
   FiFeather,
   FiShield,
   FiTarget,
-  FiLayers,
-  FiStar
+  FiLayers
 } from 'react-icons/fi';
 
 const mapScoreToRating = (score) => {
@@ -70,16 +69,11 @@ const ComparePage = () => {
     { key: 'fiber_100g', label: 'Fibra (g)', icon: FiFeather, path: ['nutriments', 'fiber_100g'] },
     { key: 'proteins_100g', label: 'Proteínas (g)', icon: FiShield, path: ['nutriments', 'proteins_100g'] },
     { key: 'salt_100g', label: 'Sal (g)', icon: FiTarget, path: ['nutriments', 'salt_100g'] },
-    { key: 'nova_group', label: 'Grupo NOVA', icon: FiLayers, path: ['nova_group'] },
-    { key: 'nutriscore_score', label: 'Calidad (1-10)', icon: FiStar, path: ['nutriscore_score'], transform: mapScoreToRating }
+    { key: 'nova_group', label: 'Grupo NOVA', icon: FiLayers, path: ['nova_group'] }
   ];
 
   const getValue = (obj, path) =>
     path.reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), obj);
-
-  const availableFields = FIELDS.filter(field =>
-    products.some(p => getValue(p, field.path) !== undefined && getValue(p, field.path) !== null)
-  );
 
   return (
     <div className="compare-page">
@@ -94,29 +88,35 @@ const ComparePage = () => {
             return (
               <div key={i} className="compare-column">
                 <div className="product-header">
+                  <div className="quality-wrapper">
+                    <div
+                      className={`quality-circle ${rating ? `filled rating-${color}` : 'empty'}`}
+                      title={rating ? `Calidad: ${rating}/10` : 'Calidad: Sin datos'}
+                    />
+                    <span className="quality-text">
+                      {rating ? `Calidad: ${rating}/10` : 'Calidad: Sin datos'}
+                    </span>
+                  </div>
                   <img
                     src={p.image_url || '/img/lays-classic.svg'}
                     alt={p.product_name}
                   />
                   <h3>{p.product_name}</h3>
-                  {rating && (
-                    <div
-                      className={`rating-circle rating-${color}`}
-                      title={`Calidad: ${rating}/10`}
-                    />
-                  )}
                 </div>
                 <ul className="feature-list">
-                  {availableFields.map(field => {
+                  {FIELDS.map(field => {
                     let val = getValue(p, field.path);
                     if (field.transform && val != null) val = field.transform(val);
                     const Icon = field.icon;
+                    const hasData = val != null;
                     return (
                       <li key={field.key} className="feature-item">
                         <Icon className="feature-icon" />
                         <div className="feature-text">
                           <span className="feature-label">{field.label}</span>
-                          <span className="feature-value">{val != null ? val : 'Sin datos'}</span>
+                          <span className={`feature-value${hasData ? '' : ' no-data'}`}>
+                            {hasData ? val : 'Sin datos'}
+                          </span>
                         </div>
                       </li>
                     );
