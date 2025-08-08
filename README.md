@@ -51,5 +51,5 @@ Introspect the existing database with:
 npx prisma db pull
 ```
 
-Ensure that `backend/.env.secrets` defines both `DATABASE_URL` and
-`DIRECT_URL` so Prisma can connect correctly.
+Ensure that `backend/.env.secrets` defines `DATABASE_URL` so Prisma can
+connect correctly.
