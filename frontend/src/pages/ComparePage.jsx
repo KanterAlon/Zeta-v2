@@ -47,9 +47,15 @@ const ComparePage = () => {
   useEffect(() => {
     if (names.length === 0) return;
     setLoading(true);
+    // Determine base URL for API requests.
+    // Use the VITE_API_URL environment variable if defined at build time;
+    // otherwise fall back to the deployed backend URL. This fallback ensures
+    // client-side builds still function when environment variables are not
+    // available (e.g., misconfigured builds or previews).
+    const apiBase = import.meta.env.VITE_API_URL || 'https://zeta-v2-backend.vercel.app';
     Promise.all(
       names.map(n =>
-        fetch(`/api/product?query=${encodeURIComponent(n)}`)
+        fetch(`${apiBase}/api/product?query=${encodeURIComponent(n)}`)
           .then(res => res.json())
           .catch(() => null)
       )
