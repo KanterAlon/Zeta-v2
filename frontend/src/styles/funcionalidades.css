@@ -1,16 +1,20 @@
 /* ------------------ FUNCIONALIDADES ------------------ */
+
 .funcionalidades-inner, .advertisements-blog-inner {
   display: flex;
   flex-direction: column;
   justify-content: center;
   width: 100%;
   gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .cards-container {
   width: 100%;
   display: flex;
-  justify-content: space-evenly;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1rem;
 }
 
@@ -21,12 +25,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  text-align: justify;
-  min-width: 300px;
+  text-align: center;
+  flex: 1 1 300px;
   max-width: 400px;
   min-height: 500px;
   gap: .5rem;
   padding-bottom: 1.5rem;
+  margin: 0.5rem;
 }
 
 .contenedor-imagen-card-funcionalidad, .contenedor-imagen-card-blog {
@@ -52,6 +57,7 @@
 
 .card-funcionalidad h3, .card-funcionalidad p {
   width: 89%;
+  margin: 0 auto;
 }
 
 .button-card {
@@ -70,5 +76,16 @@
 .button-card:hover {
   color: var(--whiteback-color);
   transform: scale(1.01);
+}
+
+@media (max-width: 768px) {
+  .cards-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card-funcionalidad, .card-advertisement-blog {
+    max-width: 90%;
+  }
 }
 

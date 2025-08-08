@@ -9,6 +9,7 @@ const HeroSection = () => {
   const [showCamera, setShowCamera] = useState(false);
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
+  const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
   const handleSearch = () => {
     if (query.trim()) {
@@ -17,7 +18,11 @@ const HeroSection = () => {
   };
 
   const handleCameraClick = () => {
-    setShowCamera(true);
+    if (isMobile && fileInputRef.current) {
+      fileInputRef.current.click();
+    } else {
+      setShowCamera(true);
+    }
   };
 
   const handleCapture = async (source) => {
