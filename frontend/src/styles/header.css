@@ -170,3 +170,63 @@ span.button-text{
   transition: all 0.3s ease;
 }
 
+/* ---------- MOBILE LAYOUT ---------- */
+@media (max-width: 940px) {
+  header {
+    padding-inline: 1rem;
+  }
+
+  .nav-links {
+    display: flex;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 0;
+    background-color: var(--secondary3-color);
+    border-top: 1px solid var(--secondary5-color);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transform: translateY(-200%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  .nav-links.active {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav-links a {
+    width: 100%;
+    padding-inline: 1.5rem;
+  }
+
+  .login-button,
+  .icon-group,
+  .user-button {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .hamburger-btn {
+    display: block;
+  }
+
+  .hamburger-btn.active .hamburger-line:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+
+  .hamburger-btn.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger-btn.active .hamburger-line:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+}
+
