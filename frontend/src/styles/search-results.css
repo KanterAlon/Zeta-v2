@@ -64,7 +64,7 @@
 
 /* Tarjeta de producto */
 .search-results-page .product-card {
-  background-color: transparent;
+  background-color: #fff;
   border: none;
   border-radius: 15px;
   overflow: hidden;

@@ -7,6 +7,12 @@
   background: transparent;
 }
 
+.compare-page > h1 {
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+  font-weight: 600;
+}
+
 .compare-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
@@ -45,9 +51,8 @@
 
 .product-header h3 {
   font-size: 2.25rem;
-
-  font-weight: 700;
-  max-height: 4.5rem;
+  font-weight: 600;
+  line-height: 1.2;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -56,19 +61,13 @@
   margin-top: 0.5rem;
 }
 
-.product-header .product-price {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-top: 0.25rem;
-}
-
 .quality-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 500;
   margin-bottom: 1rem;
 }
 
@@ -124,18 +123,14 @@
 }
 
 .feature-label {
-
   font-size: 1.5rem;
-
   color: var(--secondary2-color);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .feature-value {
-
   font-size: 2rem;
-
-  font-weight: 700;
+  font-weight: 600;
   color: var(--secondary1-color);
 }
 
