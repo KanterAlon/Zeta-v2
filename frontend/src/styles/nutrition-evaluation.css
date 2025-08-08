@@ -10,23 +10,11 @@
 
 .nutrition-evaluation-inner {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
-  width: 100%;
-  
-}
-
-.product-info {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-wrap: wrap;
   gap: 2rem;
-}
-
-.product-image {
-  width: 180px;
-  height: auto;
+  width: 100%;
 }
 
 .nutrition-evaluation {
@@ -56,8 +44,8 @@
 
 .rating {
   position: absolute;
-  top: -30px;
-  right: -190px;
+  top: -20px;
+  right: -40px;
   background-color: var(--secondary5-color);
   border-radius: 30px;
   display: flex;
@@ -110,5 +98,22 @@
 
 .nutritional-info h2, .nutritional-info p {
   color: var(--secondary2-color);
+}
+
+@media (max-width: 768px) {
+  .nutrition-evaluation-inner {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .product-info {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .rating {
+    position: static;
+    margin-top: 1rem;
+  }
 }
 
