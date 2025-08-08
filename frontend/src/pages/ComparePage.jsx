@@ -103,6 +103,7 @@ const ComparePage = () => {
                     alt={p.product_name}
                   />
                   <h3>{p.product_name}</h3>
+                  <p className="product-price">{p.price ? `$${p.price}` : 'Sin precio'}</p>
                 </div>
                 <ul className="feature-list">
                   {FIELDS.map(field => {
