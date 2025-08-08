@@ -15,6 +15,38 @@
   margin-bottom: 2rem;
 }
 
+.search-results-page .selection-warning {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--error-color);
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  animation: fade-in-out 2s ease forwards;
+}
+
+@keyframes fade-in-out {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+  10% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+}
+
 .search-results-page .loader {
   display: flex;
   justify-content: center;
@@ -32,22 +64,21 @@
 
 /* Tarjeta de producto */
 .search-results-page .product-card {
-  background-color: var(--whiteback-color);
+  background-color: transparent;
+  border: none;
   border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease;
   width: 100%;
-  max-width: 280px;
+  max-width: 320px;
   position: relative;
 }
 
 .search-results-page .product-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Imagen dentro de la tarjeta */
@@ -101,6 +132,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
+  font-size: 1.75rem;
 }
 
 /* MEDIAQUERIES */

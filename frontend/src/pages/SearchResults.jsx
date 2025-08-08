@@ -10,6 +10,7 @@ const SearchResults = () => {
   const [products, setProducts] = useState([]);
   const [selectionMode, setSelectionMode] = useState(false);
   const [selected, setSelected] = useState([]);
+  const [warning, setWarning] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,9 +31,15 @@ const SearchResults = () => {
 
   const handleClick = (name) => {
     if (selectionMode) {
-      setSelected(prev =>
-        prev.includes(name) ? prev.filter(n => n !== name) : [...prev, name]
-      );
+      setSelected(prev => {
+        if (prev.includes(name)) return prev.filter(n => n !== name);
+        if (prev.length >= 3) {
+          setWarning('Solo puedes comparar hasta 3 productos');
+          setTimeout(() => setWarning(''), 2000);
+          return prev;
+        }
+        return [...prev, name];
+      });
     } else {
       navigate(`/producto?query=${encodeURIComponent(name)}`);
     }
@@ -92,15 +99,18 @@ const SearchResults = () => {
       )}
 
       {selectionMode && (
-        <div className="compare-bar">
-          <button
-            className="compare-button"
-            disabled={selected.length < 2}
-            onClick={handleCompare}
-          >
-            Comparar ({selected.length})
-          </button>
-        </div>
+        <>
+          {warning && <div className="selection-warning">{warning}</div>}
+          <div className="compare-bar">
+            <button
+              className="compare-button"
+              disabled={selected.length < 2}
+              onClick={handleCompare}
+            >
+              Comparar ({selected.length})
+            </button>
+          </div>
+        </>
       )}
     </div>
   );
