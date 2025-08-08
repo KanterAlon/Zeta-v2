@@ -10,10 +10,15 @@ const cameraRoutes = require('./routes/camera.routes');
 dotenvExpand.expand(dotenv.config({ path: '.env.secrets' }));
 dotenvExpand.expand(dotenv.config({ path: '.env', override: true }));
 
+// Lista de orígenes permitidos para solicitudes CORS.  
+// Incluye dominios de desarrollo y los dominios de producción actuales
+// que utilizan la marca «Nut». De este modo, el backend aceptará peticiones
+// del frontend tanto en localhost como en Vercel.
 const allowedOrigins = [
-  'http://localhost:5174',   
-  'http://localhost:5173',             // Para desarrollo local
-  'https://zeta-v2-1.onrender.com'       // Tu frontend en producción
+  'http://localhost:5174', // puerto alternativo para desarrollo
+  'http://localhost:5173', // desarrollo local
+  'https://nut-frontend.vercel.app', // dominio de staging/preview
+  'https://nutweb.vercel.app' // dominio principal de producción
 ];
 
 const app = express();
@@ -48,7 +53,15 @@ app.get('/', (req, res) => {
   res.send('API activa');
 });
 
-// 🚀 Iniciar servidor
-app.listen(PORT);
+// 🛡️ Iniciar servidor cuando no se esté ejecutando en un entorno serverless.
+// En Vercel exportamos la app sin escuchar el puerto, ya que Vercel gestiona
+// la función como un handler. En desarrollo (`npm run dev`), arrancamos
+// explícitamente el servidor.
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`Servidor escuchando en el puerto ${PORT}`);
+  });
+}
 
-
+// Exportamos la app para los runtimes serverless
+module.exports = app;
