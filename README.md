@@ -56,11 +56,11 @@ The script loads `.env.secrets` before `.env` so Prisma receives a connection
 string like:
 
 ```
-postgresql://${SUPABASE_DB_USER}:${SUPABASE_DB_PASSWORD}@${SUPABASE_DB_HOST}:5432/postgres?sslmode=require&pgbouncer=true
+postgresql://${SUPABASE_DB_USER}:${SUPABASE_DB_PASSWORD}@${SUPABASE_DB_HOST}:6543/postgres?pgbouncer=true
 ```
 
 `SUPABASE_DB_HOST` defaults to Supabase's IPv4 connection pool
-(`aws-0-us-east-1.pooler.supabase.com`), which avoids IPv6-only hosts that can
+(`aws-0-us-east-2.pooler.supabase.com`), which avoids IPv6-only hosts that can
 cause P1001 errors on machines without IPv6 connectivity. Adjust the host to
 match your project's region if needed. Edit `backend/.env.secrets` to provide
 your Supabase user and password.
