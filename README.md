@@ -6,7 +6,8 @@
 
 The project uses two environment files inside the `backend` folder:
 
-- `.env` contains public configuration and **is committed** to the repository.
+- `.env` contains public configuration (including a `DATABASE_URL` built from
+  `SUPABASE_DB_USER` and `SUPABASE_DB_PASSWORD`) and **is committed** to the repository.
 - `.env.secrets` holds sensitive keys like database credentials, the OpenAI API key and the Google Vision credentials path. This file is ignored by Git. Use `.env.secrets.example` as a template. It also stores the Gmail credentials required for the contact form.
 
 Copy the example files before running the project:
@@ -48,8 +49,14 @@ or inside the `backend` folder.
 Introspect the existing database with:
 
 ```bash
-npx prisma db pull
+npm run db:pull
 ```
 
-Ensure that `backend/.env.secrets` defines `DATABASE_URL` so Prisma can
-connect correctly.
+The script loads `.env.secrets` before `.env` so Prisma receives a direct
+connection string like:
+
+```
+postgresql://${SUPABASE_DB_USER}:${SUPABASE_DB_PASSWORD}@db.cuphajddgbzgnomwsupa.supabase.co:5432/postgres?sslmode=require
+```
+
+Edit `backend/.env.secrets` to provide your Supabase user and password.
