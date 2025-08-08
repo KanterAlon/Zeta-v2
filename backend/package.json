@@ -6,7 +6,8 @@
     "prestart": "prisma generate",
     "start": "node app.js",
     "server": "node app.js",
-    "generate": "prisma generate"
+    "generate": "prisma generate",
+    "db:pull": "dotenv -e .env.secrets -e .env -- prisma db pull"
   },
   "keywords": [],
   "author": "",
@@ -25,7 +26,8 @@
     "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
-    "prisma": "^6.6.0"
+    "prisma": "^6.6.0",
+    "dotenv-cli": "^7.4.4"
   },
   "description": ""
 }
