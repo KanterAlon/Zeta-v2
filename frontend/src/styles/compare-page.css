@@ -107,7 +107,8 @@
   grid-template-columns: 3rem 1fr;
   align-items: center;
   gap: 1.5rem;
-  padding: 1rem;
+  padding-block: .5rem;
+  padding-inline: 8rem;
 }
 
 .feature-icon {
