@@ -14,8 +14,9 @@
 }
 
 .product-inner {
-  
   width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .product-details-container {
@@ -40,6 +41,7 @@
   justify-content: center;
   align-items: center;
   min-height: 400px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 .product-image-new {
@@ -98,6 +100,7 @@
   position: relative;
   display: flex;
   align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .nutrition-info-item img {
@@ -202,5 +205,74 @@
   font-family: var(--font-family-body);
   font-size: var(--body-text-size);
   color: var(--secondary4-color);
+}
+
+/* ------------------ RESPONSIVE STYLES ------------------ */
+
+@media (max-width: 768px) {
+  .product-section {
+    padding: 1rem;
+  }
+
+  .product-details-container {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .product-image-rating {
+    align-items: center;
+  }
+
+  .product-image-wrapper {
+    min-width: auto;
+    min-height: auto;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .product-image-new {
+    width: 100%;
+    height: auto;
+  }
+
+  .product-rating {
+    top: 0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    height: auto;
+    padding: 0.5rem 1rem;
+  }
+
+  .product-nutrition-info {
+    width: 100%;
+    align-items: center;
+  }
+
+  .nutrition-info-item {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .nutrition-evaluation {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-rating {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .nutrition-info-item {
+    height: auto;
+    padding: 0.75rem 1rem;
+  }
+
+  .nutrition-info-item img,
+  .nutrition-info-item span {
+    position: static;
+  }
 }
 
