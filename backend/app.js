@@ -2,12 +2,13 @@ const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
 const dotenv = require('dotenv');
+const dotenvExpand = require('dotenv-expand');
 const homeRoutes = require('./routes/home.routes');
 const cameraRoutes = require('./routes/camera.routes');
 
 // Cargar variables de entorno
-dotenv.config({ path: '.env' });
-dotenv.config({ path: '.env.secrets', override: true });
+dotenvExpand.expand(dotenv.config({ path: '.env.secrets' }));
+dotenvExpand.expand(dotenv.config({ path: '.env', override: true }));
 
 const allowedOrigins = [
   'http://localhost:5174',   
