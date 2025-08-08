@@ -64,22 +64,21 @@
 
 /* Tarjeta de producto */
 .search-results-page .product-card {
-  background-color: var(--whiteback-color);
+  background-color: transparent;
+  border: none;
   border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease;
   width: 100%;
-  max-width: 280px;
+  max-width: 320px;
   position: relative;
 }
 
 .search-results-page .product-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Imagen dentro de la tarjeta */
@@ -133,6 +132,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
+  font-size: 1.75rem;
 }
 
 /* MEDIAQUERIES */
