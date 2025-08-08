@@ -7,21 +7,23 @@
 }
 
 .compare-grid {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
-  justify-content: center;
-  flex-wrap: wrap;
+  justify-items: center;
 }
 
 
 .compare-column {
-  flex: 1 1 300px;
-  max-width: 320px;
+  background-color: var(--whiteback-color);
   border-radius: 20px;
-  padding: 1.5rem;
+  padding: 2rem 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  max-width: 320px;
+  margin: 0 auto;
 }
 
 .product-header {
@@ -61,7 +63,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 2px solid var(--secondary2-color);
+  border: 2px solid var(--secondary5-color);
 }
 
 .quality-circle.filled {
@@ -128,8 +130,7 @@
 
 @media (max-width: 768px) {
   .compare-grid {
-    flex-direction: column;
-    align-items: center;
+    grid-template-columns: 1fr;
   }
 
   .product-header img {

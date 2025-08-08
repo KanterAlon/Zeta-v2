@@ -37,7 +37,8 @@ const ComparePage = () => {
       namesQuery
         .split(',')
         .map(n => decodeURIComponent(n))
-        .filter(Boolean),
+        .filter(Boolean)
+        .slice(0, 3),
     [namesQuery]
   );
   const [products, setProducts] = useState([]);
