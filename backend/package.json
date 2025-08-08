@@ -20,6 +20,7 @@
     "axios": "^1.8.4",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
+    "dotenv-cli": "^7.4.4",
     "dotenv-expand": "^10.0.0",
     "express": "^5.1.0",
     "express-session": "^1.18.1",
@@ -27,7 +28,6 @@
     "nodemailer": "^6.9.12"
   },
   "devDependencies": {
-    "dotenv-cli": "^7.4.4",
     "prisma": "^6.6.0"
   },
   "description": ""
