@@ -17,6 +17,7 @@
 
 .compare-column {
   background-color: transparent;
+
   border: none;
   border-radius: 20px;
   padding: 2rem 1.5rem;
@@ -44,6 +45,7 @@
 
 .product-header h3 {
   font-size: 2.25rem;
+
   font-weight: 700;
   max-height: 4.5rem;
   overflow: hidden;
@@ -52,6 +54,12 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   margin-top: 0.5rem;
+}
+
+.product-header .product-price {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 0.25rem;
 }
 
 .quality-wrapper {
@@ -67,6 +75,7 @@
 .quality-circle {
   width: 48px;
   height: 48px;
+
   border-radius: 50%;
   border: 2px solid var(--secondary5-color);
 }
@@ -101,7 +110,9 @@
 }
 
 .feature-icon {
+
   font-size: 2.5rem;
+
   color: var(--secondary2-color);
   flex-shrink: 0;
 }
@@ -113,13 +124,17 @@
 }
 
 .feature-label {
+
   font-size: 1.5rem;
+
   color: var(--secondary2-color);
   font-weight: 600;
 }
 
 .feature-value {
+
   font-size: 2rem;
+
   font-weight: 700;
   color: var(--secondary1-color);
 }
