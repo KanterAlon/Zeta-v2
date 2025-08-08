@@ -1,12 +1,14 @@
 // src/components/HeroSection.jsx
 import React, { useState, useRef } from 'react';
 import CameraModal from './CameraModal';
+import Loader from './Loader';
 import { useNavigate } from 'react-router-dom';
 import { FiSearch, FiCamera } from 'react-icons/fi';
 
 const HeroSection = () => {
   const [query, setQuery] = useState('');
   const [showCamera, setShowCamera] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const isMobile = /Mobi|Android/i.test(navigator.userAgent);
@@ -36,6 +38,7 @@ const HeroSection = () => {
     const formData = new FormData();
     formData.append('image', file, 'capture.jpg');
     try {
+      setLoading(true);
       const res = await fetch('http://localhost:3000/api/camera/upload', {
         method: 'POST',
         body: formData,
@@ -48,7 +51,11 @@ const HeroSection = () => {
     } catch (err) {
       console.error('Camera search error', err);
     } finally {
+      setLoading(false);
       setShowCamera(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     }
   };
 
@@ -106,6 +113,11 @@ const HeroSection = () => {
           <div className="search-hint">Presioná Enter o la lupa para buscar</div>
         </div>
       </div>
+      {loading && (
+        <div className="page-loader">
+          <Loader />
+        </div>
+      )}
     </section>
   );
 };
