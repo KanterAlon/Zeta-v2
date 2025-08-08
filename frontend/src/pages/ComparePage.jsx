@@ -1,5 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import {
+  FiZap,
+  FiDroplet,
+  FiSlash,
+  FiGrid,
+  FiPieChart,
+  FiFeather,
+  FiShield,
+  FiTarget,
+  FiLayers,
+  FiStar
+} from 'react-icons/fi';
 
 const mapScoreToRating = (score) => {
   if (typeof score !== 'number') return null;
@@ -42,24 +54,38 @@ const ComparePage = () => {
           .catch(() => null)
       )
     ).then(data => {
-      setProducts(data.filter(Boolean));
+      setProducts(data.filter(Boolean).slice(0, 3));
       setLoading(false);
     });
   }, [names]);
 
   if (loading) return <p className="compare-loading">Cargando...</p>;
 
+  // Icon mapping for nutritional fields:
+  // - FiZap -> Energía (kcal)
+  // - FiDroplet -> Grasas (g)
+  // - FiSlash -> Grasas Saturadas (g)
+  // - FiGrid -> Carbohidratos (g)
+  // - FiPieChart -> Azúcares (g)
+  // - FiFeather -> Fibra (g)
+  // - FiShield -> Proteínas (g)
+  // - FiTarget -> Sal (g)
+  // - FiLayers -> Grupo NOVA
+  // - FiStar -> Calidad (1-10)
+  // Icons are decorative; screen readers rely on the adjacent text labels.
+  // Keep icons `aria-hidden` or provide an `aria-label`/`title` if they convey
+  // additional meaning beyond the label.
   const FIELDS = [
-    { key: 'energy-kcal_100g', label: 'Energía (kcal)', path: ['nutriments', 'energy-kcal_100g'] },
-    { key: 'fat_100g', label: 'Grasas (g)', path: ['nutriments', 'fat_100g'] },
-    { key: 'saturated-fat_100g', label: 'Grasas Saturadas (g)', path: ['nutriments', 'saturated-fat_100g'] },
-    { key: 'carbohydrates_100g', label: 'Carbohidratos (g)', path: ['nutriments', 'carbohydrates_100g'] },
-    { key: 'sugars_100g', label: 'Azúcares (g)', path: ['nutriments', 'sugars_100g'] },
-    { key: 'fiber_100g', label: 'Fibra (g)', path: ['nutriments', 'fiber_100g'] },
-    { key: 'proteins_100g', label: 'Proteínas (g)', path: ['nutriments', 'proteins_100g'] },
-    { key: 'salt_100g', label: 'Sal (g)', path: ['nutriments', 'salt_100g'] },
-    { key: 'nova_group', label: 'Grupo NOVA', path: ['nova_group'] },
-    { key: 'nutriscore_score', label: 'Calidad (1-10)', path: ['nutriscore_score'], transform: mapScoreToRating }
+    { key: 'energy-kcal_100g', label: 'Energía (kcal)', icon: FiZap, path: ['nutriments', 'energy-kcal_100g'] },
+    { key: 'fat_100g', label: 'Grasas (g)', icon: FiDroplet, path: ['nutriments', 'fat_100g'] },
+    { key: 'saturated-fat_100g', label: 'Grasas Saturadas (g)', icon: FiSlash, path: ['nutriments', 'saturated-fat_100g'] },
+    { key: 'carbohydrates_100g', label: 'Carbohidratos (g)', icon: FiGrid, path: ['nutriments', 'carbohydrates_100g'] },
+    { key: 'sugars_100g', label: 'Azúcares (g)', icon: FiPieChart, path: ['nutriments', 'sugars_100g'] },
+    { key: 'fiber_100g', label: 'Fibra (g)', icon: FiFeather, path: ['nutriments', 'fiber_100g'] },
+    { key: 'proteins_100g', label: 'Proteínas (g)', icon: FiShield, path: ['nutriments', 'proteins_100g'] },
+    { key: 'salt_100g', label: 'Sal (g)', icon: FiTarget, path: ['nutriments', 'salt_100g'] },
+    { key: 'nova_group', label: 'Grupo NOVA', icon: FiLayers, path: ['nova_group'] },
+    { key: 'nutriscore_score', label: 'Calidad (1-10)', icon: FiStar, path: ['nutriscore_score'], transform: mapScoreToRating }
   ];
 
   const getValue = (obj, path) =>
@@ -75,13 +101,13 @@ const ComparePage = () => {
       {products.length < 2 ? (
         <p>No se encontraron suficientes productos.</p>
       ) : (
-        <div className="compare-table">
-          <div className="compare-header">
-            {products.map((p, i) => {
-              const rating = mapScoreToRating(p.nutriscore_score);
-              const color = rating ? getRatingColorClass(rating) : null;
-              return (
-                <div key={i} className="compare-product">
+        <div className="compare-grid">
+          {products.map((p, i) => {
+            const rating = mapScoreToRating(p.nutriscore_score);
+            const color = rating ? getRatingColorClass(rating) : null;
+            return (
+              <div key={i} className="compare-column">
+                <div className="product-header">
                   <img
                     src={p.image_url || '/img/lays-classic.svg'}
                     alt={p.product_name}
@@ -94,23 +120,25 @@ const ComparePage = () => {
                     />
                   )}
                 </div>
-              );
-            })}
-          </div>
-          <table>
-            <tbody>
-              {availableFields.map(field => (
-                <tr key={field.key}>
-                  <th>{field.label}</th>
-                  {products.map((p, i) => {
+                <ul className="feature-list">
+                  {availableFields.map(field => {
                     let val = getValue(p, field.path);
                     if (field.transform && val != null) val = field.transform(val);
-                    return <td key={i}>{val != null ? val : 'Sin datos'}</td>;
+                    const Icon = field.icon;
+                    return (
+                      <li key={field.key} className="feature-item">
+                        <Icon className="feature-icon" aria-hidden="true" />
+                        <div className="feature-text">
+                          <span className="feature-label">{field.label}</span>
+                          <span className="feature-value">{val != null ? val : 'Sin datos'}</span>
+                        </div>
+                      </li>
+                    );
                   })}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                </ul>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
