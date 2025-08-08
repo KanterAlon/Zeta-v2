@@ -1,29 +1,35 @@
 /* ----------- COMPARE PAGE ----------- */
+
 .compare-page {
   width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
+  margin: 0;
+  padding: 1rem;
+  background: transparent;
 }
 
 .compare-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
   gap: 2rem;
-  justify-items: center;
+  justify-items: stretch;
 }
 
 
 .compare-column {
-  background-color: var(--whiteback-color);
+  background-color: transparent;
+  border: 1px solid var(--secondary6-color);
   border-radius: 20px;
   padding: 2rem 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  max-width: 320px;
-  margin: 0 auto;
+  backdrop-filter: blur(6px);
+  transition: transform 0.3s ease;
+}
+
+.compare-column:hover {
+  transform: translateY(-4px);
 }
 
 .product-header {
@@ -31,22 +37,28 @@
 }
 
 .product-header img {
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
+  width: 100%;
+  height: 300px;
+  object-fit: contain;
   border-radius: 12px;
 }
 
 .product-header h3 {
-  font-size: 1.25rem;
+  font-size: 1.75rem;
   font-weight: 700;
-  max-height: 3rem;
+  max-height: 4.5rem;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   margin-top: 0.5rem;
+}
+
+.product-header .product-price {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 0.25rem;
 }
 
 .quality-wrapper {
@@ -60,8 +72,8 @@
 }
 
 .quality-circle {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   border: 2px solid var(--secondary5-color);
 }
@@ -96,7 +108,7 @@
 }
 
 .feature-icon {
-  font-size: 1.5rem;
+  font-size: 2rem;
   color: var(--secondary2-color);
   flex-shrink: 0;
 }
@@ -107,13 +119,13 @@
 }
 
 .feature-label {
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: var(--secondary2-color);
   font-weight: 600;
 }
 
 .feature-value {
-  font-size: 1.125rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--secondary1-color);
 }
@@ -134,8 +146,7 @@
   }
 
   .product-header img {
-    width: 120px;
-    height: 120px;
+    height: 200px;
   }
 }
 
