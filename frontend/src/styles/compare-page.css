@@ -92,6 +92,43 @@
   text-align: center;
 }
 
+@media (max-width: 1000px) {
+  .compare-table {
+    min-width: 600px;
+  }
+
+  .compare-table th:first-child,
+  .compare-table .feature-name {
+    width: 140px;
+  }
+
+  .feature-name {
+    font-size: 1.2rem;
+  }
+
+  .feature-icon {
+    font-size: 1.4rem;
+  }
+
+  .product-heading img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .product-heading span {
+    font-size: 1.8rem;
+  }
+
+  .compare-table th,
+  .compare-table td {
+    padding: 1rem;
+  }
+
+  .compare-table tbody td {
+    font-size: 1.4rem;
+  }
+}
+
 @media (max-width: 768px) {
   .product-heading img {
     width: 80px;
@@ -101,6 +138,44 @@
   .compare-table th,
   .compare-table td {
     padding: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .compare-table {
+    min-width: 360px;
+  }
+
+  .compare-table th:first-child,
+  .compare-table .feature-name {
+    width: 90px;
+  }
+
+  .feature-name {
+    font-size: 1rem;
+    padding-left: 0.5rem;
+  }
+
+  .feature-icon {
+    font-size: 1.2rem;
+  }
+
+  .product-heading img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .product-heading span {
+    font-size: 1.4rem;
+  }
+
+  .compare-table th,
+  .compare-table td {
+    padding: 0.5rem;
+  }
+
+  .compare-table tbody td {
+    font-size: 1.2rem;
   }
 }
 
