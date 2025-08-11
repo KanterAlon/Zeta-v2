@@ -49,7 +49,11 @@ app.get('/', (req, res) => {
   res.send('API activa');
 });
 
-// 🚀 Iniciar servidor
-app.listen(PORT);
+// 🚀 Iniciar servidor solo si se ejecuta directamente
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Servidor escuchando en el puerto ${PORT}`);
+  });
+}
 
-
+module.exports = app;
