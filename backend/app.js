@@ -51,6 +51,22 @@ app.use(session({
 app.use('/api', homeRoutes);
 app.use('/api/camera', cameraRoutes);
 
+// 🧪 Ruta de prueba para inspeccionar el estado del backend
+app.get('/api/test', (req, res) => {
+  const info = {
+    message: 'Backend operativo',
+    env: app.get('env'),
+    port: PORT,
+    cors: allowedOrigins,
+    sessionID: req.sessionID,
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString(),
+  };
+
+  console.log('Información de prueba:', info);
+  res.json(info);
+});
+
 // 🏠 Ruta base
 app.get('/', (req, res) => {
   res.send('API activa');
