@@ -13,7 +13,8 @@ dotenvExpand.expand(dotenv.config({ path: '.env', override: true }));
 const allowedOrigins = [
   'http://localhost:5174',   
   'http://localhost:5173',             // Para desarrollo local
-  'https://zeta-v2-1.onrender.com'       // Tu frontend en producción
+  'https://zeta-v2-1.onrender.com'  ,
+  'https://nutweb.vercel.app' // <- agregar     // Tu frontend en producción
 ];
 
 const app = express();
