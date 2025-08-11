@@ -5,13 +5,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background: url('./img/img_fondo-login.svg') no-repeat center center;
+  min-height: 100vh;
+  background: url('/img/img_fondo-login.svg') no-repeat center center;
   background-size: cover;
 }
 
 .login-content, .ca1-content {
-  background-color: var(--secondary3-color); 
+  background-color: var(--secondary3-color);
   display: flex;
   justify-content: center;
   border-radius: 20px;
@@ -20,6 +20,12 @@
   width: 90%;
   height: 90%;
   gap: 4rem;
+}
+
+.login-content {
+  height: auto;
+  max-width: 1200px;
+  padding: 2rem;
 }
 
 .ca1-content {
@@ -47,7 +53,24 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  gap: 9rem;
+  gap: 3rem;
+}
+
+@media (max-width: 768px) {
+  .login-content {
+    flex-direction: column;
+    width: 100%;
+    gap: 2rem;
+    padding: 1.5rem;
+  }
+
+  .illustration {
+    display: none;
+  }
+
+  .welcome-message {
+    gap: 2rem;
+  }
 }
 
 .welcome-heading {
