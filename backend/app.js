@@ -18,7 +18,9 @@ const allowedOrigins = [
   'http://localhost:5174', // puerto alternativo para desarrollo
   'http://localhost:5173', // desarrollo local
   'https://nut-frontend.vercel.app', // dominio de staging/preview
-  'https://nutweb.vercel.app' // dominio principal de producción
+  'https://nutweb.vercel.app', // dominio principal de producción
+  'https://zeta-v2-frontend.vercel.app', // dominio de staging/preview
+  'https://zeta-v2.vercel.app' // dominio principal de producción
 ];
 
 const app = express();
