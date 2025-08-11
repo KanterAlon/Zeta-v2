@@ -20,7 +20,8 @@ const allowedOrigins = [
   'https://nut-frontend.vercel.app', // dominio de staging/preview
   'https://nutweb.vercel.app', // dominio principal de producción
   'https://zeta-v2-frontend.vercel.app', // dominio de staging/preview
-  'https://zeta-v2.vercel.app' // dominio principal de producción
+  'https://zeta-v2.vercel.app', // dominio principal de producción
+  'https://nut-backend.vercel.app'
 ];
 
 const app = express();
