@@ -108,8 +108,10 @@
   align-items: center;
   margin-top: 2rem;
   gap: 1rem;
-  width: 100%;
-  
+  width: 80%;
+  margin-inline: auto;
+  flex-wrap: wrap;
+
 }
 
 .info-button {
@@ -119,11 +121,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 300px;
+  width: 80%;
+  max-width: 300px;
   text-align: left;
   gap: 0.5rem;
   height: 75px;
-  width: 290px;
+  margin-inline: auto;
 }
 
 .info-button img {
