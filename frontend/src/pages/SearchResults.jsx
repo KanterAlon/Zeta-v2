@@ -39,8 +39,8 @@ const SearchResults = () => {
     if (selectionMode) {
       setSelected(prev => {
         if (prev.includes(name)) return prev.filter(n => n !== name);
-        if (prev.length >= 3) {
-          setWarning('Solo puedes comparar hasta 3 productos');
+        if (prev.length >= 10) {
+          setWarning('Solo puedes comparar hasta 10 productos');
           setTimeout(() => setWarning(''), 2000);
           return prev;
         }
