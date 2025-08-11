@@ -14,8 +14,11 @@ import {
 
 const Header = () => {
   const { isLoaded, isSignedIn, getToken, signOut } = useAuth();
-  const [auth, setAuth] = useState({ authenticated: false, user: null });
-  const [loading, setLoading] = useState(true); // nuevo estado
+  const cachedAuth = typeof window !== 'undefined' ? sessionStorage.getItem('auth') : null;
+  const [auth, setAuth] = useState(
+    cachedAuth ? JSON.parse(cachedAuth) : { authenticated: false, user: null }
+  );
+  const [loading, setLoading] = useState(!cachedAuth);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
@@ -34,8 +37,10 @@ const Header = () => {
         }
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/auth`, { withCredentials: true });
         setAuth(res.data);
+        sessionStorage.setItem('auth', JSON.stringify(res.data));
       } catch {
         setAuth({ authenticated: false });
+        sessionStorage.removeItem('auth');
       } finally {
         setLoading(false);
       }
@@ -88,12 +93,13 @@ const Header = () => {
     };
   }, [isLoaded, isSignedIn, getToken]);
 
-  if (!isLoaded || loading) return <Loader />;
+  if ((!isLoaded && !cachedAuth) || loading) return <Loader />;
 
   const handleLogout = async () => {
     await signOut();
     axios.post(`${import.meta.env.VITE_API_URL}/api/logout`, {}, { withCredentials: true })
       .then(() => {
+        sessionStorage.removeItem('auth');
         setAuth({ authenticated: false, user: null });
         navigate('/');
       });

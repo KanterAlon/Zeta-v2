@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import Loader from '../components/Loader';
 import {
   FaBolt,
   FaTint,
@@ -47,7 +48,7 @@ const ComparePage = () => {
     });
   }, [names]);
 
-  if (loading) return <p className="compare-loading">Cargando...</p>;
+    if (loading) return <Loader />;
 
   const FIELDS = [
     {
