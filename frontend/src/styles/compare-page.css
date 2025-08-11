@@ -15,18 +15,24 @@
 
 .compare-table-wrapper {
   overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 .compare-table {
-  width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
+  min-width: 800px;
+  width: max-content;
 }
 
 .compare-table th,
 .compare-table td {
   padding: 1.5rem;
   text-align: center;
+}
+
+.compare-table tbody td {
   font-size: 1.6rem;
 }
 
@@ -41,6 +47,11 @@
   gap: 1rem;
 }
 
+.product-heading span {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
 .product-heading img {
   width: 120px;
   height: 120px;
@@ -49,11 +60,22 @@
 
 .feature-name {
   text-align: left;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 1.4rem;
   color: var(--secondary2-color);
   position: sticky;
   left: 0;
-  background: var(--whiteback-color);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-left: 1rem;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(6px);
+}
+
+.feature-icon {
+  flex-shrink: 0;
+  font-size: 1.6rem;
 }
 
 .compare-table tbody tr:nth-child(even) {
