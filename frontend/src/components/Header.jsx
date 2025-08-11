@@ -17,6 +17,7 @@ const Header = () => {
   const [auth, setAuth] = useState({ authenticated: false, user: null });
   const [loading, setLoading] = useState(true); // nuevo estado
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   
@@ -42,51 +43,24 @@ const Header = () => {
     };
 
     syncSession();
+  }, [isLoaded, isSignedIn, getToken]);
 
-
-  
-    // Config hamburguesa
-    const hamburgerBtn = document.querySelector('.hamburger-btn');
-    const navLinks = document.querySelector('.nav-links');
-
-    const toggleMenu = () => {
-      hamburgerBtn.classList.toggle('active');
-      navLinks.classList.toggle('active');
-    };
-
-    const closeMenuOnResize = () => {
-      if (window.innerWidth > 940) {
-        hamburgerBtn.classList.remove('active');
-        navLinks.classList.remove('active');
-      }
-    };
-
-    const closeMenuOnClick = () => {
-      if (window.innerWidth <= 940) {
-        hamburgerBtn.classList.remove('active');
-        navLinks.classList.remove('active');
-      }
-    };
-
-    hamburgerBtn?.addEventListener('click', toggleMenu);
-    window.addEventListener('resize', closeMenuOnResize);
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      link.addEventListener('click', closeMenuOnClick);
-    });
-
+  useEffect(() => {
     const handleOutside = e => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setDropdownOpen(false);
       }
     };
-    document.addEventListener('mousedown', handleOutside);
-
-    return () => {
-      hamburgerBtn?.removeEventListener('click', toggleMenu);
-      window.removeEventListener('resize', closeMenuOnResize);
-      document.removeEventListener('mousedown', handleOutside);
+    const handleResize = () => {
+      if (window.innerWidth > 940) setMenuOpen(false);
     };
-  }, [isLoaded, isSignedIn, getToken]);
+    document.addEventListener('mousedown', handleOutside);
+    window.addEventListener('resize', handleResize);
+    return () => {
+      document.removeEventListener('mousedown', handleOutside);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   if (!isLoaded || loading) return <Loader />;
 
@@ -100,6 +74,8 @@ const Header = () => {
   };
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
+  const toggleMenu = () => setMenuOpen(prev => !prev);
+  const closeMenu = () => setMenuOpen(false);
 
   return (
     <header>
@@ -107,32 +83,36 @@ const Header = () => {
         <img src="/img/Logo_Zeta_Header.svg" alt="Nut Logo" />
       </div>
 
-      <button className="hamburger-btn" aria-label="Menú">
+      <button
+        className={`hamburger-btn ${menuOpen ? 'active' : ''}`}
+        aria-label="Menú"
+        onClick={toggleMenu}
+      >
         <span className="hamburger-line"></span>
         <span className="hamburger-line"></span>
         <span className="hamburger-line"></span>
       </button>
 
-      <nav className="nav-links">
-        <Link to="/">
+      <nav className={`nav-links ${menuOpen ? 'active' : ''}`}>
+        <Link to="/" onClick={closeMenu}>
           <FaHome size={30} />
           <span>Inicio</span>
         </Link>
-        <Link to="/community">
+        <Link to="/community" onClick={closeMenu}>
           <FaUsers size={30} />
           <span>Comunidad</span>
         </Link>
-        <Link to="/blog">
+        <Link to="/blog" onClick={closeMenu}>
           <FaRegNewspaper size={30} />
           <span>Blog</span>
         </Link>
-        <Link to="/contact">
+        <Link to="/contact" onClick={closeMenu}>
           <FaEnvelopeOpenText size={30} />
           <span>Contacto</span>
         </Link>
 
         {!auth.authenticated ? (
-          <Link to="/login" className="login-button"><span className="button-text">Login</span></Link>
+          <Link to="/login" className="login-button" onClick={closeMenu}><span className="button-text">Login</span></Link>
         ) : (
           <div className="user-menu" ref={dropdownRef}>
             <button className="user-button" onClick={toggleDropdown} aria-expanded={dropdownOpen} aria-haspopup="true">
@@ -148,16 +128,18 @@ const Header = () => {
                   onClick={() => {
                     setDropdownOpen(false);
                     navigate('/profile');
+                    closeMenu();
                   }}
                 >
                   Mi perfil
                 </button>
-                <button type="button" className="dropdown-item" onClick={handleLogout}>Cerrar sesión</button>
+                <button type="button" className="dropdown-item" onClick={() => { handleLogout(); closeMenu(); }}>Cerrar sesión</button>
               </div>
             )}
           </div>
         )}
       </nav>
+      <div className={`overlay ${menuOpen ? 'active' : ''}`} onClick={closeMenu}></div>
     </header>
   );
 };
