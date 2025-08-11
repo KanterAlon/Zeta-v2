@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Loader from '../components/Loader';
 
 const ProfilePage = () => {
   const [patologias, setPatologias] = useState([]);
@@ -75,7 +76,7 @@ const ProfilePage = () => {
     }
   };
 
-  if (loading) return <p>Cargando...</p>;
+    if (loading) return <Loader />;
 
   return (
     <section className="profile-page">
