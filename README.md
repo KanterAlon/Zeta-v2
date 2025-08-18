@@ -2,6 +2,8 @@
 
 ## Environment configuration
 
+Authentication is handled by [Clerk](https://clerk.com). The backend must define `CLERK_SECRET_KEY` and the frontend exposes `VITE_CLERK_PUBLISHABLE_KEY`.
+
 ## Comando para evitar problema del firewall: set NODE_TLS_REJECT_UNAUTHORIZED=0
 
 The project uses two environment files inside the `backend` folder:
@@ -18,6 +20,7 @@ cp frontend/.env.example frontend/.env
 ```
 
 The frontend keeps its own public variables in `frontend/.env`. A sample file is provided at `frontend/.env.example`.
+For deployment, at minimum set `DATABASE_URL` and `CLERK_SECRET_KEY`.
 Add `VITE_IMGBB_KEY` with your imgbb API key to enable image uploads for
 community posts. If the key is missing, posts will still be created but
 any selected images will be ignored.

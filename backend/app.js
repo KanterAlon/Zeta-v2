@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const session = require('express-session');
+const { ClerkExpressWithAuth } = require('@clerk/clerk-sdk-node');
 const dotenv = require('dotenv');
 const dotenvExpand = require('dotenv-expand');
 const path = require('path');
@@ -32,19 +32,9 @@ app.use(cors({
   credentials: true
 }));
 
-// 🔐 JSON y Sesión
+// 🔐 JSON y Clerk Auth
 app.use(express.json());
-
-app.use(session({
-  secret: 'zeta_secret',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
-  }
-}));
+app.use(ClerkExpressWithAuth());
 
 // 📦 Rutas
 app.use('/api', homeRoutes);
