@@ -23,7 +23,7 @@ const HomePage = () => {
 
     const checkProfile = async () => {
       try {
-        const token = await getToken();
+        const token = await getToken({ template: 'integration_fallback' });
         if (!token) return;
         const auth = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/auth`,

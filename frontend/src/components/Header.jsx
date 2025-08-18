@@ -30,7 +30,7 @@ const Header = () => {
       try {
         let token;
         if (isSignedIn) {
-          token = await getToken();
+          token = await getToken({ template: 'integration_fallback' });
           if (token) {
             await axios.post(
               `${import.meta.env.VITE_API_URL}/api/clerk/sync`,

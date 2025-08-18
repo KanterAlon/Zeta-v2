@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import CommunityCard from '../components/CommunityCard';
 import CommunityPopup from '../components/CommunityPopup';
 import { FaPlus } from 'react-icons/fa';
+import { useAuth } from '@clerk/clerk-react';
 
 const CommunityPage = () => {
   const [posts, setPosts] = useState([]);
@@ -15,6 +16,7 @@ const CommunityPage = () => {
   const [auth, setAuth] = useState({ authenticated: false });
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { isLoaded, isSignedIn, getToken } = useAuth();
 
   const fetchPosts = async () => {
     setLoading(true);
@@ -42,8 +44,13 @@ const CommunityPage = () => {
 
   const checkAuth = async () => {
     try {
+      let token;
+      if (isLoaded && isSignedIn) {
+        token = await getToken({ template: 'integration_fallback' });
+      }
       const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/auth`, {
-        withCredentials: true
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        withCredentials: true,
       });
       setAuth(res.data);
     } catch (err) {
@@ -54,7 +61,7 @@ const CommunityPage = () => {
   useEffect(() => {
     checkAuth();
     fetchPosts();
-  }, []);
+  }, [isLoaded, isSignedIn, getToken]);
 
   const handleLike = async (id) => {
     if (!auth.authenticated) return navigate('/login');
