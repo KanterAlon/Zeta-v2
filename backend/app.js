@@ -10,6 +10,10 @@ const cameraRoutes = require('./routes/camera.routes');
 dotenvExpand.expand(dotenv.config({ path: '.env.secrets' }));
 dotenvExpand.expand(dotenv.config({ path: '.env', override: true }));
 
+if (process.env.NODE_ENV !== 'production') {
+  dotenvExpand.expand(dotenv.config({ path: '.env.secrets' }));
+  dotenvExpand.expand(dotenv.config({ path: '.env', override: true }));
+}
 const allowedOrigins = [
   'http://localhost:5174',   
   'http://localhost:5173',             // Para desarrollo local
