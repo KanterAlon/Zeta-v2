@@ -50,7 +50,9 @@ const ProductPage = () => {
         } else {
           const elapsed = (performance.now() - start).toFixed(2);
           const source = data.source === 'cache' ? 'la cache' : 'OpenFoodFacts';
-          setAlertMessage(`Producto obtenido de ${source} en ${elapsed} ms`);
+          if (import.meta.env.DEV) {
+            setAlertMessage(`Producto obtenido de ${source} en ${elapsed} ms`);
+          }
           const { source: _SOURCE, elapsedTime: _ELAPSEDTIME, ...product } = data;
           setProductData(product);
           setProductName(product.product_name || 'Producto sin nombre');

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import LazyImage from '../components/LazyImage';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import AlertPopup from '../components/AlertPopup';
 
 const SearchResults = () => {
   const [params] = useSearchParams();
@@ -11,6 +12,7 @@ const SearchResults = () => {
   const [selectionMode, setSelectionMode] = useState(false);
   const [selected, setSelected] = useState([]);
   const [warning, setWarning] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,11 +24,17 @@ const SearchResults = () => {
     // client-side builds still function when environment variables are not
     // available (e.g., misconfigured builds or previews).
     const apiBase = import.meta.env.VITE_API_URL || 'https://zeta-v2-backend.vercel.app';
+    const start = performance.now();
     fetch(`${apiBase}/api/SearchProducts?query=${encodeURIComponent(query)}`)
       .then(res => res.json())
       .then(data => {
         if (data.success) {
           setProducts(data.products);
+          const elapsed = (performance.now() - start).toFixed(2);
+          const source = data.source === 'cache' ? 'la cache' : 'OpenFoodFacts';
+          if (import.meta.env.DEV) {
+            setAlertMessage(`Resultados obtenidos de ${source} en ${elapsed} ms`);
+          }
         } else {
           setProducts([]);
         }
@@ -117,6 +125,9 @@ const SearchResults = () => {
             </button>
           </div>
         </>
+      )}
+      {alertMessage && (
+        <AlertPopup message={alertMessage} onClose={() => setAlertMessage('')} />
       )}
     </div>
   );

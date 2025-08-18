@@ -2,16 +2,13 @@ const prisma = require('../prisma/client');
 const { Prisma } = require('@prisma/client');
 const axios = require('axios');
 const { HttpsProxyAgent } = require('https-proxy-agent');
-const redis = require('../utils/redis');
+const { readCache, writeCache } = require('../utils/cache');
 
 const OFF_PROD_URL = process.env.OPENFOODFACTS_PRODUCT_URL ||
   'https://world.openfoodfacts.org/api/v2/product';
 const OFF_SEARCH_URL = process.env.OPENFOODFACTS_SEARCH_URL ||
   'https://world.openfoodfacts.org/cgi/search.pl';
 const OFF_API_URL = process.env.OPENFOODFACTS_API_URL || 'https://world.openfoodfacts.org/api/v2/search';
-
-const CACHE_THRESHOLD = parseInt(process.env.CACHE_THRESHOLD || '3', 10);
-const CACHE_TTL = 86400; // 24 hours
 
 const normalize = (str) =>
   str
@@ -311,30 +308,9 @@ registrarUsuario: async (req, res) => {
     const isEAN = /^\d{8,13}$/.test(query);
     const normalized = isEAN ? query : normalize(query);
     const cacheKey = `product:${normalized}`;
-    const freqKey = `freq:${cacheKey}`;
-    let freq = 0;
-    let product;
-    let source = 'openfoodfacts';
 
-    try {
-      if (redis) {
-        freq = await redis.incr(freqKey);
-        if (freq === 1) await redis.expire(freqKey, CACHE_TTL);
-        console.log('📦 Revisando cache para', cacheKey);
-        const cached = await redis.get(cacheKey);
-        if (cached) {
-          console.log('✅ Cache hit para', cacheKey);
-          product = JSON.parse(cached);
-          source = 'cache';
-        } else {
-          console.log('❌ Cache miss para', cacheKey);
-        }
-      } else {
-        console.log('⚠️ Redis no está configurado');
-      }
-    } catch (err) {
-      console.error('Redis read error:', err.message);
-    }
+    const { data: cachedProduct, source, freq } = await readCache(cacheKey);
+    let product = cachedProduct;
 
     if (!product) {
       try {
@@ -359,10 +335,7 @@ registrarUsuario: async (req, res) => {
           product = productos[0];
         }
 
-        if (redis && freq >= CACHE_THRESHOLD) {
-          console.log('💾 Guardando producto en cache para', cacheKey);
-          await redis.setex(cacheKey, CACHE_TTL, JSON.stringify(product));
-        }
+        await writeCache(cacheKey, product, freq);
       } catch (err) {
         return res.status(500).json({ error: err.message });
       }
@@ -375,27 +348,14 @@ registrarUsuario: async (req, res) => {
   searchProducts: async (req, res) => {
     const { query } = req.query;
     if (!query) return res.status(400).json({ success: false, message: 'Falta query' });
+    const startTime = Date.now();
     const normalizedQuery = normalize(query);
     const cacheKey = `search:${normalizedQuery}`;
-    const freqKey = `freq:${cacheKey}`;
-    let freq = 0;
 
-    try {
-      if (redis) {
-        freq = await redis.incr(freqKey);
-        if (freq === 1) await redis.expire(freqKey, CACHE_TTL);
-        console.log('📦 Revisando cache para', cacheKey);
-        const cached = await redis.get(cacheKey);
-        if (cached) {
-          console.log('✅ Cache hit para', cacheKey);
-          return res.json({ success: true, products: JSON.parse(cached) });
-        }
-        console.log('❌ Cache miss para', cacheKey);
-      } else {
-        console.log('⚠️ Redis no está configurado');
-      }
-    } catch (err) {
-      console.error('Redis read error:', err.message);
+    const { data: cachedResults, source, freq } = await readCache(cacheKey);
+    if (cachedResults) {
+      const elapsedTime = Date.now() - startTime;
+      return res.json({ success: true, products: cachedResults, source, elapsedTime });
     }
 
     try {
@@ -443,16 +403,10 @@ registrarUsuario: async (req, res) => {
         image: p.images.find(Boolean)
       }));
 
-      try {
-        if (redis && freq >= CACHE_THRESHOLD) {
-          console.log('💾 Guardando resultado en cache para', cacheKey);
-          await redis.setex(cacheKey, CACHE_TTL, JSON.stringify(uniqueProducts));
-        }
-      } catch (err) {
-        console.error('Redis write error:', err.message);
-      }
+      await writeCache(cacheKey, uniqueProducts, freq);
 
-      res.json({ success: true, products: uniqueProducts });
+      const elapsedTime = Date.now() - startTime;
+      res.json({ success: true, products: uniqueProducts, source, elapsedTime });
     } catch (error) {
       console.error("🔴 Error en API OpenFood:", error.message);
       res.status(500).json({ success: false, message: 'Error en API' });
