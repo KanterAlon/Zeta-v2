@@ -3,17 +3,19 @@ const cors = require('cors');
 const session = require('express-session');
 const dotenv = require('dotenv');
 const dotenvExpand = require('dotenv-expand');
-const homeRoutes = require('./routes/home.routes');
-const cameraRoutes = require('./routes/camera.routes');
+const path = require('path');
 
-// Cargar variables de entorno
-dotenvExpand.expand(dotenv.config({ path: '.env.secrets' }));
-dotenvExpand.expand(dotenv.config({ path: '.env', override: true }));
+// Cargar variables de entorno antes de importar rutas
+dotenvExpand.expand(dotenv.config({ path: path.join(__dirname, '.env.secrets') }));
+dotenvExpand.expand(dotenv.config({ path: path.join(__dirname, '.env'), override: true }));
 
 if (process.env.NODE_ENV !== 'production') {
-  dotenvExpand.expand(dotenv.config({ path: '.env.secrets' }));
-  dotenvExpand.expand(dotenv.config({ path: '.env', override: true }));
+  dotenvExpand.expand(dotenv.config({ path: path.join(__dirname, '.env.secrets') }));
+  dotenvExpand.expand(dotenv.config({ path: path.join(__dirname, '.env'), override: true }));
 }
+
+const homeRoutes = require('./routes/home.routes');
+const cameraRoutes = require('./routes/camera.routes');
 const allowedOrigins = [
   'http://localhost:5174',   
   'http://localhost:5173',             // Para desarrollo local
