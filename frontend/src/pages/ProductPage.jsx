@@ -38,6 +38,7 @@ const ProductPage = () => {
     // client-side builds still function when environment variables are not
     // available (e.g., misconfigured builds or previews).
     const apiBase = import.meta.env.VITE_API_URL || 'https://zeta-v2-backend.vercel.app';
+    const start = performance.now();
     fetch(`${apiBase}/api/product?query=${encodeURIComponent(query)}`)
       .then((res) => res.json())
       .then((data) => {
@@ -45,8 +46,15 @@ const ProductPage = () => {
           setErrorMessage(data.error);
           setProductData(null);
         } else {
-          setProductData(data);
-          setProductName(data.product_name || 'Producto sin nombre');
+          const elapsed = (performance.now() - start).toFixed(2);
+          alert(
+            `Producto obtenido de ${
+              data.source === 'cache' ? 'la cache' : 'OpenFoodFacts'
+            } en ${elapsed} ms`
+          );
+          const { source: _SOURCE, elapsedTime: _ELAPSEDTIME, ...product } = data;
+          setProductData(product);
+          setProductName(product.product_name || 'Producto sin nombre');
           setErrorMessage('');
         }
       })
