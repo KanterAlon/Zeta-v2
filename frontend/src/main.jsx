@@ -10,7 +10,7 @@ function ClerkProviderWithRouter({ children }) {
   return (
     <ClerkProvider
       publishableKey={import.meta.env.VITE_CLERK_PUBLISHABLE_KEY}
-      navigate={to => navigate(to)}
+      navigate={(to) => navigate(to)}
     >
       {children}
     </ClerkProvider>
@@ -18,9 +18,12 @@ function ClerkProviderWithRouter({ children }) {
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <BrowserRouter>
-    <ClerkProviderWithRouter>
-      <App />
-    </ClerkProviderWithRouter>
-  </BrowserRouter>
+  <React.StrictMode>
+    <BrowserRouter>
+      <ClerkProviderWithRouter>
+        <App />
+      </ClerkProviderWithRouter>
+    </BrowserRouter>
+  </React.StrictMode>
 );
+  
