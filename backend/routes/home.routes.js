@@ -11,8 +11,6 @@ router.post('/darLike', controller.darLike);
 router.post('/darDislike', controller.darDislike);
 router.post('/publicarPost', controller.publicarPost);
 router.get('/obtenerPosts', controller.obtenerPosts);
-router.post('/login', controller.login);
-router.post('/logout', controller.logout);
 router.get('/auth', controller.isAuthenticated);
 router.post('/CreateAccount', controller.registrarUsuario);
 router.post('/clerk/sync', controller.clerkSync);

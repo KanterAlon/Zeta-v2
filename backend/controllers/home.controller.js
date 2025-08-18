@@ -3,6 +3,8 @@ const { Prisma } = require('@prisma/client');
 const axios = require('axios');
 const { HttpsProxyAgent } = require('https-proxy-agent');
 const redis = require('../utils/redis');
+const { clerkClient } = require('@clerk/clerk-sdk-node');
+const { getUserEmail } = require('../utils/auth');
 
 const OFF_PROD_URL = process.env.OPENFOODFACTS_PRODUCT_URL ||
   'https://world.openfoodfacts.org/api/v2/product';
@@ -21,65 +23,26 @@ const normalize = (str) =>
     .toLowerCase();
 
 const homeController = {
-  // 🔐 LOGIN
-  login: async (req, res) => {
-    const { email, password } = req.body;
-  
-    const usuario = await prisma.usuarios.findUnique({ where: { email } });
-  
-    if (!usuario) {
-      return res.status(401).json({ error: 'Credenciales inválidas' });
+  // 🔐 Verificar autenticación
+  isAuthenticated: async (req, res) => {
+    try {
+      const email = await getUserEmail(req);
+      const usuario = await prisma.usuarios.findUnique({ where: { email } });
+      return res.json({
+        authenticated: true,
+        user: usuario ? { id: usuario.id_usuario, nombre: usuario.nombre, email: usuario.email } : null
+      });
+    } catch {
+      return res.status(401).json({ authenticated: false });
     }
-  
-    // ⚠️ Aquí deberías usar bcrypt si las contraseñas están hasheadas
-    if (usuario.password !== password) {
-      return res.status(401).json({ error: 'Credenciales inválidas' });
-    }
-  
-    req.session.authenticated = true;
-    req.session.user = {
-      id: usuario.id_usuario,
-      nombre: usuario.nombre,
-      email: usuario.email
-    };
-  
-    req.session.save(err => {
-      if (err) {
-        return res.status(500).json({ error: 'Error al guardar sesión' });
-      }
-  
-      res.json({ success: true, usuario: req.session.user });
-    });
-  },  
-  logout: (req, res) => {
-    req.session.destroy(err => {
-      if (err) {
-        return res.status(500).send('Error al cerrar sesión');
-      }
-      res.clearCookie('connect.sid');
-      res.sendStatus(200);
-    });
   },
 
-
-  isAuthenticated: (req, res) => {
-    res.json({
-      authenticated: !!req.session.authenticated,
-      user: req.session.user || null
-    });
-  },
-
-  // 🔐 Sincronizar sesión con Clerk
+  // 🔐 Sincronizar usuario con Clerk
   clerkSync: async (req, res) => {
     try {
-      const { clerkClient } = require('@clerk/clerk-sdk-node');
-      const token = req.body.token || req.headers.authorization?.replace('Bearer ', '');
-      if (!token) return res.status(400).json({ error: 'Token requerido' });
+      if (!req.auth?.userId) return res.status(401).json({ error: 'No autenticado' });
+      const userData = await clerkClient.users.getUser(req.auth.userId);
 
-      const payload = await clerkClient.base.verifySessionToken(token);
-      const userData = await clerkClient.users.getUser(payload.sub);
-
-      // Clerk's SDK returns camelCase properties
       const email =
         userData.primaryEmailAddress?.emailAddress ||
         userData.emailAddresses?.[0]?.emailAddress;
@@ -98,16 +61,13 @@ const homeController = {
         });
       }
 
-      req.session.authenticated = true;
-      req.session.user = {
-        id: usuario.id_usuario,
-        nombre: usuario.nombre,
-        email: usuario.email,
-      };
-
-      req.session.save(err => {
-        if (err) return res.status(500).json({ error: 'No se pudo guardar sesión' });
-        res.json({ success: true, usuario: req.session.user });
+      return res.json({
+        success: true,
+        usuario: {
+          id: usuario.id_usuario,
+          nombre: usuario.nombre,
+          email: usuario.email,
+        }
       });
     } catch (error) {
       console.error('Error clerkSync:', error);
@@ -172,9 +132,7 @@ registrarUsuario: async (req, res) => {
 
   obtenerPerfil: async (req, res) => {
     try {
-      if (!req.session?.user?.email) return res.status(401).json({ error: 'No autenticado' });
-
-      const email = req.session.user.email;
+      const email = await getUserEmail(req);
       const usuario = await prisma.usuarios.findUnique({
         where: { email },
         include: {
@@ -212,8 +170,6 @@ registrarUsuario: async (req, res) => {
 
   actualizarPerfil: async (req, res) => {
     try {
-      if (!req.session?.user?.email) return res.status(401).json({ error: 'No autenticado' });
-
       const {
         edad,
         sexo,
@@ -222,8 +178,7 @@ registrarUsuario: async (req, res) => {
         patologias = [],
         actividades = []
       } = req.body;
-
-      const email = req.session.user.email;
+      const email = await getUserEmail(req);
       const usuario = await prisma.usuarios.findUnique({ where: { email } });
       if (!usuario) return res.status(404).json({ error: 'Usuario no encontrado' });
 
@@ -456,9 +411,8 @@ registrarUsuario: async (req, res) => {
 
   darLike: async (req, res) => {
     try {
-      if (!req.session?.user?.email) throw new Error('Usuario no autenticado');
       const { idPost } = req.body;
-      const email = req.session.user.email;
+      const email = await getUserEmail(req);
       const user = await prisma.usuarios.findUnique({ where: { email } });
       const idUsuario = user.id_usuario;
 
@@ -486,15 +440,15 @@ registrarUsuario: async (req, res) => {
       res.json({ success: true });
     } catch (err) {
       console.error('❌ Error en darLike:', err.message);
-      res.status(500).json({ success: false, message: err.message });
+      const status = err.message === 'Usuario no autenticado' ? 401 : 500;
+      res.status(status).json({ success: false, message: err.message });
     }
   },
 
   darDislike: async (req, res) => {
     try {
-      if (!req.session?.user?.email) throw new Error('Usuario no autenticado');
       const { idPost } = req.body;
-      const email = req.session.user.email;
+      const email = await getUserEmail(req);
       const user = await prisma.usuarios.findUnique({ where: { email } });
       const idUsuario = user.id_usuario;
 
@@ -522,15 +476,15 @@ registrarUsuario: async (req, res) => {
       res.json({ success: true });
     } catch (err) {
       console.error('❌ Error en darDislike:', err.message);
-      res.status(500).json({ success: false, message: err.message });
+      const status = err.message === 'Usuario no autenticado' ? 401 : 500;
+      res.status(status).json({ success: false, message: err.message });
     }
   },
 
   publicarPost: async (req, res) => {
     try {
-      if (!req.session?.user?.email) throw new Error('Usuario no autenticado');
       const { contenidoPost, imagenUrl } = req.body;
-      const email = req.session.user.email;
+      const email = await getUserEmail(req);
       const user = await prisma.usuarios.findUnique({ where: { email } });
       const idUsuario = user.id_usuario;
 
@@ -557,7 +511,8 @@ registrarUsuario: async (req, res) => {
       });
     } catch (err) {
       console.error('❌ Error en publicarPost:', err.message);
-      res.status(500).json({ success: false, message: err.message });
+      const status = err.message === 'Usuario no autenticado' ? 401 : 500;
+      res.status(status).json({ success: false, message: err.message });
     }
   },
 
@@ -574,9 +529,12 @@ registrarUsuario: async (req, res) => {
     });
 
     let idUsuario = null;
-    if (req.session?.user?.email) {
-      const user = await prisma.usuarios.findUnique({ where: { email: req.session.user.email } });
+    try {
+      const email = await getUserEmail(req);
+      const user = await prisma.usuarios.findUnique({ where: { email } });
       idUsuario = user?.id_usuario ?? null;
+    } catch {
+      idUsuario = null;
     }
 
     const formatted = posts.map(post => {
