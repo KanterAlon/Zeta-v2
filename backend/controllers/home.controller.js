@@ -2,6 +2,7 @@ const prisma = require('../prisma/client');
 const { Prisma } = require('@prisma/client');
 const axios = require('axios');
 const { HttpsProxyAgent } = require('https-proxy-agent');
+const redis = require('../utils/redis');
 
 const OFF_PROD_URL = process.env.OPENFOODFACTS_PRODUCT_URL ||
   'https://world.openfoodfacts.org/api/v2/product';
@@ -327,6 +328,18 @@ registrarUsuario: async (req, res) => {
   searchProducts: async (req, res) => {
     const { query } = req.query;
     if (!query) return res.status(400).json({ success: false, message: "Falta query" });
+    const cacheKey = `search:${query}`;
+
+    try {
+      if (redis) {
+        const cached = await redis.get(cacheKey);
+        if (cached) {
+          return res.json({ success: true, products: JSON.parse(cached) });
+        }
+      }
+    } catch (err) {
+      console.error('Redis read error:', err.message);
+    }
 
     try {
       const searchParams = {
@@ -373,6 +386,14 @@ registrarUsuario: async (req, res) => {
         name: p.name,
         image: p.images.find(Boolean)
       }));
+
+      try {
+        if (redis) {
+          await redis.setex(cacheKey, 86400, JSON.stringify(uniqueProducts));
+        }
+      } catch (err) {
+        console.error('Redis write error:', err.message);
+      }
 
       res.json({ success: true, products: uniqueProducts });
     } catch (error) {
