@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Loader from '../components/Loader';
 import { useSearchParams } from 'react-router-dom';
 import { FaCheck, FaTimes, FaMinus } from 'react-icons/fa';
+import AlertPopup from '../components/AlertPopup';
 
 // Convert OpenFoodFacts nutriscore (-15 best to 40 worst) to a 1-10 scale
 const mapScoreToRating = (score) => {
@@ -28,6 +29,7 @@ const ProductPage = () => {
   const [productData, setProductData] = useState(null);
   const [productName, setProductName] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
 
   useEffect(() => {
     if (!query) return;
@@ -47,11 +49,8 @@ const ProductPage = () => {
           setProductData(null);
         } else {
           const elapsed = (performance.now() - start).toFixed(2);
-          alert(
-            `Producto obtenido de ${
-              data.source === 'cache' ? 'la cache' : 'OpenFoodFacts'
-            } en ${elapsed} ms`
-          );
+          const source = data.source === 'cache' ? 'la cache' : 'OpenFoodFacts';
+          setAlertMessage(`Producto obtenido de ${source} en ${elapsed} ms`);
           const { source: _SOURCE, elapsedTime: _ELAPSEDTIME, ...product } = data;
           setProductData(product);
           setProductName(product.product_name || 'Producto sin nombre');
@@ -214,6 +213,9 @@ const ProductPage = () => {
         </>
       ) : (
         <Loader />
+      )}
+      {alertMessage && (
+        <AlertPopup message={alertMessage} onClose={() => setAlertMessage('')} />
       )}
     </div>
   );

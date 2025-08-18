@@ -6,10 +6,8 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 const SearchResults = () => {
   const [params] = useSearchParams();
   const query = params.get('query') || '';
-  const cacheKey = `search:${query}`;
-  const cached = typeof window !== 'undefined' ? sessionStorage.getItem(cacheKey) : null;
-  const [loading, setLoading] = useState(!cached);
-  const [products, setProducts] = useState(cached ? JSON.parse(cached) : []);
+  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState([]);
   const [selectionMode, setSelectionMode] = useState(false);
   const [selected, setSelected] = useState([]);
   const [warning, setWarning] = useState('');
@@ -17,13 +15,7 @@ const SearchResults = () => {
 
   useEffect(() => {
     if (!query) return;
-    const cachedData = sessionStorage.getItem(cacheKey);
-    if (cachedData) {
-      setProducts(JSON.parse(cachedData));
-      setLoading(false);
-    } else {
-      setLoading(true);
-    }
+    setLoading(true);
     // Determine base URL for API requests.
     // Use the VITE_API_URL environment variable if defined at build time;
     // otherwise fall back to the deployed backend URL. This fallback ensures
@@ -35,14 +27,13 @@ const SearchResults = () => {
       .then(data => {
         if (data.success) {
           setProducts(data.products);
-          sessionStorage.setItem(cacheKey, JSON.stringify(data.products));
         } else {
           setProducts([]);
         }
       })
       .catch(() => setProducts([]))
       .finally(() => setLoading(false));
-  }, [cacheKey, query]);
+  }, [query]);
 
   const handleClick = (name) => {
     if (selectionMode) {
