@@ -307,11 +307,14 @@ registrarUsuario: async (req, res) => {
     const { query } = req.query;
     if (!query) return res.status(400).json({ error: 'Falta query' });
 
+    const startTime = Date.now();
     const isEAN = /^\d{8,13}$/.test(query);
     const normalized = isEAN ? query : normalize(query);
     const cacheKey = `product:${normalized}`;
     const freqKey = `freq:${cacheKey}`;
     let freq = 0;
+    let product;
+    let source = 'openfoodfacts';
 
     try {
       if (redis) {
@@ -321,9 +324,11 @@ registrarUsuario: async (req, res) => {
         const cached = await redis.get(cacheKey);
         if (cached) {
           console.log('✅ Cache hit para', cacheKey);
-          return res.json(JSON.parse(cached));
+          product = JSON.parse(cached);
+          source = 'cache';
+        } else {
+          console.log('❌ Cache miss para', cacheKey);
         }
-        console.log('❌ Cache miss para', cacheKey);
       } else {
         console.log('⚠️ Redis no está configurado');
       }
@@ -331,40 +336,40 @@ registrarUsuario: async (req, res) => {
       console.error('Redis read error:', err.message);
     }
 
-    try {
-      if (isEAN) {
-        const productUrl = `${OFF_PROD_URL}/${encodeURIComponent(query)}.json`;
-        console.log('🔍 OFF product URL:', productUrl);
-        const response = await axios.get(productUrl);
-        if (response.data.status !== 1) throw new Error('No encontrado');
-        const product = response.data.product;
+    if (!product) {
+      try {
+        if (isEAN) {
+          const productUrl = `${OFF_PROD_URL}/${encodeURIComponent(query)}.json`;
+          console.log('🔍 OFF product URL:', productUrl);
+          const response = await axios.get(productUrl);
+          if (response.data.status !== 1) throw new Error('No encontrado');
+          product = response.data.product;
+        } else {
+          const searchParams = {
+            search_terms: query,
+            search_simple: 1,
+            action: 'process',
+            json: 1
+          };
+          const url = `${OFF_SEARCH_URL}?${new URLSearchParams(searchParams)}`;
+          console.log('🔍 OFF search URL:', url);
+          const response = await axios.get(OFF_SEARCH_URL, { params: searchParams });
+          const productos = response.data.products;
+          if (!productos.length) return res.status(404).json({ error: 'No hay resultados' });
+          product = productos[0];
+        }
+
         if (redis && freq >= CACHE_THRESHOLD) {
           console.log('💾 Guardando producto en cache para', cacheKey);
           await redis.setex(cacheKey, CACHE_TTL, JSON.stringify(product));
         }
-        return res.json(product);
-      } else {
-        const searchParams = {
-          search_terms: query,
-          search_simple: 1,
-          action: 'process',
-          json: 1
-        };
-        const url = `${OFF_SEARCH_URL}?${new URLSearchParams(searchParams)}`;
-        console.log('🔍 OFF search URL:', url);
-        const response = await axios.get(OFF_SEARCH_URL, { params: searchParams });
-        const productos = response.data.products;
-        if (!productos.length) return res.status(404).json({ error: 'No hay resultados' });
-        const product = productos[0];
-        if (redis && freq >= CACHE_THRESHOLD) {
-          console.log('💾 Guardando producto en cache para', cacheKey);
-          await redis.setex(cacheKey, CACHE_TTL, JSON.stringify(product));
-        }
-        return res.json(product);
+      } catch (err) {
+        return res.status(500).json({ error: err.message });
       }
-    } catch (err) {
-      return res.status(500).json({ error: err.message });
     }
+
+    const elapsedTime = Date.now() - startTime;
+    return res.json({ ...product, source, elapsedTime });
   },
 
   searchProducts: async (req, res) => {

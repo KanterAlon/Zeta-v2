@@ -14,7 +14,6 @@ const HomePage = () => {
   const { isLoaded, isSignedIn } = useAuth();
 
   const handleClose = () => {
-    localStorage.setItem('healthPopupSeen', 'true');
     setShowPopup(false);
   };
 
@@ -26,8 +25,7 @@ const HomePage = () => {
         const auth = await axios.get(`${import.meta.env.VITE_API_URL}/api/auth`, { withCredentials: true });
         if (!auth.data.authenticated) return;
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/me`, { withCredentials: true });
-        const seen = localStorage.getItem('healthPopupSeen');
-        if (!seen && !res.data.completo) setShowPopup(true);
+        if (!res.data.completo) setShowPopup(true);
       } catch (err) {
         console.error('Error al verificar perfil', err);
       }
