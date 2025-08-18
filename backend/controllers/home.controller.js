@@ -332,10 +332,15 @@ registrarUsuario: async (req, res) => {
 
     try {
       if (redis) {
+        console.log('📦 Revisando cache para', cacheKey);
         const cached = await redis.get(cacheKey);
         if (cached) {
+          console.log('✅ Cache hit para', cacheKey);
           return res.json({ success: true, products: JSON.parse(cached) });
         }
+        console.log('❌ Cache miss para', cacheKey);
+      } else {
+        console.log('⚠️ Redis no está configurado');
       }
     } catch (err) {
       console.error('Redis read error:', err.message);
@@ -364,6 +369,12 @@ registrarUsuario: async (req, res) => {
         .filter(p => p.product_name && p.image_url)
         .map(p => ({ name: p.product_name.trim(), image: p.image_url }));
 
+      if (!productos.length) {
+        console.log('🔎 No se encontraron productos para', query);
+      } else {
+        console.log(`🔎 Se encontraron ${productos.length} productos para ${query}`);
+      }
+
       // Normaliza y combina productos duplicados con distintas fotos
       const normalizeName = (str) =>
         str
@@ -389,6 +400,7 @@ registrarUsuario: async (req, res) => {
 
       try {
         if (redis) {
+          console.log('💾 Guardando resultado en cache para', cacheKey);
           await redis.setex(cacheKey, 86400, JSON.stringify(uniqueProducts));
         }
       } catch (err) {
