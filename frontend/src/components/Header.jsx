@@ -28,15 +28,24 @@ const Header = () => {
     if (!isLoaded) return;
     const syncSession = async () => {
       try {
+        let token;
         if (isSignedIn) {
-          const token = await getToken();
-          await axios.post(
-            `${import.meta.env.VITE_API_URL}/api/clerk/sync`,
-            {},
-            { headers: { Authorization: `Bearer ${token}` }, withCredentials: true }
-          );
+          token = await getToken();
+          if (token) {
+            await axios.post(
+              `${import.meta.env.VITE_API_URL}/api/clerk/sync`,
+              {},
+              { headers: { Authorization: `Bearer ${token}` }, withCredentials: true }
+            );
+          }
         }
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/auth`, { withCredentials: true });
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/auth`,
+          {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+            withCredentials: true,
+          }
+        );
         setAuth(res.data);
         sessionStorage.setItem('auth', JSON.stringify(res.data));
       } catch {

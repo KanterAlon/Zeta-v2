@@ -11,7 +11,7 @@ import axios from 'axios';
 
 const HomePage = () => {
   const [showPopup, setShowPopup] = useState(false);
-  const { isLoaded, isSignedIn } = useAuth();
+  const { isLoaded, isSignedIn, getToken } = useAuth();
 
   const handleClose = () => {
     localStorage.setItem('healthPopupSeen', 'true');
@@ -23,9 +23,17 @@ const HomePage = () => {
 
     const checkProfile = async () => {
       try {
-        const auth = await axios.get(`${import.meta.env.VITE_API_URL}/api/auth`, { withCredentials: true });
+        const token = await getToken();
+        if (!token) return;
+        const auth = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/auth`,
+          { headers: { Authorization: `Bearer ${token}` }, withCredentials: true }
+        );
         if (!auth.data.authenticated) return;
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/me`, { withCredentials: true });
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/user/me`,
+          { headers: { Authorization: `Bearer ${token}` }, withCredentials: true }
+        );
         const seen = localStorage.getItem('healthPopupSeen');
         if (!seen && !res.data.completo) setShowPopup(true);
       } catch (err) {
@@ -35,7 +43,7 @@ const HomePage = () => {
 
     const timer = setTimeout(checkProfile, 300);
     return () => clearTimeout(timer);
-  }, [isLoaded, isSignedIn]);
+  }, [isLoaded, isSignedIn, getToken]);
 
   return (
     <div className="index-main">
