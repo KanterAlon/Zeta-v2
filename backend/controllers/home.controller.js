@@ -10,6 +10,16 @@ const OFF_SEARCH_URL = process.env.OPENFOODFACTS_SEARCH_URL ||
   'https://world.openfoodfacts.org/cgi/search.pl';
 const OFF_API_URL = process.env.OPENFOODFACTS_API_URL || 'https://world.openfoodfacts.org/api/v2/search';
 
+const CACHE_THRESHOLD = parseInt(process.env.CACHE_THRESHOLD || '3', 10);
+const CACHE_TTL = 86400; // 24 hours
+
+const normalize = (str) =>
+  str
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-zA-Z0-9]/g, '')
+    .toLowerCase();
+
 const homeController = {
   // 🔐 LOGIN
   login: async (req, res) => {
@@ -298,14 +308,41 @@ registrarUsuario: async (req, res) => {
     if (!query) return res.status(400).json({ error: 'Falta query' });
 
     const isEAN = /^\d{8,13}$/.test(query);
+    const normalized = isEAN ? query : normalize(query);
+    const cacheKey = `product:${normalized}`;
+    const freqKey = `freq:${cacheKey}`;
+    let freq = 0;
+
+    try {
+      if (redis) {
+        freq = await redis.incr(freqKey);
+        if (freq === 1) await redis.expire(freqKey, CACHE_TTL);
+        console.log('📦 Revisando cache para', cacheKey);
+        const cached = await redis.get(cacheKey);
+        if (cached) {
+          console.log('✅ Cache hit para', cacheKey);
+          return res.json(JSON.parse(cached));
+        }
+        console.log('❌ Cache miss para', cacheKey);
+      } else {
+        console.log('⚠️ Redis no está configurado');
+      }
+    } catch (err) {
+      console.error('Redis read error:', err.message);
+    }
 
     try {
       if (isEAN) {
         const productUrl = `${OFF_PROD_URL}/${encodeURIComponent(query)}.json`;
         console.log('🔍 OFF product URL:', productUrl);
         const response = await axios.get(productUrl);
-        if (response.data.status !== 1) throw new Error("No encontrado");
-        return res.json(response.data.product);
+        if (response.data.status !== 1) throw new Error('No encontrado');
+        const product = response.data.product;
+        if (redis && freq >= CACHE_THRESHOLD) {
+          console.log('💾 Guardando producto en cache para', cacheKey);
+          await redis.setex(cacheKey, CACHE_TTL, JSON.stringify(product));
+        }
+        return res.json(product);
       } else {
         const searchParams = {
           search_terms: query,
@@ -318,7 +355,12 @@ registrarUsuario: async (req, res) => {
         const response = await axios.get(OFF_SEARCH_URL, { params: searchParams });
         const productos = response.data.products;
         if (!productos.length) return res.status(404).json({ error: 'No hay resultados' });
-        return res.json(productos[0]);
+        const product = productos[0];
+        if (redis && freq >= CACHE_THRESHOLD) {
+          console.log('💾 Guardando producto en cache para', cacheKey);
+          await redis.setex(cacheKey, CACHE_TTL, JSON.stringify(product));
+        }
+        return res.json(product);
       }
     } catch (err) {
       return res.status(500).json({ error: err.message });
@@ -327,11 +369,16 @@ registrarUsuario: async (req, res) => {
 
   searchProducts: async (req, res) => {
     const { query } = req.query;
-    if (!query) return res.status(400).json({ success: false, message: "Falta query" });
-    const cacheKey = `search:${query}`;
+    if (!query) return res.status(400).json({ success: false, message: 'Falta query' });
+    const normalizedQuery = normalize(query);
+    const cacheKey = `search:${normalizedQuery}`;
+    const freqKey = `freq:${cacheKey}`;
+    let freq = 0;
 
     try {
       if (redis) {
+        freq = await redis.incr(freqKey);
+        if (freq === 1) await redis.expire(freqKey, CACHE_TTL);
         console.log('📦 Revisando cache para', cacheKey);
         const cached = await redis.get(cacheKey);
         if (cached) {
@@ -376,16 +423,9 @@ registrarUsuario: async (req, res) => {
       }
 
       // Normaliza y combina productos duplicados con distintas fotos
-      const normalizeName = (str) =>
-        str
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .replace(/[^a-zA-Z0-9]/g, '')
-          .toLowerCase();
-
       const map = new Map();
       for (const prod of productos) {
-        const key = normalizeName(prod.name);
+        const key = normalize(prod.name);
         if (!map.has(key)) {
           map.set(key, { name: prod.name, images: [prod.image] });
         } else {
@@ -399,9 +439,9 @@ registrarUsuario: async (req, res) => {
       }));
 
       try {
-        if (redis) {
+        if (redis && freq >= CACHE_THRESHOLD) {
           console.log('💾 Guardando resultado en cache para', cacheKey);
-          await redis.setex(cacheKey, 86400, JSON.stringify(uniqueProducts));
+          await redis.setex(cacheKey, CACHE_TTL, JSON.stringify(uniqueProducts));
         }
       } catch (err) {
         console.error('Redis write error:', err.message);
@@ -410,7 +450,7 @@ registrarUsuario: async (req, res) => {
       res.json({ success: true, products: uniqueProducts });
     } catch (error) {
       console.error("🔴 Error en API OpenFood:", error.message);
-      res.status(500).json({ success: false, message: "Error en API" });
+      res.status(500).json({ success: false, message: 'Error en API' });
     }
   },
 

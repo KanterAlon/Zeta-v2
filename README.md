@@ -65,19 +65,21 @@ cause P1001 errors on machines without IPv6 connectivity. Adjust the host to
 match your project's region if needed. Edit `backend/.env.secrets` to provide
 your Supabase user and password.
 
-## Product search cache
+## Product cache
 
-The backend uses [Upstash Redis](https://upstash.com/) to cache results from
-the OpenFoodFacts product search API. When a request arrives:
+The backend uses [Upstash Redis](https://upstash.com/) to cache both product
+search results and individual product details. The cache is smarter now:
 
-1. The server looks for a `search:<query>` key in Redis.
-   - If it exists, the cached products are returned and a log indicates a cache
-     hit.
-   - If it does not exist, a cache miss is logged.
-2. On a cache miss, the OpenFoodFacts API is queried. The response is processed
-   and stored in Redis for 24 hours (`SETEX`) so subsequent searches are faster.
-3. If `REDIS_URL` is not set or Redis is unavailable, the server skips caching
+1. **Normalized keys:** search terms are normalized (accents, spaces and
+   punctuation removed) so variations like `oreo`, `oreoo` or `oreo-` share the
+   same cache entry.
+2. **Frequency-based storage:** each normalized query increments a counter. Only
+   when a query or product is requested repeatedly (default threshold: `3`)
+   does the server store the result in Redis (`SETEX`, 24h).
+3. **Product details:** requests to the product endpoint also benefit from this
+   mechanism, caching the product information itself under `product:<query>`.
+4. If `REDIS_URL` is not set or Redis is unavailable, the server skips caching
    and logs that Redis is disabled.
 
-The logs also report when no products are found for a query and when new data is
-saved into the cache.
+This approach avoids storing rarely used data and prevents duplicate entries for
+similar product names.
