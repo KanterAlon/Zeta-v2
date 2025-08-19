@@ -18,6 +18,7 @@ const Header = () => {
   const [loading, setLoading] = useState(true);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [devMode, setDevMode] = useState(() => localStorage.getItem('devMode') === 'true');
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   
@@ -76,6 +77,11 @@ const Header = () => {
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
   const toggleMenu = () => setMenuOpen(prev => !prev);
   const closeMenu = () => setMenuOpen(false);
+  const toggleDevMode = () => {
+    const value = !devMode;
+    setDevMode(value);
+    localStorage.setItem('devMode', value);
+  };
 
   return (
     <header>
@@ -139,6 +145,13 @@ const Header = () => {
           </div>
         )}
       </nav>
+      <button
+        type="button"
+        className="dev-toggle"
+        onClick={toggleDevMode}
+      >
+        {devMode ? 'Modo Dev: ON' : 'Modo Dev: OFF'}
+      </button>
       <div className={`overlay ${menuOpen ? 'active' : ''}`} onClick={closeMenu}></div>
     </header>
   );

@@ -25,6 +25,7 @@ const SearchResults = () => {
     // available (e.g., misconfigured builds or previews).
     const apiBase = import.meta.env.VITE_API_URL || 'https://zeta-v2-backend.vercel.app';
     const start = performance.now();
+    const isDev = import.meta.env.DEV || localStorage.getItem('devMode') === 'true';
     fetch(`${apiBase}/api/SearchProducts?query=${encodeURIComponent(query)}`)
       .then(res => res.json())
       .then(data => {
@@ -32,7 +33,7 @@ const SearchResults = () => {
           setProducts(data.products);
           const elapsed = (performance.now() - start).toFixed(2);
           const source = data.source === 'cache' ? 'la cache' : 'OpenFoodFacts';
-          if (import.meta.env.DEV) {
+          if (isDev) {
             setAlertMessage(`Resultados obtenidos de ${source} en ${elapsed} ms`);
           }
         } else {

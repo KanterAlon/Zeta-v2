@@ -44,6 +44,16 @@ header {
   height: 30px;
 }
 
+.dev-toggle {
+  margin-left: 1rem;
+  background: none;
+  border: 1px solid var(--secondary2-color);
+  color: var(--secondary2-color);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
 .login-button, .icon-group {
   display: flex;
   align-items: center;
@@ -217,6 +227,11 @@ span.button-text{
   .nav-links a {
     width: 100%;
     padding: 1rem 0;
+  }
+
+  .dev-toggle {
+    margin-top: 1rem;
+    margin-left: 0;
   }
 
   .login-button,
