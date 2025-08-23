@@ -44,19 +44,19 @@ const SearchResults = () => {
       .finally(() => setLoading(false));
   }, [query]);
 
-  const handleClick = (name) => {
+  const handleClick = (product) => {
     if (selectionMode) {
       setSelected(prev => {
-        if (prev.includes(name)) return prev.filter(n => n !== name);
+        if (prev.includes(product.code)) return prev.filter(c => c !== product.code);
         if (prev.length >= 10) {
           setWarning('Solo puedes comparar hasta 10 productos');
           setTimeout(() => setWarning(''), 2000);
           return prev;
         }
-        return [...prev, name];
+        return [...prev, product.code];
       });
     } else {
-      navigate(`/producto?query=${encodeURIComponent(name)}`);
+      navigate(`/producto?code=${encodeURIComponent(product.code)}`);
     }
   };
 
@@ -67,8 +67,8 @@ const SearchResults = () => {
 
   const handleCompare = () => {
     if (selected.length < 2) return;
-    const names = selected.map(n => encodeURIComponent(n)).join(',');
-    navigate(`/compare?names=${names}`);
+    const codes = selected.map(c => encodeURIComponent(c)).join(',');
+    navigate(`/compare?codes=${codes}`);
   };
 
   const skeletons = Array.from({ length: 6 });
@@ -97,13 +97,13 @@ const SearchResults = () => {
         <p className="no-results">No se encontraron productos.</p>
       ) : (
         <div className="cards-container">
-          {products.map((p, i) => {
-            const isSelected = selected.includes(p.name);
+          {products.map((p) => {
+            const isSelected = selected.includes(p.code);
             return (
               <div
-                key={i}
+                key={p.code}
                 className={`product-card${isSelected ? ' selected' : ''}`}
-                onClick={() => handleClick(p.name)}
+                onClick={() => handleClick(p)}
               >
                 <LazyImage src={p.image} alt={p.name} className="card-image" />
                 <h3 className="card-title">{p.name}</h3>

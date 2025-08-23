@@ -24,7 +24,9 @@ const getRatingColorClass = (rating) => {
 
 const ProductPage = () => {
   const [searchParams] = useSearchParams();
-  const query = searchParams.get('query');
+  const codeParam = searchParams.get('code');
+  const queryParam = searchParams.get('query');
+  const query = codeParam || queryParam;
 
   const [productData, setProductData] = useState(null);
   const [productName, setProductName] = useState('');
@@ -185,7 +187,33 @@ const ProductPage = () => {
                     value={productData.nutriments?.fat_100g}
                   />
                 )}
-                {/* Repetí saturadas, azúcar, etc si querés */}
+                {getLevel('saturated-fat') === 'moderate' && (
+                  <NutritionItem
+                    type="moderate"
+                    icon="/img/icon_fat.svg"
+                    title="Grasas Saturadas Moderadas"
+                    description="Consumir con moderación."
+                    value={productData.nutriments?.['saturated-fat_100g']}
+                  />
+                )}
+                {getLevel('sugars') === 'moderate' && (
+                  <NutritionItem
+                    type="moderate"
+                    icon="/img/icon_sugar.svg"
+                    title="Azúcares Moderados"
+                    description="Consumir con moderación."
+                    value={productData.nutriments?.sugars_100g}
+                  />
+                )}
+                {getLevel('salt') === 'moderate' && (
+                  <NutritionItem
+                    type="moderate"
+                    icon="/img/icon_salt.svg"
+                    title="Sodio Moderado"
+                    description="Consumir con moderación."
+                    value={productData.nutriments?.salt_100g}
+                  />
+                )}
               </>
             )}
 
@@ -199,6 +227,24 @@ const ProductPage = () => {
                     title="Alto en Azúcares"
                     description="Puede afectar la salud dental y aumentar calorías."
                     value={productData.nutriments?.sugars_100g}
+                  />
+                )}
+                {getLevel('saturated-fat') === 'high' && (
+                  <NutritionItem
+                    type="negative"
+                    icon="/img/icon_fat.svg"
+                    title="Alto en Grasas Saturadas"
+                    description="Puede aumentar el colesterol malo."
+                    value={productData.nutriments?.['saturated-fat_100g']}
+                  />
+                )}
+                {getLevel('salt') === 'high' && (
+                  <NutritionItem
+                    type="negative"
+                    icon="/img/icon_salt.svg"
+                    title="Alto en Sodio"
+                    description="Un consumo excesivo puede elevar la presión arterial."
+                    value={productData.nutriments?.salt_100g}
                   />
                 )}
                 {productData.nova_group === '4' && (
