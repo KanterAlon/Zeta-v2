@@ -362,7 +362,7 @@ registrarUsuario: async (req, res) => {
       const searchParams = {
         search_terms: query,
         page_size: 20,
-        fields: 'product_name,image_url',
+        fields: 'code,product_name,image_url',
         search_simple: 1,
         action: 'process',
         json: 1
@@ -378,8 +378,8 @@ registrarUsuario: async (req, res) => {
       const result = await axios.get(OFF_SEARCH_URL, options);
 
       const productos = (result.data.products || [])
-        .filter(p => p.product_name && p.image_url)
-        .map(p => ({ name: p.product_name.trim(), image: p.image_url }));
+        .filter(p => p.product_name && p.image_url && p.code)
+        .map(p => ({ code: p.code, name: p.product_name.trim(), image: p.image_url }));
 
       if (!productos.length) {
         console.log('🔎 No se encontraron productos para', query);
@@ -387,18 +387,18 @@ registrarUsuario: async (req, res) => {
         console.log(`🔎 Se encontraron ${productos.length} productos para ${query}`);
       }
 
-      // Normaliza y combina productos duplicados con distintas fotos
+      // Combina productos duplicados según el código
       const map = new Map();
       for (const prod of productos) {
-        const key = normalize(prod.name);
-        if (!map.has(key)) {
-          map.set(key, { name: prod.name, images: [prod.image] });
+        if (!map.has(prod.code)) {
+          map.set(prod.code, { code: prod.code, name: prod.name, images: [prod.image] });
         } else {
-          map.get(key).images.push(prod.image);
+          map.get(prod.code).images.push(prod.image);
         }
       }
 
       const uniqueProducts = Array.from(map.values()).map(p => ({
+        code: p.code,
         name: p.name,
         image: p.images.find(Boolean)
       }));
