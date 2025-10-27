@@ -20,6 +20,74 @@ if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
 
 const visionClient = new vision.ImageAnnotatorClient();
 
+function getVertices(boundingPoly) {
+  if (!boundingPoly) return [];
+  if (boundingPoly.normalizedVertices?.length) {
+    return boundingPoly.normalizedVertices.map(v => ({
+      x: v.x ?? 0,
+      y: v.y ?? 0
+    }));
+  }
+  if (boundingPoly.vertices?.length) {
+    return boundingPoly.vertices.map(v => ({
+      x: v.x ?? 0,
+      y: v.y ?? 0
+    }));
+  }
+  return [];
+}
+
+function getBoxMetrics(boundingPoly) {
+  const vertices = getVertices(boundingPoly);
+  if (!vertices.length) return { area: 0, box: null };
+  const xs = vertices.map(v => v.x);
+  const ys = vertices.map(v => v.y);
+  const minX = Math.min(...xs);
+  const maxX = Math.max(...xs);
+  const minY = Math.min(...ys);
+  const maxY = Math.max(...ys);
+  const width = Math.max(0, maxX - minX);
+  const height = Math.max(0, maxY - minY);
+  return {
+    area: width * height,
+    box: {
+      minX,
+      minY,
+      maxX,
+      maxY,
+      vertices
+    }
+  };
+}
+
+function paragraphText(paragraph) {
+  return (paragraph.words || [])
+    .map(word => (word.symbols || []).map(symbol => symbol.text).join(''))
+    .join(' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function extractDominantText(fullTextAnnotation) {
+  if (!fullTextAnnotation?.pages?.length) return null;
+  const candidates = [];
+  fullTextAnnotation.pages.forEach(page => {
+    (page.blocks || []).forEach(block => {
+      (block.paragraphs || []).forEach(paragraph => {
+        const text = paragraphText(paragraph);
+        if (!text) return;
+        const { area, box } = getBoxMetrics(paragraph.boundingBox || block.boundingBox);
+        if (area <= 0) return;
+        const weight = area * (1 + Math.log1p(text.length));
+        candidates.push({ text, weight, box });
+      });
+    });
+  });
+  if (!candidates.length) return null;
+  candidates.sort((a, b) => b.weight - a.weight);
+  return candidates[0];
+}
+
 async function searchOFF(terms) {
   const searchParams = {
     search_terms: terms,
@@ -54,17 +122,32 @@ async function handleUpload(req, res) {
     const barcodes = (vResp.barcodeAnnotations || []).map(b => b.rawValue);
     const logos = (vResp.logoAnnotations || []).map(l => ({ name: l.description, score: l.score }));
     const rawText = vResp.fullTextAnnotation?.text?.trim() || '';
+    const dominant = extractDominantText(vResp.fullTextAnnotation);
     const text = rawText;
     const webEnts = (vResp.webDetection?.webEntities || []).map(e => ({ desc: e.description, score: e.score }));
     const labels = (vResp.labelAnnotations || []).map(l => ({ desc: l.description, score: l.score }));
-    const objects = (vResp.localizedObjectAnnotations || []).map(o => o.name);
+    const objects = (vResp.localizedObjectAnnotations || []).map(o => ({
+      name: o.name,
+      score: o.score,
+      box: getBoxMetrics(o.boundingPoly).box
+    }));
 
-    const visionData = { barcodes, logos, text, webEnts, labels, objects };
+    const visionData = {
+      barcodes,
+      logos,
+      text,
+      webEnts,
+      labels,
+      objects,
+      primaryText: dominant?.text || null,
+      primaryBox: dominant?.box || null
+    };
 
     const prompt = `
     Eres un asistente en ESPAÑOL experto en productos alimenticios. Recibes un JSON con datos de Google Vision sobre un envase. Tu tarea es devolver SOLO el término de búsqueda más corto y útil para buscar ese producto en OpenFoodFacts.
     \n    ✅ REGLAS CLARAS:
-    1. Usa el texto OCR (\`text\`) como fuente PRINCIPAL para identificar el nombre genérico.
+    1. Prioriza siempre el campo \`primaryText\`, que corresponde al texto más grande detectado en el envase.
+       - Si \`primaryText\` no es descriptivo, usa el campo \`text\` como apoyo.
        - Si hay varias líneas, elige la más descriptiva en ESPAÑOL que indique qué es el producto.
        - Omite frases de marketing, ingredientes o instrucciones.
     2. Solo incluye la marca si aparece en \`logos\`.

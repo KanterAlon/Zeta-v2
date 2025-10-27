@@ -1,0 +1,246 @@
+.scan-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+  padding: 1.5rem;
+}
+
+.scan-dialog {
+  background: #fff;
+  border-radius: 16px;
+  max-width: 960px;
+  width: 100%;
+  max-height: 90vh;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+}
+
+.scan-dialog__close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: rgba(0, 0, 0, 0.05);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.scan-dialog__close:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.scan-dialog__body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  padding: 2.5rem 2rem 2rem;
+  overflow-y: auto;
+}
+
+.scan-dialog__preview {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.scan-dialog__image-wrapper {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+
+.scan-dialog__image-wrapper img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.scan-dialog__box {
+  position: absolute;
+  border: 2px solid rgba(0, 114, 255, 0.85);
+  border-radius: 6px;
+  color: #fff;
+  background: rgba(0, 114, 255, 0.6);
+  font-size: 0.75rem;
+  padding: 0.2rem 0.35rem;
+  pointer-events: none;
+  text-transform: capitalize;
+}
+
+.scan-dialog__box--primary {
+  border-color: rgba(0, 189, 126, 0.85);
+  background: rgba(0, 189, 126, 0.6);
+}
+
+.scan-dialog__summary h2 {
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+.scan-dialog__primary-text,
+.scan-dialog__ai-text {
+  margin: 0;
+  color: var(--secondary8-color);
+}
+
+.scan-dialog__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.scan-dialog__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--secondary6-color);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  background: #fff;
+  font-weight: 600;
+}
+
+.scan-dialog__action svg {
+  font-size: 1rem;
+}
+
+.scan-dialog__action.disabled,
+.scan-dialog__action:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.scan-dialog__warning {
+  background: rgba(255, 193, 7, 0.15);
+  color: #8a6d00;
+  padding: 0.65rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.scan-dialog__compare-list {
+  border-top: 1px solid var(--secondary5-color);
+  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.scan-dialog__compare-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.scan-dialog__compare-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.scan-dialog__clear {
+  background: none;
+  border: 1px solid var(--secondary6-color);
+  border-radius: 6px;
+  padding: 0.45rem 0.75rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.scan-dialog__clear:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.scan-dialog__empty {
+  margin: 0;
+  color: var(--secondary7-color);
+  font-size: 0.9rem;
+}
+
+.scan-dialog__compare-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.scan-dialog__compare-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--secondary5-color);
+  border-radius: 10px;
+}
+
+.scan-dialog__compare-info {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.scan-dialog__compare-info img,
+.scan-dialog__placeholder {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: var(--secondary4-color);
+}
+
+.scan-dialog__placeholder {
+  display: inline-block;
+}
+
+.scan-dialog__compare-item button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--secondary7-color);
+  font-size: 1.1rem;
+}
+
+.scan-dialog__compare-item button:hover {
+  color: var(--primary-color);
+}
+
+@media (max-width: 900px) {
+  .scan-dialog__body {
+    grid-template-columns: 1fr;
+    max-height: 80vh;
+  }
+}
+
+@media (max-width: 600px) {
+  .scan-dialog-overlay {
+    padding: 0.75rem;
+  }
+
+  .scan-dialog {
+    border-radius: 12px;
+  }
+
+  .scan-dialog__action {
+    width: 100%;
+    justify-content: center;
+  }
+}

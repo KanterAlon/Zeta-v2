@@ -10,15 +10,16 @@ const CameraModal = ({ isOpen, onClose, onCapture }) => {
   if (!isOpen) return null;
 
   const capture = async () => {
-    if (webcamRef.current) {
-      const imageSrc = webcamRef.current.getScreenshot();
-      if (imageSrc) {
-        setCapturing(true);
-        const res = await fetch(imageSrc);
-        const blob = await res.blob();
-        await onCapture(blob);
-        setCapturing(false);
-      }
+    if (!webcamRef.current) return;
+    const imageSrc = webcamRef.current.getScreenshot();
+    if (!imageSrc) return;
+    setCapturing(true);
+    try {
+      const res = await fetch(imageSrc);
+      const blob = await res.blob();
+      await onCapture({ file: blob, preview: imageSrc });
+    } finally {
+      setCapturing(false);
     }
   };
 
