@@ -4,6 +4,7 @@ import { BrowserRouter, useNavigate } from 'react-router-dom';
 import { ClerkProvider } from '@clerk/clerk-react';
 import App from './App';
 import './index.css';
+import { CompareProvider } from './context/CompareContext';
 
 function ClerkProviderWithRouter({ children }) {
   const navigate = useNavigate();
@@ -21,7 +22,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
       <ClerkProviderWithRouter>
-        <App />
+        <CompareProvider>
+          <App />
+        </CompareProvider>
       </ClerkProviderWithRouter>
     </BrowserRouter>
   </React.StrictMode>

@@ -1,17 +1,29 @@
 // src/components/HeroSection.jsx
-import React, { useState, useRef } from 'react';
+import React, { useRef, useState } from 'react';
+import { FiCamera, FiSearch } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 import CameraModal from './CameraModal';
 import Loader from './Loader';
-import { useNavigate } from 'react-router-dom';
-import { FiSearch, FiCamera } from 'react-icons/fi';
+import AlertPopup from './AlertPopup';
+import ScanResultDialog from './ScanResultDialog';
 
 const HeroSection = () => {
   const [query, setQuery] = useState('');
   const [showCamera, setShowCamera] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [scanResult, setScanResult] = useState(null);
+  const [scanError, setScanError] = useState('');
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
+  const readAsDataUrl = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
 
   const handleSearch = () => {
     if (query.trim()) {
@@ -27,29 +39,67 @@ const HeroSection = () => {
     }
   };
 
-  const handleCapture = async (source) => {
+  const handleCapture = async (input) => {
     let file = null;
-    if (source && source.target) {
-      file = source.target.files[0];
-    } else if (source instanceof Blob) {
-      file = source;
+    let preview = null;
+
+    if (input?.target?.files?.[0]) {
+      file = input.target.files[0];
+      try {
+        preview = await readAsDataUrl(file);
+      } catch (err) {
+        console.warn('No se pudo generar la previsualización', err);
+      }
+    } else if (input?.file) {
+      file = input.file;
+      preview = input.preview || null;
+      if (!preview) {
+        try {
+          preview = await readAsDataUrl(file);
+        } catch (err) {
+          console.warn('No se pudo generar la previsualización', err);
+        }
+      }
+    } else if (input instanceof Blob) {
+      file = input;
+      try {
+        preview = await readAsDataUrl(file);
+      } catch (err) {
+        console.warn('No se pudo generar la previsualización', err);
+      }
     }
+
     if (!file) return;
+
     const formData = new FormData();
     formData.append('image', file, 'capture.jpg');
     try {
       setLoading(true);
+      setScanError('');
       const res = await fetch('http://localhost:3000/api/camera/upload', {
         method: 'POST',
         body: formData,
       });
-      const data = await res.json();
-      const term = data.ai?.response?.trim();
-      if (term) {
-        navigate(`/search?query=${encodeURIComponent(term)}`);
+      if (!res.ok) {
+        throw new Error('No se pudo analizar la imagen');
       }
+      const data = await res.json();
+      const aiTerm = data.ai?.response?.trim() || '';
+      const dominantText = data.vision?.primaryText?.trim() || '';
+      const fallbackText = data.vision?.text?.split('\n').map(t => t.trim()).find(Boolean) || '';
+      const term = aiTerm || dominantText || fallbackText;
+      if (!term) {
+        setScanError('No se pudo reconocer el texto principal del envase. Intentalo nuevamente.');
+        return;
+      }
+      setScanResult({
+        preview,
+        term,
+        data,
+      });
     } catch (err) {
       console.error('Camera search error', err);
+      setScanError(err.message || 'Ocurrió un error al analizar la imagen');
     } finally {
       setLoading(false);
       setShowCamera(false);
@@ -57,6 +107,10 @@ const HeroSection = () => {
         fileInputRef.current.value = '';
       }
     }
+  };
+
+  const handleCloseScanResult = () => {
+    setScanResult(null);
   };
 
   const onKeyDown = (e) => {
@@ -117,6 +171,14 @@ const HeroSection = () => {
         <div className="page-loader">
           <Loader />
         </div>
+      )}
+      <ScanResultDialog
+        isOpen={!!scanResult}
+        scan={scanResult}
+        onClose={handleCloseScanResult}
+      />
+      {scanError && (
+        <AlertPopup message={scanError} onClose={() => setScanError('')} />
       )}
     </section>
   );

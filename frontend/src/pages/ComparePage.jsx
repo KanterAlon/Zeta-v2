@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Loader from '../components/Loader';
 import {
@@ -8,14 +8,17 @@ import {
   FaCube,
   FaDrumstickBite,
   FaListOl,
+  FaTrashAlt,
+  FaTimes,
 } from 'react-icons/fa';
 import { GiButter, GiWheat, GiSaltShaker } from 'react-icons/gi';
+import { useCompare } from '../context/CompareContext';
 
 const ComparePage = () => {
-  const [params] = useSearchParams();
+  const [params, setParams] = useSearchParams();
   const codesQuery = params.get('codes') || params.get('names') || '';
 
-  const codes = React.useMemo(
+  const initialCodes = useMemo(
     () =>
       codesQuery
         .split(',')
@@ -26,29 +29,35 @@ const ComparePage = () => {
   );
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCodes, setSelectedCodes] = useState(initialCodes);
+  const { removeItem, clearItems } = useCompare();
 
   useEffect(() => {
-    if (codes.length === 0) return;
+    setSelectedCodes(initialCodes);
+  }, [initialCodes]);
+
+  useEffect(() => {
+    if (selectedCodes.length === 0) {
+      setProducts([]);
+      setLoading(false);
+      return;
+    }
     setLoading(true);
-    // Determine base URL for API requests.
-    // Use the VITE_API_URL environment variable if defined at build time;
-    // otherwise fall back to the deployed backend URL. This fallback ensures
-    // client-side builds still function when environment variables are not
-    // available (e.g., misconfigured builds or previews).
     const apiBase = import.meta.env.VITE_API_URL || 'https://zeta-v2-backend.vercel.app';
     Promise.all(
-      codes.map(c =>
-        fetch(`${apiBase}/api/product?query=${encodeURIComponent(c)}`)
+      selectedCodes.map(code =>
+        fetch(`${apiBase}/api/product?query=${encodeURIComponent(code)}`)
           .then(res => res.json())
+          .then(data => (data ? { ...data, code } : null))
           .catch(() => null)
       )
     ).then(data => {
       setProducts(data.filter(Boolean).slice(0, 10));
       setLoading(false);
     });
-  }, [codes]);
+  }, [selectedCodes]);
 
-    if (loading) return <Loader />;
+  if (loading) return <Loader />;
 
   const FIELDS = [
     {
@@ -105,9 +114,50 @@ const ComparePage = () => {
   const getValue = (obj, path) =>
     path.reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), obj);
 
+  const paramKey = params.get('codes') ? 'codes' : params.get('names') ? 'names' : 'codes';
+
+  const updateQuery = (codesList) => {
+    const newParams = new URLSearchParams(params);
+    newParams.delete('codes');
+    newParams.delete('names');
+    if (codesList.length) {
+      newParams.set(paramKey, codesList.join(','));
+    }
+    setParams(newParams);
+  };
+
+  const handleRemoveProduct = (code) => {
+    setSelectedCodes(prev => {
+      const updated = prev.filter(c => c !== code);
+      updateQuery(updated);
+      return updated;
+    });
+    removeItem(code);
+  };
+
+  const handleClearAll = () => {
+    setSelectedCodes([]);
+    setProducts([]);
+    const clearedParams = new URLSearchParams(params);
+    clearedParams.delete('codes');
+    clearedParams.delete('names');
+    setParams(clearedParams);
+    clearItems();
+  };
+
   return (
     <div className="compare-page">
-      <h1>Comparar Productos</h1>
+      <div className="compare-page__header">
+        <h1>Comparar Productos</h1>
+        <button
+          type="button"
+          className="compare-page__clear"
+          onClick={handleClearAll}
+          disabled={!products.length}
+        >
+          <FaTrashAlt /> Limpiar comparación
+        </button>
+      </div>
       {products.length < 2 ? (
         <p>No se encontraron suficientes productos.</p>
       ) : (
@@ -116,17 +166,30 @@ const ComparePage = () => {
             <thead>
               <tr>
                 <th />
-                {products.map((p, i) => (
-                  <th key={i}>
-                    <div className="product-heading">
-                      <img
-                        src={p.image_url || '/img/lays-classic.svg'}
-                        alt={p.product_name}
-                      />
-                      <span>{p.product_name}</span>
-                    </div>
-                  </th>
-                ))}
+                {products.map((p, i) => {
+                  const productCode = p.code || selectedCodes[i];
+                  return (
+                    <th key={productCode || i}>
+                      <div className="product-heading">
+                        <img
+                          src={p.image_url || '/img/lays-classic.svg'}
+                          alt={p.product_name}
+                        />
+                        <span>{p.product_name}</span>
+                        {productCode && (
+                          <button
+                            type="button"
+                            className="product-heading__remove"
+                            onClick={() => handleRemoveProduct(productCode)}
+                            aria-label={`Quitar ${p.product_name}`}
+                          >
+                            <FaTimes />
+                          </button>
+                        )}
+                      </div>
+                    </th>
+                  );
+                })}
               </tr>
             </thead>
             <tbody>
