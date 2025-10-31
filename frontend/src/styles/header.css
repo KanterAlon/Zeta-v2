@@ -4,7 +4,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: red;
+  background-color: var(--secondary3-color);
   position: relative;
   box-sizing: border-box;
   max-width: 100%;
